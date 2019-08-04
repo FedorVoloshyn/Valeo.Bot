@@ -5,7 +5,7 @@ namespace ValeoBot.Data.Repository
 {
     public interface IDataRepository<TEntity>
     {
-        IEnumerable<TEntity> All { get; }
+        IEnumerable<TEntity> All();
         TEntity Get(long id);
         TEntity Add(TEntity entity);
         TEntity[] Find(Func<TEntity, bool> predicator);

@@ -15,14 +15,5 @@ namespace ValeoBot.Data.Entities
         public string PatientName { get; set; }
         public string PhoneNumber {get; set;}
         public ICollection<User> Users { get; set; }
-
-        public Order()
-        {
-            
-        }
-        public Order(Order order)
-        {
-            this.ChatId = order.ChatId;
-        }
     }
 }

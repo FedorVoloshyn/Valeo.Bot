@@ -71,7 +71,7 @@ namespace ValeoBot
         private IBotBuilder ConfigureBot()
         {
             return new BotBuilder()
-                //.Use<ExceptionHandler>()
+                .Use<ExceptionHandler>()
                 //.UseWhen<WebhookLogger>(When.Webhook)
                 //.UseWhen<UpdateMembersList>(When.MembersChanged)
                 .MapWhen(When.NewMessage, msgBranch => msgBranch

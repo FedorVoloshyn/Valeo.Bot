@@ -11,8 +11,6 @@ namespace ValeoBot
             : base(options)
         { 
             Database.EnsureCreated();
-            Database.ExecuteSqlCommand($@"ALTER TABLE orders CONVERT TO CHARACTER SET utf8;");
-            Database.ExecuteSqlCommand($@"ALTER TABLE admins CONVERT TO CHARACTER SET utf8;");
         }
 
         

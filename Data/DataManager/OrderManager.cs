@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using ValeoBot;
 using ValeoBot.Data.Entities;
 using ValeoBot.Data.Repository;
@@ -9,58 +10,105 @@ using ValeoBot.Data.Repository;
 namespace ValeoBot.Data.DataManager
 {
     public class OrderManager : IDataRepository<Order>
+    {
+        private readonly ILogger<OrderManager> _logger;
+        private readonly ApplicationDbContext _context;
+
+        public OrderManager(ApplicationDbContext context, ILogger<OrderManager> logger)
         {
-            readonly ApplicationDbContext _context;
+            _logger = logger;
+            _context = context;
+        }
 
-            public OrderManager(ApplicationDbContext context)
+        public IEnumerable<Order> All()
+        {
+            try
             {
-                _context = context;
+                return _context.Orders.ToList();
             }
-
-            public IEnumerable<Order> All => _context.Orders.ToList();
-            public Order Get(long id)
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error on get All Orders.");
+                throw;
+            }
+        }
+        public Order Get(long id)
+        {
+            try
             {
                 return _context.Orders
                     .FirstOrDefault(e => e.Id == id);
             }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error on Get Order: {id}.");
+                throw;
+            }
+        }
 
-            public Order Add(Order entity)
+        public Order Add(Order entity)
+        {
+            try
             {
                 var value = Get(entity.Id);
-                if(value == null) { 
-                   var result = _context.Orders.Add(entity);
+                if (value == null)
+                {
+                    var result = _context.Orders.Add(entity);
                     _context.SaveChanges();
                     return result.Entity;
                 }
-                else 
-                { 
+                else
+                {
                     var result = Get(entity.Id);
                     return result;
                 }
-            }
 
-            public void Update(Order entity)
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error on Add new Order: {entity.ToString()}.");
+                throw;
+            }
+        }
+
+        public void Update(Order entity)
+        {
+            try
             {
                 _context.Update(entity);
                 _context.SaveChanges();
             }
-
-            public void Delete(Order entity)
+            catch (Exception e)
             {
-                try
-                {
-                    _context.Orders.Remove(entity);
-                    _context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-
-                }
+                _logger.LogError(e, $"Error on Update Order: {entity.ToString()}.");
+                throw;
             }
-            public Order[] Find(Func<Order, bool> predicator)
+        }
+
+        public void Delete(Order entity)
+        {
+            try
+            {
+                _context.Orders.Remove(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error on Delete Order: {entity.ToString()}.");
+                throw;
+            }
+        }
+        public Order[] Find(Func<Order, bool> predicator)
+        {
+            try
             {
                 return _context.Orders.Where(predicator).ToArray();
             }
-
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error on Find Order: {predicator.ToString()}.");
+                throw;
+            }
         }
+    }
 }

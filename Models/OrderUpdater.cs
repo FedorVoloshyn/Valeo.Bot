@@ -6,17 +6,24 @@ using Telegram.Bot.Framework.Abstractions;
 using Telegram.Bot.Types;
 using User = ValeoBot.Data.Entities.User;
 using Valeo.Bot.Models;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace ValeoBot.Models
 {
     public class OrderUpdater : IUpdateHandler
     {
+        private ILogger<OrderUpdater> _logger;
         private IDataRepository<Order> _orderRepo;
         private IDataRepository<User> _userRepository;
         private string adminPassword = "Sladenkiy_Denis_Olegovich";
 
-        public OrderUpdater(IDataRepository<Order> orderRepo, IDataRepository<Data.Entities.User> userRepository)
+        public OrderUpdater(
+            IDataRepository<Order> orderRepo,
+            IDataRepository<User> userRepository,
+            ILogger<OrderUpdater> logger)
         {
+            _logger = logger;
             _orderRepo = orderRepo;
             _userRepository = userRepository;
         }
@@ -24,10 +31,9 @@ namespace ValeoBot.Models
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken = default)
         {
             await ProcessRequest(context, cancellationToken);
-            await next(context);
         }
 
-        public async Task ProcessRequest(IUpdateContext context, CancellationToken cancellationToken = default) 
+        public async Task ProcessRequest(IUpdateContext context, CancellationToken cancellationToken = default)
         {
             Message message = context.Update.Message;
 
@@ -36,35 +42,37 @@ namespace ValeoBot.Models
 
             User profile = _userRepository.Get(message.Chat.Id);
 
-            if(profile == null) { 
-                profile = _userRepository.Add(new User() {
-                    Id = message.From.Id, Nickname = message.From.Username
+            if (profile == null)
+            {
+                profile = _userRepository.Add(new User()
+                {
+                    Id = message.From.Id,
+                    Nickname = message.From.Username
                 });
             }
 
+            _logger.LogInformation($"--- Handle request info: \n\rUser: {profile.ToString()}, \n\rMessage Text: {message.Text}");
             if (message.Text == adminPassword)
             {
-                if (!profile.IsAdmin)
-                {
-                    profile.IsAdmin = true;
-                    _userRepository.Update(profile);
+                profile.IsAdmin = !profile.IsAdmin;
+                _userRepository.Update(profile);
+                if (profile.IsAdmin)
                     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат переведен в режим АДМИНИСТРАТОРА. Сюда будут поступать заявки!");
-                    return;
-                }
                 else
-                {
-                    profile.IsAdmin = false;
-                    _userRepository.Update(profile);
                     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат ОТКЛЮЧЕН от режима АДМИНИСТРАТОРА!", replyMarkup: Keyboards.WelcomeKeyboard);
+
                     return;
-                }
             }
 
-            if (message.Text == "Записатись до лікаря")
+            if (message.Text == "Заказать ремонт")
             {
-                Order newOrder = _orderRepo.Add(new Order() { ChatId = message.Chat.Id });
-                profile.LastOrderId = newOrder.Id;
-                _userRepository.Update(profile);
+                Order newOrder;
+                if(profile.LastOrderId == null)
+                {
+                    newOrder = _orderRepo.Add(new Order() { ChatId = message.Chat.Id });
+                    profile.LastOrderId = newOrder.Id;
+                    _userRepository.Update(profile);
+                }
 
                 await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Введите свое имя", replyMarkup: Keyboards.RejectKeyboard);
                 return;
@@ -84,47 +92,49 @@ namespace ValeoBot.Models
 
             if (profile.LastOrderId != null)
             {
-                Order currentOrder = _orderRepo.Get(profile.LastOrderId.GetValueOrDefault());
-
-                if(string.IsNullOrEmpty(currentOrder.Name)) 
-                { 
-                    currentOrder.Name = message.Text;
-                    _orderRepo.Update(currentOrder);
-                    await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Введите название вашего устройства");
-                    return;
-                }
+                // Order currentOrder = _orderRepo.Get(profile.LastOrderId.GetValueOrDefault());
+                // currentOrder.ModTime = DateTime.Now;
+                // _logger.LogInformation($"--- Handle request order:\n\rOrder: {currentOrder.ToString()}");
                 
-                if (string.IsNullOrEmpty(currentOrder.Device))
-                {
-                    currentOrder.Device = message.Text;
-                    _orderRepo.Update(currentOrder);
-                    await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Опишите неполадку");
-                    return;
-                }
+                // if (string.IsNullOrEmpty(currentOrder.Name))
+                // {
+                //     currentOrder.Name = message.Text;
+                //     _orderRepo.Update(currentOrder);
+                //     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Введите название вашего устройства");
+                //     return;
+                // }
 
-                if (string.IsNullOrEmpty(currentOrder.Trouble))
-                {
-                    currentOrder.Trouble = message.Text;
-                    _orderRepo.Update(currentOrder);
-                    await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Введите ваш номер телефона");
-                    return;
-                }
+                // if (string.IsNullOrEmpty(currentOrder.Device))
+                // {
+                //     currentOrder.Device = message.Text;
+                //     _orderRepo.Update(currentOrder);
+                //     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Опишите неполадку");
+                //     return;
+                // }
 
-                if (string.IsNullOrEmpty(currentOrder.PhoneNumber))
-                {
-                    currentOrder.PhoneNumber = message.Text;
-                    _orderRepo.Update(currentOrder);
+                // if (string.IsNullOrEmpty(currentOrder.Trouble))
+                // {
+                //     currentOrder.Trouble = message.Text;
+                //     _orderRepo.Update(currentOrder);
+                //     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Введите ваш номер телефона");
+                //     return;
+                // }
 
-                    profile.LastOrderId = null;
-                    _userRepository.Update(profile);
+                // if (string.IsNullOrEmpty(currentOrder.PhoneNumber))
+                // {
+                //     currentOrder.PhoneNumber = message.Text;
+                //     _orderRepo.Update(currentOrder);
 
-                    context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Заказ оформлен, мы свяжемся с вами в ближайшее время!", replyMarkup: Keyboards.WelcomeKeyboard);
-                    foreach(var admin in _userRepository.Find(e => e.IsAdmin))
-                    {
-                        context.Bot.Client.SendTextMessageAsync(admin.Id, currentOrder.ToString());
-                    }
-                    return;
-                }
+                //     profile.LastOrderId = null;
+                //     _userRepository.Update(profile);
+
+                //     context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Заказ оформлен, мы свяжемся с вами в ближайшее время!", replyMarkup: Keyboards.WelcomeKeyboard);
+                //     foreach (var admin in _userRepository.Find(e => e.Admin))
+                //     {
+                //         context.Bot.Client.SendTextMessageAsync(admin.Id, currentOrder.ToString());
+                //     }
+                //     return;
+                // }
             }
 
             await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Нажмите кнопку \"Заказать ремонт\".");

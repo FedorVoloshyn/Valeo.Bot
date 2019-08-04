@@ -15,16 +15,5 @@ namespace ValeoBot.Data.Entities
         public Order Order { get; set; }
 
         public bool IsAdmin { get; set; }
-
-        public User()
-        {
-
-        }
-
-        public User(User user)
-        {
-            this.Nickname = user.Nickname;
-            this.LastOrderId = user.LastOrderId;
-        }
     }
 }
