@@ -160,7 +160,9 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
             for (int i = 1; i < times.Count; i++)
             {
-                string formatedTime = times[i].Value.ToString("g", CultureInfo.CreateSpecificCulture("es-ES"));
+                string formatedTime = times[i].Value.ToString("g", CultureInfo.CreateSpecificCulture("es-ES")) 
+                                    + " " 
+                                    + times[i].Value.DayOfWeek.ToString();
                 currentRow.Add(InlineKeyboardButton.WithCallbackData($"{formatedTime}", $"{formatedTime}|Save"));
                 if (i % 2 == 0)
                 {

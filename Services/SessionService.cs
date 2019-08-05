@@ -77,7 +77,6 @@ namespace ValeoBot.Services
                 lastReg.RegistrationMessageId = null;
                 regRepository.Update(lastReg);
             }
-
         }
 
         /**
