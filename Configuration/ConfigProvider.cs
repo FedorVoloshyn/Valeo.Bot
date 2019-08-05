@@ -1,3 +1,4 @@
+
 using ValeoBot.Configuration.Entities;
 using ValeoBot.Configuration.Entities.Logging;
 
@@ -8,6 +9,7 @@ namespace ValeoBot.Configuration
         private ConnectionStrings connectionString;
         private LoggingSettings logging;
         private BotSettings botSettings;
+        private ValeoApi valeoApi;
         public ConnectionStrings ConnectionStrings
         {
             get
@@ -17,6 +19,17 @@ namespace ValeoBot.Configuration
             set
             {
                 connectionString = value;
+            }
+        }
+        public ValeoApi ValeoApi
+        {
+            get
+            {
+                return valeoApi;
+            }
+            set
+            {
+                valeoApi = value;
             }
         }
         public LoggingSettings Logging

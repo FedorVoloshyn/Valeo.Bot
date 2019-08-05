@@ -13,7 +13,8 @@ namespace ValeoBot.Configuration
             {
                 ConnectionStrings = GetConfiguration<ConnectionStrings>(config, "ConnectionStrings"),
                 Logging = GetConfiguration<LoggingSettings>(config, "Logging"),
-                BotSettings = GetConfiguration<BotSettings>(config, "BotSettings")
+                BotSettings = GetConfiguration<BotSettings>(config, "BotSettings"),
+                ValeoApi = GetConfiguration<ValeoApi>(config, "ValeoApi")
             };
             return configProvider;
         }

@@ -49,6 +49,7 @@ namespace ValeoBot
 
             services.AddTransient<ValeoLifeBot>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
+                .AddScoped<ExceptionHandler>()
                 .AddScoped<OrderUpdater>()
                 .AddScoped<StartCommand>();
         }
