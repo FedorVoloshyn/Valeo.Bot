@@ -28,7 +28,7 @@ namespace ValeoBot.Services.ValeoApi
             return JsonConvert.DeserializeObject<Doctor>(json);
         }
 
-        private async Task<Time[]> GetFreeTimeByDoctor(Doctor doctor)
+        public async Task<Time[]> GetFreeTimeByDoctor(Doctor doctor)
         {
             string json = await _client.GetStringAsync(string.Format(_config.ValeoApi.TimeUrl, doctor.Id))
                 .ConfigureAwait(false);

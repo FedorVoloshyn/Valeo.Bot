@@ -7,13 +7,14 @@ namespace ValeoBot.Configuration
 {
     public class ConfigLoader
     {
-        public ConfigProvider GetConfigProvider(IConfiguration config)
+        public ConfigProvider GetConfigProvider(IServiceCollection services, IConfiguration config)
         {
+            services.Configure<BotConfig>(config.GetSection("BotConfig"));
             ConfigProvider configProvider = new ConfigProvider()
             {
                 ConnectionStrings = GetConfiguration<ConnectionStrings>(config, "ConnectionStrings"),
                 Logging = GetConfiguration<LoggingSettings>(config, "Logging"),
-                BotSettings = GetConfiguration<BotSettings>(config, "BotSettings"),
+                BotConfig = GetConfiguration<BotConfig>(config, "BotConfig"),
                 ValeoApi = GetConfiguration<ValeoApi>(config, "ValeoApi")
             };
             return configProvider;

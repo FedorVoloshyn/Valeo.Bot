@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot.Framework;
+using Telegram.Bot.Framework.Abstractions;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
 using ValeoBot.Data.DataManager;
@@ -13,8 +15,7 @@ using ValeoBot.Middleware.BotBuilderMiddleware.Extensions;
 using ValeoBot.Middleware.Connection;
 using ValeoBot.Models;
 using ValeoBot.Models.Commands;
-using Telegram.Bot.Framework;
-using Telegram.Bot.Framework.Abstractions;
+using ValeoBot.Services.ValeoApi;
 
 namespace ValeoBot
 {
@@ -48,10 +49,12 @@ namespace ValeoBot
             }
 
             services.AddTransient<ValeoLifeBot>()
+                .AddTransient<ValeoLifeBotLP>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<OrderUpdater>()
-                .AddScoped<StartCommand>();
+                .AddScoped<StartCommand>()
+                .AddScoped<IValeoAPIService, ValeoAPIService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +63,7 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                app.UseTelegramBotLongPolling<ValeoLifeBotLP>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
             }
             else
             {
@@ -68,7 +71,7 @@ namespace ValeoBot
                 app.EnsureWebhookSet<ValeoLifeBot>();
             }
         }
-        
+
         private IBotBuilder ConfigureBot()
         {
             return new BotBuilder()
@@ -87,7 +90,7 @@ namespace ValeoBot
                     //.MapWhen<WeatherReporter>(When.LocationMessage)
                 )
 
-            //.MapWhen<CallbackQueryHandler>(When.CallbackQuery)
+                .MapWhen<CallbackQueryHandler>(When.CallbackQuery)
 
             // .Use<UnhandledUpdateReporter>()
             ;
