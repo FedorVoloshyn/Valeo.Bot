@@ -49,8 +49,9 @@ namespace ValeoBot
             }
 
             services.AddTransient<ValeoLifeBot>()
-                .AddTransient<ValeoLifeBotLP>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
+                .AddScoped<PingCommand>()
+                .AddScoped<CallbackQueryHandler>()
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<OrderUpdater>()
                 .AddScoped<StartCommand>()
@@ -63,7 +64,7 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseTelegramBotLongPolling<ValeoLifeBotLP>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
             }
             else
             {
@@ -82,6 +83,7 @@ namespace ValeoBot
                     .MapWhen(When.NewTextMessage, txtBranch => txtBranch
                         .MapWhen(When.NewCommand, cmdBranch => cmdBranch
                             .UseCommand<StartCommand>("start")
+                            .UseCommand<PingCommand>("ping")
                         )
                         .Use<OrderUpdater>()
                         //.Use<NLP>()
@@ -92,7 +94,7 @@ namespace ValeoBot
 
                 .MapWhen<CallbackQueryHandler>(When.CallbackQuery)
 
-            // .Use<UnhandledUpdateReporter>()
+                //.Use<UnhandledUpdateReporter>()
             ;
         }
     }
