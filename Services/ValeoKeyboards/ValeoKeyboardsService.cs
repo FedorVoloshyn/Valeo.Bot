@@ -14,7 +14,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
             new InlineKeyboardButton[]
             {
-            InlineKeyboardButton.WithCallbackData("Записаться на прием", "dotors"),
+                InlineKeyboardButton.WithCallbackData("Записаться на прием", "dotors"),
             }
             })
         };

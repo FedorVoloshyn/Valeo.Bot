@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot.Framework.Abstractions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Valeo.Bot.Services.ValeoKeyboards;
 
 namespace ValeoBot.Models.Commands
@@ -16,6 +17,8 @@ namespace ValeoBot.Models.Commands
             await context.Bot.Client.SendTextMessageAsync(
                 msg.Chat,
                 ValeoKeyboardsService.DefaultKeyboard.Message,
+                parseMode: ParseMode.Markdown,
+                
                 replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup);
 
             await next(context);
