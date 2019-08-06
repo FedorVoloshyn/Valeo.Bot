@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Framework;
 using Telegram.Bot.Framework.Abstractions;
+using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
 using ValeoBot.Data.DataManager;
@@ -15,6 +16,7 @@ using ValeoBot.Middleware.BotBuilderMiddleware.Extensions;
 using ValeoBot.Middleware.Connection;
 using ValeoBot.Models;
 using ValeoBot.Models.Commands;
+using ValeoBot.Services;
 using ValeoBot.Services.ValeoApi;
 
 namespace ValeoBot
@@ -48,14 +50,17 @@ namespace ValeoBot
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
 
+            services.AddSingleton<SessionService>()
+                .AddScoped<ValeoKeyboardsService>()
+                .AddTransient<IValeoAPIService, ValeoAPIService>();
+
             services.AddTransient<ValeoLifeBot>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
-                .AddScoped<PingCommand>()
-                .AddScoped<CallbackQueryHandler>()
                 .AddScoped<ExceptionHandler>()
-                .AddScoped<OrderUpdater>()
                 .AddScoped<StartCommand>()
-                .AddScoped<IValeoAPIService, ValeoAPIService>();
+                .AddScoped<OrderUpdater>()
+                .AddScoped<CallbackQueryHandler>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,7 +99,7 @@ namespace ValeoBot
 
                 .MapWhen<CallbackQueryHandler>(When.CallbackQuery)
 
-                //.Use<UnhandledUpdateReporter>()
+            //.Use<UnhandledUpdateReporter>()
             ;
         }
     }

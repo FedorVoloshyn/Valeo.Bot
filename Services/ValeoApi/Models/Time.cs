@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ValeoBot.Services.ValeoApi
+namespace ValeoBot.Services.ValeoApi.Models
 {
     public struct Time
     {

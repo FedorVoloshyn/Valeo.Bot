@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using ValeoBot.Services.ValeoApi.Models;
 
 namespace ValeoBot.Services.ValeoApi
 {
