@@ -8,7 +8,7 @@ namespace ValeoBot.Configuration
         public static void AddConfigurationProvider(this IServiceCollection services, IConfiguration config)
         {
             ConfigLoader loader = new ConfigLoader();
-            ConfigProvider provider = loader.GetConfigProvider(config);
+            ConfigProvider provider = loader.GetConfigProvider(services, config);
             services.AddSingleton<ConfigProvider>(provider);
         }
 

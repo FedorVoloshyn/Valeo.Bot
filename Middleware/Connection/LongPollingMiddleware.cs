@@ -13,7 +13,7 @@ namespace ValeoBot.Middleware.Connection
         public static IApplicationBuilder UseTelegramBotLongPolling<TBot>(this IApplicationBuilder app,
             IBotBuilder botBuilder,
             TimeSpan startAfter = default,
-            CancellationToken cancellationToken = default) where TBot : BotBase
+            CancellationToken cancellationToken = default) where TBot : IBot
         {
             if (startAfter == default)
             {

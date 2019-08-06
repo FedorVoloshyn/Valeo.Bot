@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot.Framework;
+using Telegram.Bot.Framework.Abstractions;
+using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
 using ValeoBot.Data.DataManager;
@@ -13,8 +16,8 @@ using ValeoBot.Middleware.BotBuilderMiddleware.Extensions;
 using ValeoBot.Middleware.Connection;
 using ValeoBot.Models;
 using ValeoBot.Models.Commands;
-using Telegram.Bot.Framework;
-using Telegram.Bot.Framework.Abstractions;
+using ValeoBot.Services;
+using ValeoBot.Services.ValeoApi;
 
 namespace ValeoBot
 {
@@ -47,11 +50,17 @@ namespace ValeoBot
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
 
+            services.AddSingleton<SessionService>()
+                .AddScoped<ValeoKeyboardsService>()
+                .AddTransient<IValeoAPIService, ValeoAPIService>();
+
             services.AddTransient<ValeoLifeBot>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
                 .AddScoped<ExceptionHandler>()
+                .AddScoped<StartCommand>()
                 .AddScoped<OrderUpdater>()
-                .AddScoped<StartCommand>();
+                .AddScoped<CallbackQueryHandler>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +77,7 @@ namespace ValeoBot
                 app.EnsureWebhookSet<ValeoLifeBot>();
             }
         }
-        
+
         private IBotBuilder ConfigureBot()
         {
             return new BotBuilder()
@@ -79,6 +88,7 @@ namespace ValeoBot
                     .MapWhen(When.NewTextMessage, txtBranch => txtBranch
                         .MapWhen(When.NewCommand, cmdBranch => cmdBranch
                             .UseCommand<StartCommand>("start")
+                            .UseCommand<PingCommand>("ping")
                         )
                         .Use<OrderUpdater>()
                         //.Use<NLP>()
@@ -87,9 +97,9 @@ namespace ValeoBot
                     //.MapWhen<WeatherReporter>(When.LocationMessage)
                 )
 
-            //.MapWhen<CallbackQueryHandler>(When.CallbackQuery)
+                .MapWhen<CallbackQueryHandler>(When.CallbackQuery)
 
-            // .Use<UnhandledUpdateReporter>()
+            //.Use<UnhandledUpdateReporter>()
             ;
         }
     }
