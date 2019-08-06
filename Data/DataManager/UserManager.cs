@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using ValeoBot;
@@ -54,7 +55,9 @@ namespace ValeoBot.Data.DataManager
                 if (value == null)
                 {
                     var result = _context.Users.Add(entity);
+                    //_context.Database.ExecuteSqlCommand(@"SET IDENTITY_INSERT [dbo].[Users] ON");
                     _context.SaveChanges();
+                    //_context.Database.ExecuteSqlCommand(@"SET IDENTITY_INSERT [dbo].[Users] OFF");
                     return result.Entity;
                 }
                 else

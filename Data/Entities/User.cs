@@ -7,6 +7,7 @@ namespace ValeoBot.Data.Entities
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
         public string Nickname { get; set; }
         
