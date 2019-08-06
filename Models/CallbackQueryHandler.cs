@@ -22,7 +22,8 @@ namespace ValeoBot.Models
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             CallbackQuery cq = context.Update.CallbackQuery;
-            ValeoKeyboard reply = _sessionService.UpdateUserState(cq.Message.Chat.Id, cq.Message.Text);
+
+            ValeoKeyboard reply = _sessionService.UpdateUserState(cq.Message.Chat.Id, cq.Data);
             await context.Bot.Client.EditMessageTextAsync(
                 cq.Message.Chat.Id,
                 cq.Message.MessageId,
