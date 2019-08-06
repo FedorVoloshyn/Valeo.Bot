@@ -51,7 +51,7 @@ namespace ValeoBot
             }
 
             services.AddSingleton<SessionService>()
-                .AddScoped<ValeoKeyboardsService>()
+                .AddSingleton<ValeoKeyboardsService>()
                 .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()

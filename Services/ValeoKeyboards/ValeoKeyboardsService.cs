@@ -14,7 +14,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записаться на прием", "dotors"),
+                    InlineKeyboardButton.WithCallbackData("Записаться на прием", "doctors"),
                 } 
             })
         };
@@ -22,7 +22,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         static ValeoKeyboardsService()
         {
             _keybords.Add("default", DefaultKeyboard);
-            _keybords.Add("dotors",
+            _keybords.Add("doctors",
                 new ValeoKeyboard
                 {
                     Message = "*Выберите доктора*",
@@ -84,7 +84,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Назад", "dotors"),
+                                    InlineKeyboardButton.WithCallbackData("Назад", "doctors"),
                                 }
                             })
                 });
@@ -92,7 +92,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
         public ValeoKeyboard GetKeyboard(string command)
         {
-            throw new NotImplementedException();
+            return _keybords[command];
         }
     }
 }
