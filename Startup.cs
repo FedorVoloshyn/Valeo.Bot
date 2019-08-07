@@ -50,8 +50,8 @@ namespace ValeoBot
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
 
-            services.AddSingleton<SessionService>()
-                .AddSingleton<ValeoKeyboardsService>()
+            services.AddTransient<SessionService>()
+                .AddTransient<ValeoKeyboardsService>()
                 .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()
@@ -88,7 +88,6 @@ namespace ValeoBot
                     .MapWhen(When.NewTextMessage, txtBranch => txtBranch
                         .MapWhen(When.NewCommand, cmdBranch => cmdBranch
                             .UseCommand<StartCommand>("start")
-                            .UseCommand<PingCommand>("ping")
                         )
                         .Use<OrderUpdater>()
                         //.Use<NLP>()

@@ -15,7 +15,7 @@ namespace ValeoBot.Services
             _unterminatedOrders = new Dictionary<long, Order>();
         }
 
-        public ValeoKeyboard UpdateUserState(long chatId, string command)
+        public ValeoKeyboard UpdateUserState(long chatId, ValeoCommands command)
         {
             // TODO: Update order, then return next keyboard
 

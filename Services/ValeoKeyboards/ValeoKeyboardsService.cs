@@ -14,15 +14,15 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записатись на прийом", "doctors"),
-                } 
+                    InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+                }
             })
         };
-        private static readonly Dictionary<string, ValeoKeyboard> _keybords = new Dictionary<string, ValeoKeyboard>();
+        private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
         static ValeoKeyboardsService()
         {
-            _keybords.Add("default", DefaultKeyboard);
-            _keybords.Add("doctors",
+            _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
+            _keybords.Add(ValeoCommands.Doctors,
                 new ValeoKeyboard
                 {
                     Message = "*Оберіть лікаря*",
@@ -43,16 +43,16 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                                 new InlineKeyboardButton[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("Невропатолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Гастроентеролог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("УЗД (УЗІ)", "usi")
+                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("УЗИ", ValeoCommands.Usi)
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Відміна", "default"),
+                                    InlineKeyboardButton.WithCallbackData("Отмена", ValeoCommands.Default),
                                 }
                             })
                 });
-            _keybords.Add("usi",
+            _keybords.Add(ValeoCommands.Usi,
                 new ValeoKeyboard
                 {
                     Message = "*УЗД (УЗІ)*",
@@ -84,13 +84,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Назад", "doctors"),
+                                    InlineKeyboardButton.WithCallbackData("Назад", ValeoCommands.Doctors),
                                 }
                             })
                 });
         }
 
-        public ValeoKeyboard GetKeyboard(string command)
+        public ValeoKeyboard GetKeyboard(ValeoCommands command)
         {
             return _keybords[command];
         }
