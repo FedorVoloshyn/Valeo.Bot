@@ -73,7 +73,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             string res1 = ApplyCommand(inputCommand);
             ValeoCommands res2 = AppluEnum(inputEnum);
             bool res3 = ValeoCommands.Doctors == ValeoCommands.Default;
-            bool res4 = ValeoCommands.Doctors == ValeoCommands.Doctors;
+            bool res4 = ValeoCommands.Doctors != ValeoCommands.Doctors;
         }
         public string ApplyCommand(ValeoCommands param)
         {

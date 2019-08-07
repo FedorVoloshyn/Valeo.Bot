@@ -12,13 +12,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нащій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-            new InlineKeyboardButton[]
-            {
-                InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
-            }
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+                }
             })
         };
-        private static readonly Dictionary<string, ValeoKeyboard> _keybords = new Dictionary<string, ValeoKeyboard>();
+        private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
         static ValeoKeyboardsService()
         {
             _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
@@ -90,7 +90,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 });
         }
 
-        public ValeoKeyboard GetKeyboard(string command)
+        public ValeoKeyboard GetKeyboard(ValeoCommands command)
         {
             return _keybords[command];
         }

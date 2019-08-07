@@ -11,7 +11,7 @@ namespace ValeoBot.Services
             _keyboardsService = keyboardsService;
         }
 
-        public ValeoKeyboard UpdateUserState(long chatId, string command)
+        public ValeoKeyboard UpdateUserState(long chatId, ValeoCommands command)
         {
             // TODO: Update order, then return next keyboard
 
