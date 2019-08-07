@@ -9,7 +9,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         { 
             { "doctors", () => Doctors }, 
             { "back", () => Back }, 
-            { "decline", () => Decline }
+            { "default", () => Default },
+            { "usi", () => Usi }
         };
         public string Value { get; private set; }
 
@@ -20,7 +21,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
         public static ValeoCommands Doctors { get { return new ValeoCommands("doctors"); } }
         public static ValeoCommands Back { get { return new ValeoCommands("back"); } }
-        public static ValeoCommands Decline { get { return new ValeoCommands("decline"); } }
+        public static ValeoCommands Default { get { return new ValeoCommands("default"); } }
+        public static ValeoCommands Usi { get { return new ValeoCommands("usi"); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -70,7 +72,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
             string res1 = ApplyCommand(inputCommand);
             ValeoCommands res2 = AppluEnum(inputEnum);
-            bool res3 = ValeoCommands.Doctors == ValeoCommands.Decline;
+            bool res3 = ValeoCommands.Doctors == ValeoCommands.Default;
             bool res4 = ValeoCommands.Doctors == ValeoCommands.Doctors;
         }
         public string ApplyCommand(ValeoCommands param)
