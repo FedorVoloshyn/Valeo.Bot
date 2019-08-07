@@ -12,7 +12,5 @@ namespace ValeoBot
         { 
             Database.EnsureCreated();
         }
-
-        
     }
 }
