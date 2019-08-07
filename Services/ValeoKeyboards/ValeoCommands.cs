@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+
+namespace Valeo.Bot.Services.ValeoKeyboards
+{
+    public struct ValeoCommands
+    {
+        private static readonly Dictionary<string, Func<ValeoCommands>> _values = new Dictionary<string, Func<ValeoCommands>>()
+        { 
+            { "doctors", () => Doctors }, 
+            { "back", () => Back }, 
+            { "decline", () => Decline }
+        };
+        public string Value { get; private set; }
+
+        private ValeoCommands(string value)
+        {
+            Value = value;
+        }
+
+        public static ValeoCommands Doctors { get { return new ValeoCommands("doctors"); } }
+        public static ValeoCommands Back { get { return new ValeoCommands("back"); } }
+        public static ValeoCommands Decline { get { return new ValeoCommands("decline"); } }
+
+        public static implicit operator ValeoCommands(string command)
+        {
+            return _values[command]();
+        }
+        public static implicit operator string(ValeoCommands command)
+        {
+            return command.Value;
+        }
+        public static bool operator ==(ValeoCommands command1, ValeoCommands command2)
+        {
+            return command1.Value == command2.Value;
+        }
+
+        public static bool operator !=(ValeoCommands command1, ValeoCommands command2)
+        {
+            return command1.Value != command2.Value;
+        }
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ValeoCommands res)
+            {
+                return res.Value == Value;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Value);
+        }
+    }
+
+    public class Test
+    {
+
+        public Test()
+        {
+            string inputCommand = "doctors";
+            string inputEnum = ValeoCommands.Doctors;
+
+            string res1 = ApplyCommand(inputCommand);
+            ValeoCommands res2 = AppluEnum(inputEnum);
+            bool res3 = ValeoCommands.Doctors == ValeoCommands.Decline;
+            bool res4 = ValeoCommands.Doctors == ValeoCommands.Doctors;
+        }
+        public string ApplyCommand(ValeoCommands param)
+        {
+            return param;
+        }
+        public ValeoCommands AppluEnum(string param)
+        {
+            return param;
+        }
+    }
+}
