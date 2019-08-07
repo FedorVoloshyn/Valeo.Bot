@@ -14,7 +14,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записаться на прием", "doctors"),
+                    InlineKeyboardButton.WithCallbackData("Записатись на прийом", "doctors"),
                 } 
             })
         };
@@ -25,62 +25,62 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             _keybords.Add("doctors",
                 new ValeoKeyboard
                 {
-                    Message = "*Выберите доктора*",
+                    Message = "*Оберіть лікаря*",
                         Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
                             {
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Семейный доктор", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Педиатр", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Сім. лікар", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Підатр", "PONG"),
                                         InlineKeyboardButton.WithCallbackData("Терапевт", "PONG")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Эндокринолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Кардиолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Гинеколог", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Ендокринолог", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Кардіолог", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Гінеколог", "PONG"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("Невропатолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("УЗИ", "usi")
+                                        InlineKeyboardButton.WithCallbackData("Гастроентеролог", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("УЗД (УЗІ)", "usi")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Отмена", "default"),
+                                    InlineKeyboardButton.WithCallbackData("Відміна", "default"),
                                 }
                             })
                 });
             _keybords.Add("usi",
                 new ValeoKeyboard
                 {
-                    Message = "*УЗИ*",
+                    Message = "*УЗД (УЗІ)*",
                         Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
                             {
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Органы брюшной полости", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Органы забрюшинного пространства", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Щитовидной железы", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Черевної порожнини", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Заочеревинного простору", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Щитовидної залози", "PONG")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Молочной железы", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Мягких тканей", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Лимфоузлов", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Молочної залози", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("М'яких тканин", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Лімфовузлів", "PONG"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Органов малого таза", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Сердца", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Сосудов нижних конечностей", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Органів малого тазу", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Серця", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Судин ниж. кінцівок", "PONG")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Сосудов верхних конечностей", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Сосудов шеи и головы", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Нейросонография", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Судин верх. кінцівок", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Судин шиї та голови", "PONG"),
+                                        InlineKeyboardButton.WithCallbackData("Нейросонографія", "PONG")
                                 },
                                 new InlineKeyboardButton[]
                                 {
