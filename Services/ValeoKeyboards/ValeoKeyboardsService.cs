@@ -9,6 +9,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         /** param1: Command, param2: Keyboard Markup */
         public static readonly ValeoKeyboard DefaultKeyboard = new ValeoKeyboard
         {
+            RequestType = RequestType.Menu,
             Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нащій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {

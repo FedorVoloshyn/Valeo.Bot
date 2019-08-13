@@ -60,7 +60,6 @@ namespace ValeoBot.Models
                     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат переведен в режим АДМИНИСТРАТОРА. Сюда будут поступать заявки!");
                 else
                     await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат ОТКЛЮЧЕН от режима АДМИНИСТРАТОРА!", replyMarkup: ValeoKeyboardsService.DefaultKeyboard.Markup);
-
                     return;
             }
 

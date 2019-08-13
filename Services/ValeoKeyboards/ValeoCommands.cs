@@ -6,23 +6,21 @@ namespace Valeo.Bot.Services.ValeoKeyboards
     public struct ValeoCommands
     {
         private static readonly Dictionary<string, Func<ValeoCommands>> _values = new Dictionary<string, Func<ValeoCommands>>()
-        { 
-            { "doctors", () => Doctors }, 
-            { "back", () => Back }, 
-            { "default", () => Default },
-            { "usi", () => Usi }
+        { { "doctors", () => Doctors }, { "back", () => Back }, { "default", () => Default }, { "usi", () => Usi }
         };
         public string Value { get; private set; }
+        public RequestType RequestType { get; private set; }
 
-        private ValeoCommands(string value)
+        private ValeoCommands(string value, RequestType requestType = RequestType.LoadInfo)
         {
+            RequestType = requestType;
             Value = value;
         }
 
-        public static ValeoCommands Doctors { get { return new ValeoCommands("doctors"); } }
-        public static ValeoCommands Back { get { return new ValeoCommands("back"); } }
-        public static ValeoCommands Default { get { return new ValeoCommands("default"); } }
-        public static ValeoCommands Usi { get { return new ValeoCommands("usi"); } }
+        public static ValeoCommands Doctors { get { return new ValeoCommands("doctors", RequestType.Menu); } }
+        public static ValeoCommands Back { get { return new ValeoCommands("back", RequestType.Menu); } }
+        public static ValeoCommands Default { get { return new ValeoCommands("default", RequestType.Menu); } }
+        public static ValeoCommands Usi { get { return new ValeoCommands("usi", RequestType.Menu); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -60,6 +58,12 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         {
             return HashCode.Combine(Value);
         }
+    }
+
+    public enum RequestType
+    {
+        Menu,
+        LoadInfo
     }
 
     public class Test

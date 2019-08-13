@@ -1,4 +1,5 @@
-﻿using Valeo.Bot.Services.ValeoKeyboards;
+﻿using Microsoft.Extensions.Logging;
+using Valeo.Bot.Services.ValeoKeyboards;
 
 namespace ValeoBot.Services
 {
@@ -6,7 +7,11 @@ namespace ValeoBot.Services
     {
         private readonly ValeoKeyboardsService _keyboardsService;
 
-        public SessionService(ValeoKeyboardsService keyboardsService)
+
+        public SessionService(
+            ApplicationDbContext context,
+            ILogger<SessionService> logger,
+            ValeoKeyboardsService keyboardsService)
         {
             _keyboardsService = keyboardsService;
         }
@@ -14,7 +19,10 @@ namespace ValeoBot.Services
         public ValeoKeyboard UpdateUserState(long chatId, ValeoCommands command)
         {
             // TODO: Update order, then return next keyboard
-
+            if (command == ValeoCommands.Default)
+            {
+                
+            }
             return _keyboardsService.GetKeyboard(command);
         }
     }
