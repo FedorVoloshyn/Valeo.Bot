@@ -52,7 +52,8 @@ namespace ValeoBot
 
             services.AddTransient<SessionService>()
                 .AddTransient<ValeoKeyboardsService>()
-                .AddTransient<IValeoAPIService, ValeoAPIService>();
+                .AddTransient<IValeoAPIService, ValeoAPIMockService>();
+                // .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))

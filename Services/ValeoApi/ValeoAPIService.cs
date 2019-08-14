@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,19 +22,19 @@ namespace ValeoBot.Services.ValeoApi
             };
         }
 
-        public async Task<Doctor> GetDoctorsByCategory(string category)
+        public async Task<List<Doctor>> GetDoctorsByCategory(string category)
         {
 
             string json = await _client.GetStringAsync(string.Format(_config.ValeoApi.DoctorsUrl, category))
                 .ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<Doctor>(json);
+            return JsonConvert.DeserializeObject<List<Doctor>>(json);
         }
 
-        public async Task<Time[]> GetFreeTimeByDoctor(Doctor doctor)
+        public async Task<List<Time>> GetFreeTimeByDoctor(Doctor doctor)
         {
             string json = await _client.GetStringAsync(string.Format(_config.ValeoApi.TimeUrl, doctor.Id))
                 .ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<Time[]>(json);
+            return JsonConvert.DeserializeObject<List<Time>>(json);
         }
     }
 }

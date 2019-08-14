@@ -11,7 +11,31 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public string Value { get; private set; }
         public RequestType RequestType { get; private set; }
 
-        private ValeoCommands(string value, RequestType requestType = RequestType.LoadInfo)
+        public ValeoCommands(string value)
+        {
+            string[] parts = value.Split(":");
+
+            if (parts.Length < 0 || parts.Length > 2)
+            {
+                throw new ArgumentException("Invalid command. Must be of 1-2 parts.");
+            }
+
+            if (parts.Length == 1)
+            {
+                RequestType = RequestType.Menu;
+                Value = value;
+            }
+            else 
+            { 
+                Enum.TryParse(parts[1], out RequestType type);
+                RequestType = type;
+                Value = parts[0];
+            }
+
+
+
+        }
+        public ValeoCommands(string value, RequestType requestType)
         {
             RequestType = requestType;
             Value = value;
@@ -62,8 +86,10 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
     public enum RequestType
     {
+        Default, 
         Menu,
-        LoadInfo
+        Doctors,
+        Times
     }
 
     public class Test
