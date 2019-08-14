@@ -53,7 +53,7 @@ namespace ValeoBot
             services.AddTransient<SessionService>()
                 .AddTransient<ValeoKeyboardsService>()
                 .AddTransient<IValeoAPIService, ValeoAPIMockService>();
-                // .AddTransient<IValeoAPIService, ValeoAPIService>();
+            // .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()
                 .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
@@ -70,7 +70,9 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                // app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+
+                app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
             }
             else
             {

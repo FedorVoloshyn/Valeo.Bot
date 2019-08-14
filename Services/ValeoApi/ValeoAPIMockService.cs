@@ -27,7 +27,7 @@ namespace ValeoBot.Services.ValeoApi
             return doctors;
         }
 
-        public async Task<List<Time>> GetFreeTimeByDoctor(Doctor doctor)
+        public async Task<List<Time>> GetFreeTimeByDoctor(string doctor)
         {
             var times = new List<Time>();
             for(int i = 0; i < 20; i++)

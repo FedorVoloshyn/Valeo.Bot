@@ -11,9 +11,9 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public string Value { get; private set; }
         public RequestType RequestType { get; private set; }
 
-        public ValeoCommands(string value)
+        private ValeoCommands(string value)
         {
-            string[] parts = value.Split(":");
+            string[] parts = value.Split("|");
 
             if (parts.Length < 0 || parts.Length > 2)
             {
@@ -31,9 +31,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 RequestType = type;
                 Value = parts[0];
             }
-
-
-
         }
         public ValeoCommands(string value, RequestType requestType)
         {
@@ -48,7 +45,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
         public static implicit operator ValeoCommands(string command)
         {
-            return _values[command]();
+            return new ValeoCommands(command);
         }
         public static implicit operator string(ValeoCommands command)
         {
