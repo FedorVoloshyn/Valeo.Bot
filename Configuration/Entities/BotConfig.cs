@@ -1,10 +1,12 @@
+using Telegram.Bot.Framework.Abstractions;
+
 namespace ValeoBot.Configuration.Entities
 {
-    public class BotConfig
+    public class BotConfig : IBotOptions
     {
-        public string Url { get; set; }
-        public string Proxy { get; set; }
-        public string Name { get; set; }
-        public string Key { get; set; }
+        public string Username { get; set; }
+        public string ApiToken { get; set; }
+        public string WebhookDomain { get; set; }
+        public string WebhookPath { get; set; }
     }
 }

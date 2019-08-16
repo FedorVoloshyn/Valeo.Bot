@@ -11,19 +11,18 @@ namespace ValeoBot.Models
 {
     public class CallbackQueryHandler : IUpdateHandler
     {
+        private readonly ResponseController _responseController;
 
-        private readonly SessionService _sessionService;
-
-        public CallbackQueryHandler(SessionService sessionService)
+        public CallbackQueryHandler(ResponseController responseController)
         {
-            _sessionService = sessionService;
+            _responseController = responseController;
         }
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             CallbackQuery cq = context.Update.CallbackQuery;
 
-            ValeoKeyboard reply = _sessionService.UpdateUserState(cq.Message.Chat.Id, cq.Data);
+            ValeoKeyboard reply = _responseController.UpdateUserState(cq.Message.Chat.Id, cq.Data);
             await context.Bot.Client.EditMessageTextAsync(
                 cq.Message.Chat.Id,
                 cq.Message.MessageId,
