@@ -11,7 +11,7 @@ namespace ValeoBot.Models
 {
     public class ValeoLifeBot : BotBase
     {
-        public ValeoLifeBot(IOptions<BotOptions<ValeoLifeBot>> options) 
+        public ValeoLifeBot(IOptions<BotConfig> options) 
             : base(options.Value)
         {
         }

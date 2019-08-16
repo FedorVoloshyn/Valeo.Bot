@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using ValeoBot;
 using ValeoBot.Data.Entities;
@@ -9,51 +9,51 @@ using ValeoBot.Data.Repository;
 
 namespace ValeoBot.Data.DataManager
 {
-    public class OrderManager : IDataRepository<Order>
+    public class UserReposiroty : IDataRepository<User>
     {
-        private readonly ILogger<OrderManager> _logger;
+        private readonly ILogger<UserReposiroty> _logger;
         private readonly ApplicationDbContext _context;
 
-        public OrderManager(ApplicationDbContext context, ILogger<OrderManager> logger)
+        public UserReposiroty(ApplicationDbContext context, ILogger<UserReposiroty> logger)
         {
             _logger = logger;
             _context = context;
         }
 
-        public IEnumerable<Order> All()
-        {
+        public IEnumerable<User> All()
+        { 
             try
             {
-                return _context.Orders.ToList();
+                return _context.Users.ToList(); 
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error on get All Orders.");
+                _logger.LogError(e, "Error on get All Users.");
                 throw;
             }
-        }
-        public Order Get(long id)
+        } 
+        public User Get(long id)
         {
             try
             {
-                return _context.Orders
+                return _context.Users
                     .FirstOrDefault(e => e.Id == id);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Get Order: {id}.");
+                _logger.LogError(e, $"Error on Get User: {id}.");
                 throw;
             }
         }
 
-        public Order Add(Order entity)
+        public User Add(User entity)
         {
             try
             {
                 var value = Get(entity.Id);
                 if (value == null)
                 {
-                    var result = _context.Orders.Add(entity);
+                    var result = _context.Users.Add(entity);
                     _context.SaveChanges();
                     return result.Entity;
                 }
@@ -66,12 +66,12 @@ namespace ValeoBot.Data.DataManager
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Add new Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Add new User: {entity.ToString()}.");
                 throw;
             }
         }
 
-        public void Update(Order entity)
+        public void Update(User entity)
         {
             try
             {
@@ -80,33 +80,33 @@ namespace ValeoBot.Data.DataManager
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Update Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Update User: {entity.ToString()}.");
                 throw;
             }
         }
 
-        public void Delete(Order entity)
+        public void Delete(User entity)
         {
             try
             {
-                _context.Orders.Remove(entity);
+                _context.Users.Remove(entity);
                 _context.SaveChanges();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Delete Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Delete User: {entity.ToString()}.");
                 throw;
             }
         }
-        public Order[] Find(Func<Order, bool> predicator)
+        public User[] Find(Func<User, bool> predicator)
         {
             try
             {
-                return _context.Orders.Where(predicator).ToArray();
+                return _context.Users.Where(predicator).ToArray();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Find Order: {predicator.ToString()}.");
+                _logger.LogError(e, $"Error on Find User: {predicator.ToString()}.");
                 throw;
             }
         }

@@ -1,29 +1,36 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Valeo.Bot.Services.ValeoKeyboards;
+using ValeoBot.Data.Entities;
+using ValeoBot.Services.ValeoApi;
 
 namespace ValeoBot.Services
 {
     public class SessionService
     {
-        private readonly ValeoKeyboardsService _keyboardsService;
-
+        private static List<User> _usersCache;
+        private static List<Order> _ordersCache;
+        private readonly ILogger<SessionService> logger;
+        private readonly IValeoAPIService valeoApi;
 
         public SessionService(
-            ApplicationDbContext context,
             ILogger<SessionService> logger,
-            ValeoKeyboardsService keyboardsService)
+            IValeoAPIService valeoApi
+            ) 
         {
-            _keyboardsService = keyboardsService;
+            this.logger = logger;
+            this.valeoApi = valeoApi;
         }
 
-        public ValeoKeyboard UpdateUserState(long chatId, ValeoCommands command)
+        public async Task AuthorizeUser(int chatId)
         {
-            // TODO: Update order, then return next keyboard
-            if (command == ValeoCommands.Default)
-            {
-                
-            }
-            return _keyboardsService.GetKeyboard(command);
+            return;
+        }
+
+        public async Task UpdateOrder() 
+        { 
+
         }
     }
 }

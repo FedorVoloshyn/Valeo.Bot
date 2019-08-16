@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Telegram.Bot.Types.ReplyMarkups;
 using ValeoBot.Services.ValeoApi;
+using ValeoBot.Services.ValeoApi.Models;
 
 namespace Valeo.Bot.Services.ValeoKeyboards
 {
@@ -16,17 +17,12 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
             new InlineKeyboardButton[]
             {
-            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+                InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
             }
             })
         };
         private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
-        private readonly IValeoAPIService api;
-
-        public ValeoKeyboardsService(IValeoAPIService api)
-        {
-            this.api = api;
-        }
+        
         static ValeoKeyboardsService()
         {
             _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
@@ -100,25 +96,11 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
         public ValeoKeyboard GetKeyboard(ValeoCommands command)
         {
-            if (command.RequestType == RequestType.Menu)
-            {
-                return _keybords[command];
-            }
-            if (command.RequestType == RequestType.Doctors)
-            {
-                return CreateDoctors(command);
-            }
-            if (command.RequestType == RequestType.Times)
-            {
-                return CreateTimes(command);
-            }
-
-            return DefaultKeyboard;
+            return _keybords[command];
         }
 
-        private ValeoKeyboard CreateDoctors(string command)
+        public ValeoKeyboard CreateDoctorsKeyboard(List<Doctor> doctors)
         {
-            var doctors = api.GetDoctorsByCategory(command).Result;
 
             List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
             List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
@@ -138,10 +120,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             return new ValeoKeyboard() { Message = "Выберите доктора", Markup = new InlineKeyboardMarkup(rows) };
         }
 
-        private ValeoKeyboard CreateTimes(string command)
+        public ValeoKeyboard CreateTimesKeyboard(List<Time> times)
         {
-            var times = api.GetFreeTimeByDoctor(command).Result;
-
             List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
             List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
             for (int i = 1; i < times.Count; i++)
