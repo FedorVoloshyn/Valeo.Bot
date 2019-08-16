@@ -16,7 +16,7 @@ namespace ValeoBot.Models
         private ILogger<OrderUpdater> _logger;
         private IDataRepository<Order> _orderRepo;
         private IDataRepository<User> _userRepository;
-        private string adminPassword = "Sladenkiy_Denis_Olegovich";
+        private string adminPassword = "qwerty";
 
         public OrderUpdater(
             IDataRepository<Order> orderRepo,
