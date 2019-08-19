@@ -1,59 +1,58 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Extensions.Logging;
-using ValeoBot;
 using ValeoBot.Data.Entities;
-using ValeoBot.Data.Repository;
 
-namespace ValeoBot.Data.DataManager
+namespace ValeoBot.Data.Repository
 {
-    public class OrderRepository : IDataRepository<Order>
+    public class RegistrationRepository : IDataRepository<Registration>
     {
-        private readonly ILogger<OrderRepository> _logger;
+        private readonly ILogger<RegistrationRepository> _logger;
         private readonly ApplicationDbContext _context;
 
-        public OrderRepository(ApplicationDbContext context, ILogger<OrderRepository> logger)
+        public RegistrationRepository(
+            ApplicationDbContext context, 
+            ILogger<RegistrationRepository> logger)
         {
             _logger = logger;
             _context = context;
         }
 
-        public IEnumerable<Order> All()
-        {
+        public IEnumerable<Registration> All()
+        { 
             try
             {
-                return _context.Orders.ToList();
+                return _context.Registrations.ToList(); 
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error on get All Orders.");
+                _logger.LogError(e, "Error on get All Registrations.");
                 throw;
             }
-        }
-        public Order Get(long id)
+        } 
+        public Registration Get(long id)
         {
             try
             {
-                return _context.Orders
+                return _context.Registrations
                     .FirstOrDefault(e => e.Id == id);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Get Order: {id}.");
+                _logger.LogError(e, $"Error on Get Registration: {id}.");
                 throw;
             }
         }
 
-        public Order Add(Order entity)
+        public Registration Add(Registration entity)
         {
             try
             {
                 var value = Get(entity.Id);
                 if (value == null)
                 {
-                    var result = _context.Orders.Add(entity);
+                    var result = _context.Registrations.Add(entity);
                     _context.SaveChanges();
                     return result.Entity;
                 }
@@ -66,47 +65,47 @@ namespace ValeoBot.Data.DataManager
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Add new Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Add new Registration: {entity.ToString()}.");
                 throw;
             }
         }
 
-        public void Update(Order entity)
+        public void Update(Registration entity)
         {
             try
             {
-                _context.Update(entity);
+                _context.Registrations.Update(entity);
                 _context.SaveChanges();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Update Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Update Registration: {entity.ToString()}.");
                 throw;
             }
         }
 
-        public void Delete(Order entity)
+        public void Delete(Registration entity)
         {
             try
             {
-                _context.Orders.Remove(entity);
+                _context.Registrations.Remove(entity);
                 _context.SaveChanges();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Delete Order: {entity.ToString()}.");
+                _logger.LogError(e, $"Error on Delete Registration: {entity.ToString()}.");
                 throw;
             }
         }
-        public Order[] Find(Func<Order, bool> predicator)
+        public Registration[] Find(Func<Registration, bool> predicator)
         {
             try
             {
-                return _context.Orders.Where(predicator).ToArray();
+                return _context.Registrations.Where(predicator).ToArray();
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error on Find Order: {predicator.ToString()}.");
+                _logger.LogError(e, $"Error on Find Registration: {predicator.ToString()}.");
                 throw;
             }
         }

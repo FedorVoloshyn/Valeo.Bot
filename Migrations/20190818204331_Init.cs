@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ValeoBot.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,17 +11,28 @@ namespace ValeoBot.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ChatId = table.Column<long>(nullable: true),
+                    Id = table.Column<long>(nullable: false),
+                    ChatId = table.Column<long>(nullable: false),
                     DoctorID = table.Column<string>(nullable: true),
-                    Time = table.Column<string>(nullable: true),
-                    PatientName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
+                    Time = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Registrations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false),
+                    AuthServiceToken = table.Column<string>(nullable: true),
+                    RegistrationMessageId = table.Column<int>(nullable: true),
+                    Time = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Registrations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,6 +41,8 @@ namespace ValeoBot.Migrations
                 {
                     Id = table.Column<long>(nullable: false),
                     Nickname = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
                     LastOrderId = table.Column<long>(nullable: true),
                     IsAdmin = table.Column<bool>(nullable: false)
                 },
@@ -52,6 +65,9 @@ namespace ValeoBot.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Registrations");
+
             migrationBuilder.DropTable(
                 name: "Users");
 

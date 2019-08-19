@@ -35,19 +35,19 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                                 new InlineKeyboardButton[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("Семейный доктор", "semdoc|Doctors"),
-                                        InlineKeyboardButton.WithCallbackData("Педиатр", "pediatr|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Терапевт", "terapevt|Doctor")
+                                        InlineKeyboardButton.WithCallbackData("Педиатр", "pediatr|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Терапевт", "terapevt|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Эндокринолог", "endocrin|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Кардиолог", "cardiol|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Гинеколог", "ginekol|Doctor"),
+                                    InlineKeyboardButton.WithCallbackData("Эндокринолог", "endocrin|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Кардиолог", "cardiol|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Гинеколог", "ginekol|Doctors"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Невропатолог", "nervopat|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "gastroin|Doctor"),
+                                    InlineKeyboardButton.WithCallbackData("Невропатолог", "nervopat|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "gastroin|Doctors"),
                                         InlineKeyboardButton.WithCallbackData("УЗИ", ValeoCommands.Usi)
                                 },
                                 new InlineKeyboardButton[]
@@ -64,27 +64,27 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                             {
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Органы брюшной полости", "usibrush|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Органы забрюшинного пространства", "usizabrush|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Щитовидной железы", "usishitov|Doctor")
+                                    InlineKeyboardButton.WithCallbackData("Органы брюшной полости", "usibrush|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Органы забрюшинного пространства", "usizabrush|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Щитовидной железы", "usishitov|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Молочной железы", "usimoloch|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Мягких тканей", "usimyah|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Лимфоузлов", "usilimfous|Doctor"),
+                                    InlineKeyboardButton.WithCallbackData("Молочной железы", "usimoloch|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Мягких тканей", "usimyah|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Лимфоузлов", "usilimfous|Doctors"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Органов малого таза", "usitasa|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Сердца", "usiserdsa|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Сосудов нижних конечностей", "usisosudniz|Doctor")
+                                    InlineKeyboardButton.WithCallbackData("Органов малого таза", "usitasa|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сердца", "usiserdsa|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сосудов нижних конечностей", "usisosudniz|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Сосудов верхних конечностей", "usisosudverh|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Сосудов шеи и головы", "usisosudshei|Doctor"),
-                                        InlineKeyboardButton.WithCallbackData("Нейросонография", "usineyro|Doctor")
+                                    InlineKeyboardButton.WithCallbackData("Сосудов верхних конечностей", "usisosudverh|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сосудов шеи и головы", "usisosudshei|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Нейросонография", "usineyro|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
@@ -104,7 +104,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
             List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
             List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
-            for (int i = 1; i <= doctors.Count; i++)
+            for (int i = 1; i < doctors.Count; i++)
             {
                 currentRow.Add(InlineKeyboardButton.WithCallbackData($"{doctors[i].FirstName} {doctors[i].LastName}", $"{doctors[i].FirstName}|Times"));
                 if (i % 2 == 0)

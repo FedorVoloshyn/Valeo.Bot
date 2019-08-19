@@ -27,8 +27,6 @@ namespace ValeoBot
                 NLog.LogManager.Shutdown();
             }
 
-            CreateWebHostBuilder(args).Build().Run();
-
         }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

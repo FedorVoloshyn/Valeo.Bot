@@ -9,13 +9,17 @@ namespace ValeoBot.Configuration
     {
         public ConfigProvider GetConfigProvider(IServiceCollection services, IConfiguration config)
         {
-            services.Configure<BotConfig>(config.GetSection("BotConfig"));
+            services.Configure<ConnectionStrings>(config.GetSection("ConnectionStrings"))
+                .Configure<LoggingSettings>(config.GetSection("Logging"))
+                .Configure<BotConfig>(config.GetSection("ValeoBot"))
+                .Configure<ValeoApiConfig>(config.GetSection("ValeoApi"));
+            
             ConfigProvider configProvider = new ConfigProvider()
             {
                 ConnectionStrings = GetConfiguration<ConnectionStrings>(config, "ConnectionStrings"),
                 Logging = GetConfiguration<LoggingSettings>(config, "Logging"),
-                BotConfig = GetConfiguration<BotConfig>(config, "BotConfig"),
-                ValeoApi = GetConfiguration<ValeoApi>(config, "ValeoApi")
+                BotConfig = GetConfiguration<BotConfig>(config, "ValeoBot"),
+                ValeoApi = GetConfiguration<ValeoApiConfig>(config, "ValeoApi")
             };
             return configProvider;
         }

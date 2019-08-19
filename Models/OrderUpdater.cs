@@ -4,7 +4,7 @@ using ValeoBot.Data.Entities;
 using ValeoBot.Data.Repository;
 using Telegram.Bot.Framework.Abstractions;
 using Telegram.Bot.Types;
-using User = ValeoBot.Data.Entities.User;
+using ValeoUser = ValeoBot.Data.Entities.ValeoUser;
 using Microsoft.Extensions.Logging;
 using System;
 using Valeo.Bot.Services.ValeoKeyboards;
@@ -15,12 +15,12 @@ namespace ValeoBot.Models
     {
         private ILogger<OrderUpdater> _logger;
         private IDataRepository<Order> _orderRepo;
-        private IDataRepository<User> _userRepository;
+        private IDataRepository<ValeoUser> _userRepository;
         private string adminPassword = "qwerty";
 
         public OrderUpdater(
             IDataRepository<Order> orderRepo,
-            IDataRepository<User> userRepository,
+            IDataRepository<ValeoUser> userRepository,
             ILogger<OrderUpdater> logger)
         {
             _logger = logger;
@@ -40,16 +40,7 @@ namespace ValeoBot.Models
             if (string.IsNullOrEmpty(message.Text))
                 return;
 
-            User profile = _userRepository.Get(message.Chat.Id);
-
-            if (profile == null)
-            {
-                profile = _userRepository.Add(new User()
-                {
-                    Id = message.From.Id,
-                    Nickname = message.From.Username
-                });
-            }
+            ValeoUser profile = _userRepository.Get(message.Chat.Id);
 
             _logger.LogInformation($"--- Handle request info: \n\rUser: {profile.ToString()}, \n\rMessage Text: {message.Text}");
             if (message.Text == adminPassword)

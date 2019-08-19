@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,6 @@ using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
 using ValeoBot.Configuration.Entities;
-using ValeoBot.Data.DataManager;
 using ValeoBot.Data.Entities;
 using ValeoBot.Data.Repository;
 using ValeoBot.Middleware.BotBuilderMiddleware.Extensions;
@@ -40,7 +40,8 @@ namespace ValeoBot
             services.AddConfigurationProvider(Configuration);
 
             services.AddScoped<IDataRepository<Order>, OrderRepository>();
-            services.AddScoped<IDataRepository<User>, UserReposiroty>();
+            services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
+            services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
 
             if (_envLocal.IsDevelopment())
             {
@@ -49,6 +50,12 @@ namespace ValeoBot
             }
             else
             {
+                services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                    options.HttpsPort = 443;
+                });
+            
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
@@ -61,7 +68,6 @@ namespace ValeoBot
             // .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()
-                .Configure<BotConfig>(Configuration.GetSection("ValeoBot"))
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<StartCommand>()
                 .AddScoped<OrderUpdater>()
@@ -72,19 +78,23 @@ namespace ValeoBot
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                app.UseMvc();
             }
             else
             {
+                //UseMvc and Use Webhook order important!!
+                app.UseMvc();
                 app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
                 app.EnsureWebhookSet<ValeoLifeBot>();
             }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
         }
 
         private IBotBuilder ConfigureBot()

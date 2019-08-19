@@ -10,8 +10,8 @@ using ValeoBot;
 namespace ValeoBot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190807172907_CreateDB")]
-    partial class CreateDB
+    [Migration("20190818204331_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,17 +23,11 @@ namespace ValeoBot.Migrations
 
             modelBuilder.Entity("ValeoBot.Data.Entities.Order", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("Id");
 
-                    b.Property<long?>("ChatId");
+                    b.Property<long>("ChatId");
 
                     b.Property<string>("DoctorID");
-
-                    b.Property<string>("PatientName");
-
-                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("Time");
 
@@ -42,11 +36,30 @@ namespace ValeoBot.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.User", b =>
+            modelBuilder.Entity("ValeoBot.Data.Entities.Registration", b =>
                 {
                     b.Property<long>("Id");
 
+                    b.Property<string>("AuthServiceToken");
+
+                    b.Property<int?>("RegistrationMessageId");
+
+                    b.Property<DateTime>("Time");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Registrations");
+                });
+
+            modelBuilder.Entity("ValeoBot.Data.Entities.ValeoUser", b =>
+                {
+                    b.Property<long>("Id");
+
+                    b.Property<string>("FirstName");
+
                     b.Property<bool>("IsAdmin");
+
+                    b.Property<string>("LastName");
 
                     b.Property<long?>("LastOrderId");
 
@@ -59,10 +72,10 @@ namespace ValeoBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.User", b =>
+            modelBuilder.Entity("ValeoBot.Data.Entities.ValeoUser", b =>
                 {
                     b.HasOne("ValeoBot.Data.Entities.Order", "Order")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("LastOrderId");
                 });
 #pragma warning restore 612, 618
