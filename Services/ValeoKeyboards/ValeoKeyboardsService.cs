@@ -17,12 +17,34 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
             new InlineKeyboardButton[]
             {
-                InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            }
+            })
+        };
+        public static readonly ValeoKeyboard SuccessKeyboard = new ValeoKeyboard
+        {
+            Message = "Спасибо за обращение в Валео Diagnostics! В ближайшее время мы с Вами свяжемся.",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            }
+            })
+        };
+        public static readonly ValeoKeyboard FailedKeyboard = new ValeoKeyboard
+        {
+            Message = "При обработку запроса произошла ошибка. Свяжитесь с администратором и попробоуйте повторить попытку позже.",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
             }
             })
         };
         private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
-        
+
         static ValeoKeyboardsService()
         {
             _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
@@ -127,7 +149,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             for (int i = 1; i < times.Count; i++)
             {
                 string formatedTime = times[i].Value.ToString("g", CultureInfo.CreateSpecificCulture("es-ES"));
-                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{formatedTime}", $"{formatedTime}|Times"));
+                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{formatedTime}", $"{formatedTime}|Save"));
                 if (i % 2 == 0)
                 {
                     rows.Add(currentRow.ToArray());

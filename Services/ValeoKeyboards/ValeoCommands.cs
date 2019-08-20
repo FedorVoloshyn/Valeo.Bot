@@ -8,11 +8,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         private static readonly Dictionary<string, Func<ValeoCommands>> _values = new Dictionary<string, Func<ValeoCommands>>()
         { { "doctors", () => Doctors }, { "back", () => Back }, { "default", () => Default }, { "usi", () => Usi }
         };
+        public string OriginalValue { get; private set; }
         public string Value { get; private set; }
         public RequestType RequestType { get; private set; }
 
         private ValeoCommands(string value)
         {
+            OriginalValue = value;
             string[] parts = value.Split("|");
 
             if (parts.Length < 0 || parts.Length > 2)
@@ -25,8 +27,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 RequestType = RequestType.Menu;
                 Value = value;
             }
-            else 
-            { 
+            else
+            {
                 Enum.TryParse(parts[1], out RequestType type);
                 RequestType = type;
                 Value = parts[0];
@@ -34,8 +36,10 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         }
         public ValeoCommands(string value, RequestType requestType)
         {
+            OriginalValue = "";
             RequestType = requestType;
             Value = value;
+
         }
 
         public static ValeoCommands Doctors { get { return new ValeoCommands("doctors", RequestType.Menu); } }
@@ -83,10 +87,11 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
     public enum RequestType
     {
-        Default, 
+        Default,
         Menu,
         Doctors,
-        Times
+        Times,
+        Save
     }
 
     public class Test

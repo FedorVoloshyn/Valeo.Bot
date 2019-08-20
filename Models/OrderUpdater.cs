@@ -1,31 +1,30 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using ValeoBot.Data.Entities;
-using ValeoBot.Data.Repository;
 using Telegram.Bot.Framework.Abstractions;
 using Telegram.Bot.Types;
-using ValeoUser = ValeoBot.Data.Entities.ValeoUser;
+using ValeoBot.Data.Entities;
+using ValeoBot.Data.Repository;
 using Microsoft.Extensions.Logging;
-using System;
+using Telegram.Bot.Types.Enums;
 using Valeo.Bot.Services.ValeoKeyboards;
+using ValeoBot.Services;
 
 namespace ValeoBot.Models
 {
     public class OrderUpdater : IUpdateHandler
     {
+        private readonly SessionService sessionService;
         private ILogger<OrderUpdater> _logger;
-        private IDataRepository<Order> _orderRepo;
-        private IDataRepository<ValeoUser> _userRepository;
-        private string adminPassword = "qwerty";
+        private IDataRepository<Registration> regRepository;
 
         public OrderUpdater(
-            IDataRepository<Order> orderRepo,
-            IDataRepository<ValeoUser> userRepository,
+            IDataRepository<Registration> regRepository,
+            SessionService sessionService,
             ILogger<OrderUpdater> logger)
         {
-            _logger = logger;
-            _orderRepo = orderRepo;
-            _userRepository = userRepository;
+            this.sessionService = sessionService;
+            this._logger = logger;
+            this.regRepository = regRepository;
         }
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken = default)
@@ -40,21 +39,21 @@ namespace ValeoBot.Models
             if (string.IsNullOrEmpty(message.Text))
                 return;
 
-            ValeoUser profile = _userRepository.Get(message.Chat.Id);
+            var reg = regRepository.Get(message.Chat.Id);
 
-            _logger.LogInformation($"--- Handle request info: \n\rUser: {profile.ToString()}, \n\rMessage Text: {message.Text}");
-            if (message.Text == adminPassword)
+            if (reg == null)
             {
-                profile.IsAdmin = !profile.IsAdmin;
-                _userRepository.Update(profile);
-                if (profile.IsAdmin)
-                    await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат переведен в режим АДМИНИСТРАТОРА. Сюда будут поступать заявки!");
-                else
-                    await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Чат ОТКЛЮЧЕН от режима АДМИНИСТРАТОРА!", replyMarkup: ValeoKeyboardsService.DefaultKeyboard.Markup);
-                    return;
+                await sessionService.AuthorizeUser(message.Chat);
             }
-
-            await context.Bot.Client.SendTextMessageAsync(message.Chat.Id, "Нажмите кнопку \"Заказать ремонт\".");
+            else
+            {
+                await context.Bot.Client.SendTextMessageAsync(
+                    message.Chat.Id,
+                    ValeoKeyboardsService.DefaultKeyboard.Message,
+                    ParseMode.Markdown,
+                    replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
+                );
+            }
             return;
         }
     }

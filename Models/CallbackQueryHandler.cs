@@ -22,9 +22,10 @@ namespace ValeoBot.Models
         {
             CallbackQuery cq = context.Update.CallbackQuery;
 
-            ValeoKeyboard reply = _responseController.UpdateUserState(cq.Message.Chat.Id, cq.Data);
+            ValeoKeyboard reply = await _responseController.UpdateUserStateAsync(cq.Message.Chat.Id, cq.Data);
             await context.Bot.Client.EditMessageTextAsync(
                 cq.Message.Chat.Id,
+                
                 cq.Message.MessageId,
                 reply.Message,
                 ParseMode.Markdown);
