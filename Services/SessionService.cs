@@ -38,6 +38,7 @@ namespace ValeoBot.Services
             IDataRepository<Order> orderRepository,
             IDataRepository<Registration> regRepository,
             ValeoLifeBot valeoBot,
+            IValeoAPIService valeoApi,
             IOptions<ValeoApiConfig> apiConfig,
             IOptions<BotConfig> botConfig
         )
@@ -47,6 +48,7 @@ namespace ValeoBot.Services
             this.orderRepository = orderRepository;
             this.regRepository = regRepository;
             this.valeoBot = valeoBot;
+            this.valeoApi = valeoApi;
             this.apiConfig = apiConfig;
             this.botConfig = botConfig;
         }
