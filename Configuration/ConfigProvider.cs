@@ -8,7 +8,7 @@ namespace ValeoBot.Configuration
         private ConnectionStrings connectionString;
         private LoggingSettings logging;
         private BotConfig botConfig;
-        private ValeoApi valeoApi;
+        private ValeoApiConfig valeoApi;
         public ConnectionStrings ConnectionStrings
         {
             get
@@ -20,7 +20,7 @@ namespace ValeoBot.Configuration
                 connectionString = value;
             }
         }
-        public ValeoApi ValeoApi
+        public ValeoApiConfig ValeoApi
         {
             get
             {

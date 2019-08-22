@@ -5,7 +5,7 @@ using Telegram.Bot.Framework.Abstractions;
 
 namespace ValeoBot.Services
 {
-    internal class BotServiceProvider : IBotServiceProvider
+    public class BotServiceProvider : IBotServiceProvider
     {
         private readonly IServiceProvider _container;
 

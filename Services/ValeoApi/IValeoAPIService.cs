@@ -1,11 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ValeoBot.Data.Entities;
 using ValeoBot.Services.ValeoApi.Models;
 
 namespace ValeoBot.Services.ValeoApi
 {
-    interface IValeoAPIService
+    public interface IValeoAPIService
     {
-        Task<Doctor> GetDoctorsByCategory(string category);
-        Task<Time[]> GetFreeTimeByDoctor(Doctor doctor);
+        Task<List<Doctor>> GetDoctorsByCategory(string category);
+        Task<List<Time>> GetFreeTimeByDoctor(string doctor);
+        Task<bool> SaveOrder(Order order);
     }
 }

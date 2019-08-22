@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +11,7 @@ using Telegram.Bot.Framework.Abstractions;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
-using ValeoBot.Data.DataManager;
+using ValeoBot.Configuration.Entities;
 using ValeoBot.Data.Entities;
 using ValeoBot.Data.Repository;
 using ValeoBot.Middleware.BotBuilderMiddleware.Extensions;
@@ -34,10 +36,12 @@ namespace ValeoBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddConfigurationProvider(Configuration);
 
-            services.AddScoped<IDataRepository<Order>, OrderManager>();
-            services.AddScoped<IDataRepository<User>, UserManager>();
+            services.AddScoped<IDataRepository<Order>, OrderRepository>();
+            services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
+            services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
 
             if (_envLocal.IsDevelopment())
             {
@@ -46,16 +50,24 @@ namespace ValeoBot
             }
             else
             {
+                services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+                    options.HttpsPort = 443;
+                });
+
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
 
-            services.AddTransient<SessionService>()
-                .AddTransient<ValeoKeyboardsService>()
-                .AddTransient<IValeoAPIService, ValeoAPIService>();
+            services
+                .AddScoped<ResponseController>()
+                .AddScoped<SessionService>()
+                .AddScoped<ValeoKeyboardsService>()
+                .AddScoped<IValeoAPIService, ValeoAPIMockService>();
+            // .AddTransient<IValeoAPIService, ValeoAPIService>();
 
             services.AddTransient<ValeoLifeBot>()
-                .Configure<BotOptions<ValeoLifeBot>>(Configuration.GetSection("ValeoBot"))
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<StartCommand>()
                 .AddScoped<OrderUpdater>()
@@ -66,16 +78,23 @@ namespace ValeoBot
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                app.UseMvc();
             }
             else
             {
+                //UseMvc and Use Webhook order important!!
+                app.UseMvc();
                 app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
                 app.EnsureWebhookSet<ValeoLifeBot>();
             }
+
         }
 
         private IBotBuilder ConfigureBot()

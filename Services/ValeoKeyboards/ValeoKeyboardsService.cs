@@ -1,24 +1,50 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Telegram.Bot.Types.ReplyMarkups;
+using ValeoBot.Services.ValeoApi;
+using ValeoBot.Services.ValeoApi.Models;
 
 namespace Valeo.Bot.Services.ValeoKeyboards
 {
     public class ValeoKeyboardsService
     {
-        /** param1: Command, param2: Keyboard Markup */
+        /** param1| Command, param2| Keyboard Markup */
         public static readonly ValeoKeyboard DefaultKeyboard = new ValeoKeyboard
         {
             Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нащій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-                new InlineKeyboardButton[]
-                {
-                    InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
-                }
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            }
+            })
+        };
+        public static readonly ValeoKeyboard SuccessKeyboard = new ValeoKeyboard
+        {
+            Message = "Спасибо за обращение в Валео Diagnostics! В ближайшее время мы с Вами свяжемся.",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            }
+            })
+        };
+        public static readonly ValeoKeyboard FailedKeyboard = new ValeoKeyboard
+        {
+            Message = "При обработку запроса произошла ошибка. Свяжитесь с администратором и попробоуйте повторить попытку позже.",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Записаться на прием", ValeoCommands.Doctors),
+            }
             })
         };
         private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
+
         static ValeoKeyboardsService()
         {
             _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
@@ -30,20 +56,20 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                             {
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Сім. лікар", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Підатр", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Терапевт", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Семейный доктор", "semdoc|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Педиатр", "pediatr|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Терапевт", "terapevt|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Ендокринолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Кардіолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Гінеколог", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Эндокринолог", "endocrin|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Кардиолог", "cardiol|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Гинеколог", "ginekol|Doctors"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Невропатолог", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Невропатолог", "nervopat|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Гастроэнтеролог", "gastroin|Doctors"),
                                         InlineKeyboardButton.WithCallbackData("УЗИ", ValeoCommands.Usi)
                                 },
                                 new InlineKeyboardButton[]
@@ -60,27 +86,27 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                             {
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Черевної порожнини", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Заочеревинного простору", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Щитовидної залози", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Органы брюшной полости", "usibrush|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Органы забрюшинного пространства", "usizabrush|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Щитовидной железы", "usishitov|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Молочної залози", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("М'яких тканин", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Лімфовузлів", "PONG"),
+                                    InlineKeyboardButton.WithCallbackData("Молочной железы", "usimoloch|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Мягких тканей", "usimyah|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Лимфоузлов", "usilimfous|Doctors"),
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Органів малого тазу", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Серця", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Судин ниж. кінцівок", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Органов малого таза", "usitasa|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сердца", "usiserdsa|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сосудов нижних конечностей", "usisosudniz|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Судин верх. кінцівок", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Судин шиї та голови", "PONG"),
-                                        InlineKeyboardButton.WithCallbackData("Нейросонографія", "PONG")
+                                    InlineKeyboardButton.WithCallbackData("Сосудов верхних конечностей", "usisosudverh|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Сосудов шеи и головы", "usisosudshei|Doctors"),
+                                        InlineKeyboardButton.WithCallbackData("Нейросонография", "usineyro|Doctors")
                                 },
                                 new InlineKeyboardButton[]
                                 {
@@ -93,6 +119,49 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public ValeoKeyboard GetKeyboard(ValeoCommands command)
         {
             return _keybords[command];
+        }
+
+        public ValeoKeyboard CreateDoctorsKeyboard(List<Doctor> doctors)
+        {
+
+            List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
+            List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
+            for (int i = 1; i < doctors.Count; i++)
+            {
+                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{doctors[i].FirstName} {doctors[i].LastName}", $"{doctors[i].FirstName}|Times"));
+                if (i % 2 == 0)
+                {
+                    rows.Add(currentRow.ToArray());
+                    currentRow.Clear();
+                }
+            }
+            rows.Add(new InlineKeyboardButton[]
+            {
+                InlineKeyboardButton.WithCallbackData("Назад", ValeoCommands.Doctors),
+            });
+            return new ValeoKeyboard() { Message = "Выберите доктора", Markup = new InlineKeyboardMarkup(rows) };
+        }
+
+        public ValeoKeyboard CreateTimesKeyboard(List<Time> times)
+        {
+            List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
+            List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
+            for (int i = 1; i < times.Count; i++)
+            {
+                string formatedTime = times[i].Value.ToString("g", CultureInfo.CreateSpecificCulture("es-ES"));
+                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{formatedTime}", $"{formatedTime}|Save"));
+                if (i % 2 == 0)
+                {
+                    rows.Add(currentRow.ToArray());
+                    currentRow.Clear();
+                }
+            }
+            rows.Add(new InlineKeyboardButton[]
+            {
+                InlineKeyboardButton.WithCallbackData("Назад", ValeoCommands.Doctors),
+            });
+
+            return new ValeoKeyboard() { Message = "Выберите время", Markup = new InlineKeyboardMarkup(rows) };
         }
     }
 }
