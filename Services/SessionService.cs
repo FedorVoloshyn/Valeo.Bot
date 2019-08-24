@@ -60,7 +60,7 @@ namespace ValeoBot.Services
             {
                 await valeoBot.Client.SendTextMessageAsync(
                     chatId,
-                    "*Поздравляем! Теперь вам доступны функции бота. Для записи на прием нажмите \"Записаться на прием\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -70,7 +70,7 @@ namespace ValeoBot.Services
                 await valeoBot.Client.EditMessageTextAsync(
                     chatId,
                     lastReg.RegistrationMessageId.Value,
-                    "*Поздравляем! Теперь вам доступны функции бота. Для записи на прием нажмите \"Записаться на прием\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -97,9 +97,9 @@ namespace ValeoBot.Services
             logger.LogInformation(url);
             var message = await valeoBot.Client.SendTextMessageAsync(
                 chat.Id,
-                "*Добро пожаловать. Для продолжения работы войдите в аккаунт.*",
+                "*Вітаємо. Для продовження роботи увійдіть до акаунту.*",
                 parseMode : ParseMode.Markdown,
-                replyMarkup : new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl("Войти", url))
+                replyMarkup : new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl("Війти", url))
             );
             var lastReg = regRepository.Get(chat.Id);
             if (lastReg == null)
