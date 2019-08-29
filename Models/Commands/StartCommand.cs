@@ -12,19 +12,19 @@ namespace ValeoBot.Models.Commands
 {
     public class StartCommand : CommandBase
     {
-        private readonly SessionService session;
+        private readonly AuthorizationService authorizationService;
 
         public StartCommand(
-            SessionService session
+            AuthorizationService authorizationService
             )
         {
-            this.session = session;
+            this.authorizationService = authorizationService;
         }
         public override async Task HandleAsync(IUpdateContext context, UpdateDelegate next, string[] args, CancellationToken cancellationToken = default)
         {
             Message msg = context.Update.Message;
 
-            await session.AuthorizeUser(msg.Chat);
+            await authorizationService.AuthorizeUser(msg.Chat);
 
             await next(context);
         }

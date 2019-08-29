@@ -18,7 +18,7 @@ namespace ValeoBot.Services
 {
     public class SessionService
     {
-        #region Cahche
+        #region Cache
         private static readonly List<ValeoUser> _usersCache = new List<ValeoUser>();
         private static List<Order> _ordersCache = new List<Order>();
         #endregion
@@ -51,68 +51,6 @@ namespace ValeoBot.Services
             this.valeoApi = valeoApi;
             this.apiConfig = apiConfig;
             this.botConfig = botConfig;
-        }
-
-        public async Task ApplyAuthorization(long chatId)
-        {
-            var lastReg = regRepository.Get(chatId);
-            if (lastReg == null || lastReg.RegistrationMessageId == null)
-            {
-                await valeoBot.Client.SendTextMessageAsync(
-                    chatId,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
-                    parseMode : ParseMode.Markdown,
-                    replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
-                );
-            }
-            else
-            {
-                await valeoBot.Client.EditMessageTextAsync(
-                    chatId,
-                    lastReg.RegistrationMessageId.Value,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
-                    parseMode : ParseMode.Markdown,
-                    replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
-                );
-                lastReg.RegistrationMessageId = null;
-                regRepository.Update(lastReg);
-            }
-        }
-
-        /**
-          Example of google OAuth2: 
-          https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=973674800009-gjgp1dsodh6qb3k89j31msosooq3ph2u.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fyt.contact.co%2Fauth%2Fyoutube&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fyoutube.force-ssl&state=cbjhuyjq2kem4dar&approval_prompt=force
-        */
-
-        public async Task AuthorizeUser(Chat chat)
-        {
-            if (userRepository.Get(chat.Id) == null)
-            {
-                userRepository.Add(new ValeoUser() { Id = chat.Id, FirstName = chat.FirstName, LastName = chat.LastName, Nickname = chat.Username });
-            }
-            var url = string.Concat(
-                apiConfig.Value.BaseUrl,
-                string.Format(apiConfig.Value.AuthUrl, chat.Id, botConfig.Value.WebhookDomain));
-            logger.LogInformation(url);
-            var message = await valeoBot.Client.SendTextMessageAsync(
-                chat.Id,
-                "*Вітаємо. Для продовження роботи увійдіть до акаунту.*",
-                parseMode : ParseMode.Markdown,
-                replyMarkup : new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl("Війти", url))
-            );
-            var lastReg = regRepository.Get(chat.Id);
-            if (lastReg == null)
-            {
-                regRepository.Add(new Registration() { Id = chat.Id, Time = DateTime.Now, RegistrationMessageId = message.MessageId });
-            }
-            else
-            {
-                logger.LogInformation($"Override existing registration for {lastReg.Id}");
-                lastReg.RegistrationMessageId = message.MessageId;
-                lastReg.Time = DateTime.Now;
-                regRepository.Update(lastReg);
-            }
-
         }
 
         public async Task<bool> UpdateOrder(ValeoCommands command, long chatId)

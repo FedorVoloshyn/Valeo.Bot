@@ -63,6 +63,7 @@ namespace ValeoBot
             services
                 .AddScoped<ResponseController>()
                 .AddScoped<SessionService>()
+                .AddScoped<AuthorizationService>()
                 .AddScoped<ValeoKeyboardsService>()
                 .AddScoped<IValeoAPIService, ValeoAPIMockService>();
             // .AddTransient<IValeoAPIService, ValeoAPIService>();

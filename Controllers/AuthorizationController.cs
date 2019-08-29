@@ -13,22 +13,22 @@ namespace Valeo.Bot.Controllers
     {
         private readonly ILogger<AuthorizationController> logger;
         private readonly IOptions<BotConfig> botConfig;
-        private readonly SessionService sessionService;
+        private readonly AuthorizationService authorizationService;
 
         public AuthorizationController(
             ILogger<AuthorizationController> logger,
             IOptions<BotConfig> botConfig,
-            SessionService sessionService
+            AuthorizationService authorizationService
         )
         {
             this.logger = logger;
             this.botConfig = botConfig;
-            this.sessionService = sessionService;
+            this.authorizationService = authorizationService;
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> Authorize(long id) 
         {
-            await sessionService.ApplyAuthorization(id);
+            await authorizationService.ApplyAuthorization(id);
             return new RedirectResult(string.Format("https://telegram.me/{0}", botConfig.Value.Username));
         }
     }

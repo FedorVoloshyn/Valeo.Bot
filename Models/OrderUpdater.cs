@@ -13,16 +13,16 @@ namespace ValeoBot.Models
 {
     public class OrderUpdater : IUpdateHandler
     {
-        private readonly SessionService sessionService;
+        private readonly AuthorizationService authorizationService;
         private ILogger<OrderUpdater> _logger;
         private IDataRepository<Registration> regRepository;
 
         public OrderUpdater(
             IDataRepository<Registration> regRepository,
-            SessionService sessionService,
+            AuthorizationService authorizationService,
             ILogger<OrderUpdater> logger)
         {
-            this.sessionService = sessionService;
+            this.authorizationService = authorizationService;
             this._logger = logger;
             this.regRepository = regRepository;
         }
@@ -43,7 +43,7 @@ namespace ValeoBot.Models
 
             if (reg == null)
             {
-                await sessionService.AuthorizeUser(message.Chat);
+                await authorizationService.AuthorizeUser(message.Chat);
             }
             else
             {

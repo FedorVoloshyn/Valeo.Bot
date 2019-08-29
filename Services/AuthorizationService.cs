@@ -14,9 +14,8 @@ using ValeoBot.Data.Repository;
 using ValeoBot.Models;
 using ValeoBot.Services.ValeoApi;
 
-namespace Valeo.Bot.Services
+namespace ValeoBot.Services
 {
-
     public class AuthorizationService
     {
         private readonly ILogger<AuthorizationService> logger;
@@ -55,7 +54,7 @@ namespace Valeo.Bot.Services
             {
                 await valeoBot.Client.SendTextMessageAsync(
                     chatId,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись до лікаря\".*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -65,7 +64,7 @@ namespace Valeo.Bot.Services
                 await valeoBot.Client.EditMessageTextAsync(
                     chatId,
                     lastReg.RegistrationMessageId.Value,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись на прийом\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись до лікаря\".*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -73,5 +72,35 @@ namespace Valeo.Bot.Services
                 regRepository.Update(lastReg);
             }
         }   
+        public async Task AuthorizeUser(Chat chat)
+        {
+            if (userRepository.Get(chat.Id) == null)
+            {
+                userRepository.Add(new ValeoUser() { Id = chat.Id, FirstName = chat.FirstName, LastName = chat.LastName, Nickname = chat.Username });
+            }
+            var url = string.Concat(
+                apiConfig.Value.BaseUrl,
+                string.Format(apiConfig.Value.AuthUrl, chat.Id, botConfig.Value.WebhookDomain));
+            logger.LogInformation(url);
+            var message = await valeoBot.Client.SendTextMessageAsync(
+                chat.Id,
+                "*Вітаємо. Для продовження роботи увійдіть до акаунту.*",
+                parseMode : ParseMode.Markdown,
+                replyMarkup : new InlineKeyboardMarkup(InlineKeyboardButton.WithUrl("Війти", url))
+            );
+            var lastReg = regRepository.Get(chat.Id);
+            if (lastReg == null)
+            {
+                regRepository.Add(new Registration() { Id = chat.Id, Time = DateTime.Now, RegistrationMessageId = message.MessageId });
+            }
+            else
+            {
+                logger.LogInformation($"Override existing registration for {lastReg.Id}");
+                lastReg.RegistrationMessageId = message.MessageId;
+                lastReg.Time = DateTime.Now;
+                regRepository.Update(lastReg);
+            }
+
+        }
     }
 }
