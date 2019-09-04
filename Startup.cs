@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Framework;
 using Telegram.Bot.Framework.Abstractions;
+using Valeo.Bot.Models;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.BotBuilderMiddleware.BotBuilder;
 using ValeoBot.Configuration;
@@ -42,6 +43,7 @@ namespace ValeoBot
             services.AddScoped<IDataRepository<Order>, OrderRepository>();
             services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
             services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
+            services.AddScoped<IAuthorization, AuthorizationService>();
 
             if (_envLocal.IsDevelopment())
             {
@@ -70,6 +72,7 @@ namespace ValeoBot
 
             services.AddTransient<ValeoLifeBot>()
                 .AddScoped<ExceptionHandler>()
+                .AddScoped<AuthorizationHandler>()
                 .AddScoped<StartCommand>()
                 .AddScoped<OrderUpdater>()
                 .AddScoped<CallbackQueryHandler>();
@@ -102,6 +105,7 @@ namespace ValeoBot
         {
             return new BotBuilder()
                 .Use<ExceptionHandler>()
+                .Use<AuthorizationHandler>()
                 //.UseWhen<WebhookLogger>(When.Webhook)
                 //.UseWhen<UpdateMembersList>(When.MembersChanged)
                 .MapWhen(When.NewMessage, msgBranch => msgBranch

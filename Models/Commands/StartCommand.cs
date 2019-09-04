@@ -26,6 +26,8 @@ namespace ValeoBot.Models.Commands
 
             await authorizationService.AuthorizeUser(msg.Chat);
 
+            await context.Bot.Client.SendTextMessageAsync(context.Update.Message.Chat.Id, "Вітаємо.", replyMarkup: ValeoKeyboardsService.Contacts);
+
             await next(context);
         }
     }

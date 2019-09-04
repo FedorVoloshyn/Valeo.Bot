@@ -15,7 +15,6 @@ namespace ValeoBot.Models
         }
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken = default)
         {
-            
             var u = context.Update;
             try
             {

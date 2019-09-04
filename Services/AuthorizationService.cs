@@ -16,7 +16,7 @@ using ValeoBot.Services.ValeoApi;
 
 namespace ValeoBot.Services
 {
-    public class AuthorizationService
+    public class AuthorizationService : IAuthorization
     {
         private readonly ILogger<AuthorizationService> logger;
         private readonly IDataRepository<ValeoUser> userRepository;
@@ -72,6 +72,29 @@ namespace ValeoBot.Services
                 regRepository.Update(lastReg);
             }
         }   
+        public bool IsAuthorized(Update update)
+        {
+            long chatId = 0;
+
+            // TODO: all types cases
+            switch(update.Type)
+            {
+                case UpdateType.CallbackQuery:
+                    chatId = update.CallbackQuery.From.Id;
+                    break;
+                case UpdateType.Message:
+                    chatId = update.Message.From.Id;
+                    break;
+                case UpdateType.InlineQuery:
+                    chatId = update.InlineQuery.From.Id;
+                    break;
+                default:
+                    chatId = 0;
+                break;
+            }
+
+            return regRepository.Get(chatId).AuthServiceToken == null ? false : true;
+        }
         public async Task AuthorizeUser(Chat chat)
         {
             if (userRepository.Get(chat.Id) == null)
@@ -100,7 +123,6 @@ namespace ValeoBot.Services
                 lastReg.Time = DateTime.Now;
                 regRepository.Update(lastReg);
             }
-
         }
     }
 }

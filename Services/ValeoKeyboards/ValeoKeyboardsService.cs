@@ -44,7 +44,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             })
         };
         private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
-
+        public static readonly ReplyKeyboardMarkup Contacts = new ReplyKeyboardMarkup(new KeyboardButton("Контакти клініки"));
         static ValeoKeyboardsService()
         {
             _keybords.Add(ValeoCommands.Default, DefaultKeyboard);
