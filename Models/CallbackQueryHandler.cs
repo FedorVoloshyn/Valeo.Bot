@@ -25,7 +25,6 @@ namespace ValeoBot.Models
             ValeoKeyboard reply = await _responseController.UpdateUserStateAsync(cq.Message.Chat.Id, cq.Data);
             await context.Bot.Client.EditMessageTextAsync(
                 cq.Message.Chat.Id,
-                
                 cq.Message.MessageId,
                 reply.Message,
                 ParseMode.Markdown);

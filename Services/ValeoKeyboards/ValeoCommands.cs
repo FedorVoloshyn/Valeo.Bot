@@ -6,7 +6,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
     public struct ValeoCommands
     {
         private static readonly Dictionary<string, Func<ValeoCommands>> _values = new Dictionary<string, Func<ValeoCommands>>()
-        { { "doctors", () => Doctors }, { "back", () => Back }, { "default", () => Default }, { "usi", () => Usi }
+        { 
+            { "doctors", () => Doctors }, 
+            { "back", () => Back }, 
+            { "default", () => Default }, 
+            { "usi", () => Usi },
+            { "contacts", () => Contacts }, 
+            { "usiinfo", () => UsiInfo }
         };
         public string OriginalValue { get; private set; }
         public string Value { get; private set; }
@@ -39,13 +45,14 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             OriginalValue = "";
             RequestType = requestType;
             Value = value;
-
         }
 
         public static ValeoCommands Doctors { get { return new ValeoCommands("doctors", RequestType.Menu); } }
         public static ValeoCommands Back { get { return new ValeoCommands("back", RequestType.Menu); } }
         public static ValeoCommands Default { get { return new ValeoCommands("default", RequestType.Menu); } }
         public static ValeoCommands Usi { get { return new ValeoCommands("usi", RequestType.Menu); } }
+        public static ValeoCommands Contacts { get { return new ValeoCommands("contacts", RequestType.Menu); } }
+        public static ValeoCommands UsiInfo { get { return new ValeoCommands("usiinfo", RequestType.Menu); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -59,7 +66,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         {
             return command1.Value == command2.Value;
         }
-
         public static bool operator !=(ValeoCommands command1, ValeoCommands command2)
         {
             return command1.Value != command2.Value;
@@ -91,7 +97,9 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         Menu,
         Doctors,
         Times,
-        Save
+        Save,
+        Contacts,
+        UsiInfo
     }
 
     public class Test

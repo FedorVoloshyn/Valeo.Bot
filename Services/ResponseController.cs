@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.Services.ValeoApi;
+using Valeo.Bot.Data.Repository;
 
 namespace ValeoBot.Services
 {
@@ -42,6 +43,8 @@ namespace ValeoBot.Services
                     return CreateDoctors(command);
                 case RequestType.Times:
                     return CreateTimes(command);
+                case RequestType.UsiInfo:
+                    return CreateUziInfo(command);
                 case RequestType.Save:
                     return await SaveOrder(chatId);
                 default:
@@ -60,6 +63,12 @@ namespace ValeoBot.Services
         {
             var times = api.GetFreeTimeByDoctor(command).Result;
             return _keyboardsService.CreateTimesKeyboard(times);
+        }
+
+        private ValeoKeyboard CreateUziInfo(string command)
+        {
+            string info = UziInfo.GetDescription(command);
+            return _keyboardsService.CreateUziInfoKeyboard(command, info);
         }
 
         private async Task<ValeoKeyboard> SaveOrder(long chatId)

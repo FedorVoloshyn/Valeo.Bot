@@ -152,10 +152,22 @@ namespace ValeoBot.Services
                 return false;
             }
 
-            if (!await valeoApi.SaveOrder(order))
+            bool isOrderSaved = await valeoApi.SaveOrder(order);
+            if (!isOrderSaved)
             {
                 logger.LogError($"Failed to save the order by api. Order: {order.ToString()}, chatId: {chatId}");
+                return true;
             }
+
+            string orderText = 
+                "Дякуємо за звернення до клініки Valeo Diagnostic!\n\n" +
+                "Ми записали вас на прийом.\n" + 
+                "Ваш лікарь: " + $"{order.Category} {order.DoctorId}\n" + 
+               $"Дата та час прийому: {order.Time}";
+            await valeoBot.Client.SendTextMessageAsync(
+                chatId,
+                orderText
+            );
 
             return true;
         }

@@ -22,11 +22,7 @@ namespace ValeoBot.Models.Commands
         }
         public override async Task HandleAsync(IUpdateContext context, UpdateDelegate next, string[] args, CancellationToken cancellationToken = default)
         {
-            Message msg = context.Update.Message;
-
-            await authorizationService.AuthorizeUser(msg.Chat);
-
-            await context.Bot.Client.SendTextMessageAsync(context.Update.Message.Chat.Id, "Вітаємо.", replyMarkup: ValeoKeyboardsService.Contacts);
+            await authorizationService.AuthorizeUser(context.Update.Message.Chat);
 
             await next(context);
         }

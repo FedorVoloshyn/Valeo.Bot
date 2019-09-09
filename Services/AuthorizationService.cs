@@ -54,7 +54,7 @@ namespace ValeoBot.Services
             {
                 await valeoBot.Client.SendTextMessageAsync(
                     chatId,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись до лікаря\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту.*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -64,7 +64,7 @@ namespace ValeoBot.Services
                 await valeoBot.Client.EditMessageTextAsync(
                     chatId,
                     lastReg.RegistrationMessageId.Value,
-                    "*Вітаємо! Теперь вам доступні функції боту. Для запису на прийом натисніть \"Записатись до лікаря\".*",
+                    "*Вітаємо! Теперь вам доступні функції боту.",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -93,7 +93,7 @@ namespace ValeoBot.Services
                 break;
             }
 
-            return regRepository.Get(chatId).AuthServiceToken == null ? false : true;
+            return regRepository.Get(chatId)?.AuthServiceToken == null ? false : true;
         }
         public async Task AuthorizeUser(Chat chat)
         {
