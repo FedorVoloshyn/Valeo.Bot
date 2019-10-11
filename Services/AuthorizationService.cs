@@ -64,7 +64,7 @@ namespace ValeoBot.Services
                 await valeoBot.Client.EditMessageTextAsync(
                     chatId,
                     lastReg.RegistrationMessageId.Value,
-                    "*Вітаємо! Теперь вам доступні функції боту.",
+                    "*Вітаємо! Теперь вам доступні функції боту.*",
                     parseMode : ParseMode.Markdown,
                     replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
                 );
@@ -114,7 +114,7 @@ namespace ValeoBot.Services
             var lastReg = regRepository.Get(chat.Id);
             if (lastReg == null)
             {
-                regRepository.Add(new Registration() { Id = chat.Id, Time = DateTime.Now, RegistrationMessageId = message.MessageId });
+                regRepository.Add(new Registration() { Id = chat.Id, Time = DateTime.Now, RegistrationMessageId = message.MessageId, AuthServiceToken = "test_token" });
             }
             else
             {
