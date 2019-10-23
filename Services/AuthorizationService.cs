@@ -71,13 +71,13 @@ namespace ValeoBot.Services
                 lastReg.RegistrationMessageId = null;
                 regRepository.Update(lastReg);
             }
-        }   
+        }
         public bool IsAuthorized(Update update)
         {
             long chatId = 0;
 
             // TODO: all types cases
-            switch(update.Type)
+            switch (update.Type)
             {
                 case UpdateType.CallbackQuery:
                     chatId = update.CallbackQuery.From.Id;
@@ -90,7 +90,7 @@ namespace ValeoBot.Services
                     break;
                 default:
                     chatId = 0;
-                break;
+                    break;
             }
 
             return regRepository.Get(chatId)?.AuthServiceToken == null ? false : true;
@@ -101,9 +101,8 @@ namespace ValeoBot.Services
             {
                 userRepository.Add(new ValeoUser() { Id = chat.Id, FirstName = chat.FirstName, LastName = chat.LastName, Nickname = chat.Username });
             }
-            var url = string.Concat(
-                apiConfig.Value.BaseUrl,
-                string.Format(apiConfig.Value.AuthUrl, chat.Id, botConfig.Value.WebhookDomain));
+            var url =
+                string.Format(apiConfig.Value.Urls.Auth, chat.Id, botConfig.Value.WebhookDomain);
             logger.LogInformation(url);
             var message = await valeoBot.Client.SendTextMessageAsync(
                 chat.Id,

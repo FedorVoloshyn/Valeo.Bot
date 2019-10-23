@@ -16,14 +16,15 @@ namespace ValeoBot.Services.ValeoApi
 
         public ValeoAPIMockService(ConfigProvider config)
         {
+            
         }
 
         public async Task<List<Doctor>> GetDoctorsByCategory(string category)
         {
             var doctors = new List<Doctor>();
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
-                doctors.Add(new Doctor() { FirstName = "Игорь", LastName = "Романов"});
+                doctors.Add(new Doctor() { FirstName = "Игорь", LastName = "Романов" });
             }
             return doctors;
         }
@@ -31,7 +32,7 @@ namespace ValeoBot.Services.ValeoApi
         public async Task<List<Time>> GetFreeTimeByDoctor(string doctor)
         {
             var times = new List<Time>();
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
                 times.Add(new Time() { Value = DateTime.Now });
             }

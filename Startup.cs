@@ -27,10 +27,12 @@ namespace ValeoBot
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public static IConfiguration StaticConfiguration { get; private set;}
         private IHostingEnvironment _envLocal;
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            StaticConfiguration = configuration;
             _envLocal = env;
         }
 
@@ -48,7 +50,9 @@ namespace ValeoBot
             if (_envLocal.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase")));
+                   // options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
+                   options.UseInMemoryDatabase("Test")
+                );
             }
             else
             {
@@ -67,9 +71,9 @@ namespace ValeoBot
                 .AddScoped<SessionService>()
                 .AddScoped<AuthorizationService>()
                 .AddScoped<ValeoKeyboardsService>()
-                .AddScoped<IValeoAPIService, ValeoAPIMockService>();
-            // .AddTransient<IValeoAPIService, ValeoAPIService>();
-
+                //.AddScoped<IValeoAPIService, ValeoAPIMockService>();
+                .AddTransient<IValeoAPIService, ValeoAPIService>();
+                var tt = ValeoAPIService.Auth;
             services.AddTransient<ValeoLifeBot>()
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<AuthorizationHandler>()
@@ -88,7 +92,7 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                //app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
                 app.UseMvc();
             }
             else
