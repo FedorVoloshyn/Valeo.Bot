@@ -12,7 +12,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             { "default", () => Default }, 
             { "usi", () => Usi },
             { "contacts", () => Contacts }, 
-            { "usiinfo", () => UsiInfo }
+            { "usiinfo", () => UsiInfo },
+            { "about", () => About }
         };
         public string OriginalValue { get; private set; }
         public string Value { get; private set; }
@@ -53,6 +54,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public static ValeoCommands Usi { get { return new ValeoCommands("usi", RequestType.Menu); } }
         public static ValeoCommands Contacts { get { return new ValeoCommands("contacts", RequestType.Menu); } }
         public static ValeoCommands UsiInfo { get { return new ValeoCommands("usiinfo", RequestType.Menu); } }
+        public static ValeoCommands About { get { return new ValeoCommands("about", RequestType.Menu); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -99,7 +101,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         Times,
         Save,
         Contacts,
-        UsiInfo
+        UsiInfo,
+        About
     }
 
     public class Test

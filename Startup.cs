@@ -50,8 +50,8 @@ namespace ValeoBot
             if (_envLocal.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                   // options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
-                   options.UseInMemoryDatabase("Test")
+                    options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
+                   //options.UseInMemoryDatabase("Test")
                 );
             }
             else
@@ -92,7 +92,7 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
+                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
                 app.UseMvc();
             }
             else

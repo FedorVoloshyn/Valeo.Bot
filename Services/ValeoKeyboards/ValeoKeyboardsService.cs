@@ -12,14 +12,28 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         /** param1| Command, param2| Keyboard Markup */
         public static readonly ValeoKeyboard DefaultKeyboard = new ValeoKeyboard
         {
-            Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нащій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
+            Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нашій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-            new InlineKeyboardButton[]
-            {
-                InlineKeyboardButton.WithCallbackData("Записатись до лікаря", ValeoCommands.Doctors),
-                InlineKeyboardButton.WithCallbackData("Контакти", ValeoCommands.Contacts),
-            }
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.Doctors)
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Наші лікарі 👨‍⚕️", "todo"),
+                    InlineKeyboardButton.WithCallbackData("Залишити відгук ✍️", "todo")
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Адреси 📍", "todo"),
+                    InlineKeyboardButton.WithCallbackData("Контакти 📞", ValeoCommands.Contacts)
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Поділитись 📢", "todo"),
+                    InlineKeyboardButton.WithCallbackData("Про нас 🏥", ValeoCommands.About)
+                }
             })
         };
         public static readonly ValeoKeyboard SuccessKeyboard = new ValeoKeyboard
@@ -30,7 +44,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             new InlineKeyboardButton[]
             {
             InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
-            }
+            },
             })
         };
         public static readonly ValeoKeyboard FailedKeyboard = new ValeoKeyboard
@@ -41,6 +55,28 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             new InlineKeyboardButton[]
             {
             InlineKeyboardButton.WithCallbackData("Записатись до лікаря", ValeoCommands.Doctors),
+            }
+            })
+        };
+        public static readonly ValeoKeyboard AboutKeyboard = new ValeoKeyboard
+        {
+            Message = $"Медичний центр *ВАЛЕО* працює з __26 вересня 2016 року__.\n\n" + 
+                      $"Ми проводимо всі види *ультразвукових досліджень (УЗД)* на сучасному обладнанні і співпрацюємо з найнадійнішими лабораторіями в місті, що в комплексі дає високу точність постановки діагнозу і гарантію успішного лікування.\n\n" +
+                      $"Крім того, згідно з угодою з Національною Службою Здоров’я України на обслуговування пацієнтів за програмою медичних гарантій, усі зазначені нижче послуги (при укладенні договору з сімейним лікарем) в медичному центрі ВАЛЕО Ви отримуєте *безкоштовно*:\n" +
+                      $"⭕️Прийом, консультація сімейного лікаря / терапевта / педіатра і його виклик додому (за необхідністю);\n" +
+                      $"⭕️Загальний аналіз крові з лейкоцитарною формулою;\n" +
+                      $"⭕️Загальний аналіз сечі;\n" +
+                      $"⭕️Глюкоза крові;\n" +
+                      $"⭕️Загальний холестерин;\n" +
+                      $"⭕️Електрокардіограма;\n" +
+                      $"⭕️Вимірювання артеріального тиску;\n" +
+                      $"⭕️Експрес-тести на ВІЛ / геппатіт В, С / тропонін."
+            ,
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+            new InlineKeyboardButton[]
+            {
+            InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
             }
             })
         };
@@ -130,18 +166,19 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 new ValeoKeyboard
                 {
                     Message = 
-                        "__Контакти клініки *Valeo Diagnostic*__\n" + 
+                        "__Контакти клініки *ВАЛЕО Diagnostics*__\n" + 
                         "\n*Сайт*: https://valeo.dp.ua/uk" + 
                         "\n*Телефон*: +38 (095) 232-34-00" + 
                         "\n*e-mail*: valeo.diagnostics@ukr.net",
                     Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>{
                         new InlineKeyboardButton[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Назад", ValeoCommands.Default),
+                            InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
                         }
                     })
                 }
             );
+            _keybords.Add(ValeoCommands.About, AboutKeyboard);
         }
 
         public ValeoKeyboard GetKeyboard(ValeoCommands command)

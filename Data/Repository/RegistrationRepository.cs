@@ -35,8 +35,9 @@ namespace ValeoBot.Data.Repository
         {
             try
             {
-                return _context.Registrations
+                var res = _context.Registrations
                     .FirstOrDefault(e => e.Id == id);
+                return res;
             }
             catch (Exception e)
             {
