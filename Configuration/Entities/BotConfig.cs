@@ -1,4 +1,4 @@
-using Telegram.Bot.Framework.Abstractions;
+using IBWT.Framework.Abstractions;
 
 namespace ValeoBot.Configuration.Entities
 {

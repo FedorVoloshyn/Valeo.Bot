@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Telegram.Bot.Framework.Abstractions;
+using IBWT.Framework.Abstractions;
 using Telegram.Bot.Types;
 using ValeoBot.Data.Entities;
 using ValeoBot.Data.Repository;

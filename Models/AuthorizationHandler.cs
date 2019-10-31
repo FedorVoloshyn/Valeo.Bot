@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Telegram.Bot.Framework.Abstractions;
+using IBWT.Framework.Abstractions;
 using ValeoBot.Services;
 
 namespace Valeo.Bot.Models
