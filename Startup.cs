@@ -27,19 +27,19 @@ namespace ValeoBot
     {
         public IConfiguration Configuration { get; }
         public static IConfiguration StaticConfiguration { get; private set;}
-        private IHostingEnvironment _envLocal;
+        public IHostingEnvironment Environment { get; }
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             StaticConfiguration = configuration;
-            _envLocal = env;
+            Environment = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddConfigurationProvider(Configuration);
+            services.AddConfigurationProvider(Configuration, Environment);
 
             services.AddScoped<IDataRepository<Order>, OrderRepository>();
             services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
@@ -47,11 +47,11 @@ namespace ValeoBot
             services.AddScoped<IAuthorization, AuthorizationService>();
             services.AddSingleton<IReviewCacheService, ReviewCacheService>();
 
-            if (_envLocal.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
-                   //options.UseInMemoryDatabase("Test")
+                   // options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
+                   options.UseInMemoryDatabase("Test")
                 );
             }
             else
@@ -73,7 +73,7 @@ namespace ValeoBot
                 .AddScoped<ValeoKeyboardsService>()
                 //.AddScoped<IValeoAPIService, ValeoAPIMockService>();
                 .AddTransient<IValeoAPIService, ValeoAPIService>();
-                var tt = ValeoAPIService.Auth;
+
             services.AddTransient<ValeoLifeBot>()
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<AuthorizationHandler>()
@@ -100,8 +100,8 @@ namespace ValeoBot
             {
                 //UseMvc and Use Webhook order important!!
                 app.UseMvc();
-                app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
                 app.EnsureWebhookSet<ValeoLifeBot>();
+                app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
             }
 
         }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using IBWT.Framework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,12 +13,12 @@ namespace Valeo.Bot.Controllers
     public class AuthorizationController
     {
         private readonly ILogger<AuthorizationController> logger;
-        private readonly IOptions<BotConfig> botConfig;
+        private readonly IOptions<BotOptions> botConfig;
         private readonly AuthorizationService authorizationService;
 
         public AuthorizationController(
             ILogger<AuthorizationController> logger,
-            IOptions<BotConfig> botConfig,
+            IOptions<BotOptions> botConfig,
             AuthorizationService authorizationService
         )
         {

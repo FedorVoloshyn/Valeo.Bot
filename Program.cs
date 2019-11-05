@@ -3,6 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using Valeo.Bot.Services.ValeoKeyboards;
 
 namespace ValeoBot
 {

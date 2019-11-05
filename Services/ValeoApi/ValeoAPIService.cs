@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ValeoBot.Configuration;
 using ValeoBot.Configuration.Entities;
@@ -65,11 +66,11 @@ namespace ValeoBot.Services.ValeoApi
             authData.expiration_date = DateTime.Now.AddSeconds(authData.expires_in - SafeExpirationGap);
 
         }
-        private ConfigProvider _config;
+        private ValeoApiConfig _config;
 
-        public ValeoAPIService(ConfigProvider config)
+        public ValeoAPIService(IOptions<ValeoApiConfig> config)
         {
-            _config = config;
+            _config = config.Value;
             HttpClientHandler hmh = new HttpClientHandler()
             {
                 // Proxy = new WebProxy("http://proxy.isd.dp.ua:8080")
@@ -81,21 +82,21 @@ namespace ValeoBot.Services.ValeoApi
         public async Task<List<Doctor>> GetDoctorsByCategory(string category)
         {
 
-            string json = await Client.GetStringAsync(string.Format(_config.ValeoApi.Urls.Doctors, category))
+            string json = await Client.GetStringAsync(string.Format(_config.Urls.Doctors, category))
                 .ConfigureAwait(false);
             return JsonConvert.DeserializeObject<List<Doctor>>(json);
         }
 
         public async Task<List<Time>> GetFreeTimeByDoctor(string doctor)
         {
-            string json = await Client.GetStringAsync(string.Format(_config.ValeoApi.Urls.Times, doctor))
+            string json = await Client.GetStringAsync(string.Format(_config.Urls.Times, doctor))
                 .ConfigureAwait(false);
             return JsonConvert.DeserializeObject<List<Time>>(json);
         }
 
         public async Task<bool> SaveOrder(Order order)
         {
-            var response = await Client.PostAsJsonAsync(_config.ValeoApi.Urls.Save, order)
+            var response = await Client.PostAsJsonAsync(_config.Urls.Save, order)
                 .ConfigureAwait(false);
             return await response.Content.ReadAsAsync<bool>();
         }

@@ -12,12 +12,6 @@ namespace ValeoBot.Services.ValeoApi
     public class ValeoAPIMockService : IValeoAPIService
     {
         private readonly HttpClient _client;
-        private ConfigProvider _config;
-
-        public ValeoAPIMockService(ConfigProvider config)
-        {
-            
-        }
 
         public async Task<List<Doctor>> GetDoctorsByCategory(string category)
         {

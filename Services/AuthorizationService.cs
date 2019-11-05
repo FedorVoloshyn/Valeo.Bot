@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IBWT.Framework;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Telegram.Bot.Types;
@@ -25,7 +26,7 @@ namespace ValeoBot.Services
         private readonly IValeoAPIService valeoApi;
         private readonly ValeoLifeBot valeoBot;
         private readonly IOptions<ValeoApiConfig> apiConfig;
-        private readonly IOptions<BotConfig> botConfig;
+        private readonly IOptions<BotOptions> botConfig;
 
         public AuthorizationService(
             ILogger<AuthorizationService> logger,
@@ -35,7 +36,7 @@ namespace ValeoBot.Services
             ValeoLifeBot valeoBot,
             IValeoAPIService valeoApi,
             IOptions<ValeoApiConfig> apiConfig,
-            IOptions<BotConfig> botConfig
+            IOptions<BotOptions> botConfig
         )
         {
             this.logger = logger;
