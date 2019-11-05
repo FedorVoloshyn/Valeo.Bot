@@ -13,7 +13,10 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             { "usi", () => Usi },
             { "contacts", () => Contacts }, 
             { "usiinfo", () => UsiInfo },
-            { "about", () => About }
+            { "about", () => About },
+            { "doctorsstatic", () => DoctorsStatic },
+            { "ourdoctors", () => OurDoctors },
+            { "feedback", () => Feedback }
         };
         public string OriginalValue { get; private set; }
         public string Value { get; private set; }
@@ -55,6 +58,9 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public static ValeoCommands Contacts { get { return new ValeoCommands("contacts", RequestType.Menu); } }
         public static ValeoCommands UsiInfo { get { return new ValeoCommands("usiinfo", RequestType.Menu); } }
         public static ValeoCommands About { get { return new ValeoCommands("about", RequestType.Menu); } }
+        public static ValeoCommands DoctorsStatic { get { return new ValeoCommands("doctorsstatic", RequestType.Menu); } }
+        public static ValeoCommands OurDoctors { get { return new ValeoCommands("ourdoctors", RequestType.OurDoctors); } }
+        public static ValeoCommands Feedback { get { return new ValeoCommands("feedback", RequestType.Feedback); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -102,7 +108,10 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         Save,
         Contacts,
         UsiInfo,
-        About
+        About,
+        DoctorsStatic,
+        OurDoctors,
+        Feedback
     }
 
     public class Test

@@ -17,12 +17,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.Doctors)
+                    //InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.Doctors)
+                    InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.DoctorsStatic)
                 },
                 new InlineKeyboardButton[]
                 {
                     InlineKeyboardButton.WithCallbackData("Наші лікарі 👨‍⚕️", "todo"),
-                    InlineKeyboardButton.WithCallbackData("Залишити відгук ✍️", "todo")
+                    InlineKeyboardButton.WithCallbackData("Залишити відгук ✍️", "feedback|Feedback")
                 },
                 new InlineKeyboardButton[]
                 {
@@ -63,21 +64,94 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             Message = $"Медичний центр *ВАЛЕО* працює з __26 вересня 2016 року__.\n\n" + 
                       $"Ми проводимо всі види *ультразвукових досліджень (УЗД)* на сучасному обладнанні і співпрацюємо з найнадійнішими лабораторіями в місті, що в комплексі дає високу точність постановки діагнозу і гарантію успішного лікування.\n\n" +
                       $"Крім того, згідно з угодою з Національною Службою Здоров’я України на обслуговування пацієнтів за програмою медичних гарантій, усі зазначені нижче послуги (при укладенні договору з сімейним лікарем) в медичному центрі ВАЛЕО Ви отримуєте *безкоштовно*:\n" +
-                      $"⭕️Прийом, консультація сімейного лікаря / терапевта / педіатра і його виклик додому (за необхідністю);\n" +
-                      $"⭕️Загальний аналіз крові з лейкоцитарною формулою;\n" +
-                      $"⭕️Загальний аналіз сечі;\n" +
-                      $"⭕️Глюкоза крові;\n" +
-                      $"⭕️Загальний холестерин;\n" +
-                      $"⭕️Електрокардіограма;\n" +
-                      $"⭕️Вимірювання артеріального тиску;\n" +
-                      $"⭕️Експрес-тести на ВІЛ / геппатіт В, С / тропонін."
+                      $"⭕️ Прийом, консультація сімейного лікаря / терапевта / педіатра і його виклик додому (за необхідністю);\n" +
+                      $"⭕️ Загальний аналіз крові з лейкоцитарною формулою;\n" +
+                      $"⭕️ Загальний аналіз сечі;\n" +
+                      $"⭕️ Глюкоза крові;\n" +
+                      $"⭕️ Загальний холестерин;\n" +
+                      $"⭕️ Електрокардіограма;\n" +
+                      $"⭕️ Вимірювання артеріального тиску;\n" +
+                      $"⭕️ Експрес-тести на ВІЛ / геппатіт В, С / тропонін."
             ,
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-            new InlineKeyboardButton[]
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                }
+            })
+        };
+        public static readonly ValeoKeyboard FeedbackKeyboard = new ValeoKeyboard
+        {
+            Message = $"Напишіть ваші враження та зауваження про якість обслуговування у клініці.\n",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-            InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
-            }
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                }
+            })
+        };
+        public static readonly ValeoKeyboard DoctorsValeoStaticKeyboard = new ValeoKeyboard
+        {
+            Message = "Оберіть лікаря, до якого бажаєте записатись на прийом.",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithUrl("Сім. лікар Сафонов Д.О.", "https://helsi.me/doctor/9c2f65a7-4c36-49ae-864b-a51bbcfe52f0"),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithUrl("Терапевт Паливода Д.В.", "https://helsi.me/doctor/dd4d4f9c-0618-4d05-900d-627875bc7ddd"),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithUrl("Педіатр Макарченко К.В.", "https://helsi.me/doctor/dec67dba-fc15-4d2f-971d-4dff8a5e6120"),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithUrl("Терапевт Калита Н.В.", "https://helsi.me/doctor/757f686e-c28c-4ad5-acd1-71de4c3906d5"),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithUrl("Терапевт Лєонова О.О.", "https://helsi.me/doctor/8db0a856-cb6e-480b-b9c8-37fbc6df9afe"),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                },
+            })
+        };
+        public static readonly ValeoKeyboard OurDoctorsKeyboard = new ValeoKeyboard
+        {
+            Message = "Список спеціалістів клініки ВАЛЕО Diagnostics",
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Сім. лікар Сафонов Д.О.", ""),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Терапевт Паливода Д.В.", ""),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Педіатр Макарченко К.В.", ""),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Терапевт Калита Н.В.", ""),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Терапевт Лєонова О.О.", ""),
+                },
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                },
             })
         };
         private static readonly Dictionary<ValeoCommands, ValeoKeyboard> _keybords = new Dictionary<ValeoCommands, ValeoKeyboard>();
@@ -179,13 +253,15 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 }
             );
             _keybords.Add(ValeoCommands.About, AboutKeyboard);
+            _keybords.Add(ValeoCommands.DoctorsStatic, DoctorsValeoStaticKeyboard);
+            _keybords.Add(ValeoCommands.OurDoctors, OurDoctorsKeyboard);
+            _keybords.Add(ValeoCommands.Feedback, FeedbackKeyboard);
         }
 
         public ValeoKeyboard GetKeyboard(ValeoCommands command)
         {
             return _keybords[command];
         }
-
         public ValeoKeyboard CreateDoctorsKeyboard(List<Doctor> doctors)
         {
             List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
@@ -205,7 +281,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             });
             return new ValeoKeyboard() { Message = "Оберіть лікаря", Markup = new InlineKeyboardMarkup(rows) };
         }
-
         public ValeoKeyboard CreateTimesKeyboard(List<Time> times)
         {
             List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
@@ -229,7 +304,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 
             return new ValeoKeyboard() { Message = "Оберіть час", Markup = new InlineKeyboardMarkup(rows) };
         }
-    
         public ValeoKeyboard CreateUziInfoKeyboard(string usiInfoId, string description)
         {
             var rows = new InlineKeyboardButton[]

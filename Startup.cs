@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Valeo.Bot.Models;
+using Valeo.Bot.Services.ReviewCashService;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.Configuration;
 using ValeoBot.Configuration.Entities;
@@ -44,6 +45,7 @@ namespace ValeoBot
             services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
             services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
             services.AddScoped<IAuthorization, AuthorizationService>();
+            services.AddSingleton<IReviewCacheService, ReviewCacheService>();
 
             if (_envLocal.IsDevelopment())
             {
@@ -75,6 +77,7 @@ namespace ValeoBot
             services.AddTransient<ValeoLifeBot>()
                 .AddScoped<ExceptionHandler>()
                 .AddScoped<AuthorizationHandler>()
+                .AddScoped<DataCollectFilterHandler>()
                 .AddScoped<StartCommand>()
                 .AddScoped<OrderUpdater>()
                 .AddScoped<CallbackQueryHandler>();
@@ -108,6 +111,7 @@ namespace ValeoBot
             return new BotBuilder()
                 .Use<ExceptionHandler>()
                 .Use<AuthorizationHandler>()
+                .Use<DataCollectFilterHandler>()
                 //.UseWhen<WebhookLogger>(When.Webhook)
                 //.UseWhen<UpdateMembersList>(When.MembersChanged)
                 .MapWhen(When.NewMessage, msgBranch => msgBranch

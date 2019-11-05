@@ -8,23 +8,28 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types.Enums;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.Services;
+using Valeo.Bot.Services.ReviewCashService;
 
 namespace ValeoBot.Models
 {
     public class OrderUpdater : IUpdateHandler
     {
-        private readonly AuthorizationService authorizationService;
+        private readonly AuthorizationService _authorizationService;
         private ILogger<OrderUpdater> _logger;
-        private IDataRepository<Registration> regRepository;
+        private IDataRepository<Registration> _regRepository;
+        private readonly IReviewCacheService _reviewCacheService;
 
         public OrderUpdater(
             IDataRepository<Registration> regRepository,
             AuthorizationService authorizationService,
-            ILogger<OrderUpdater> logger)
+            ILogger<OrderUpdater> logger,
+            IReviewCacheService reviewCacheService
+            )
         {
-            this.authorizationService = authorizationService;
-            this._logger = logger;
-            this.regRepository = regRepository;
+            _authorizationService = authorizationService;
+            _logger = logger;
+            _regRepository = regRepository;
+            _reviewCacheService = reviewCacheService;
         }
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken = default)
@@ -39,11 +44,15 @@ namespace ValeoBot.Models
             if (string.IsNullOrEmpty(message.Text))
                 return;
 
-            var reg = regRepository.Get(message.Chat.Id);
+            var reg = _regRepository.Get(message.Chat.Id);
 
             if (reg == null)
             {
-                await authorizationService.AuthorizeUser(message.Chat);
+                await _authorizationService.AuthorizeUser(message.Chat);
+            }
+            else if(_reviewCacheService.HasUnfinishedReview(message.Chat.Id))
+            {
+                _reviewCacheService.AddReviewText(message.Chat.Id, message.Text);
             }
             else
             {

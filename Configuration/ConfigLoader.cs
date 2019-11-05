@@ -12,14 +12,16 @@ namespace ValeoBot.Configuration
             services.Configure<ConnectionStrings>(config.GetSection("ConnectionStrings"))
                 .Configure<LoggingSettings>(config.GetSection("Logging"))
                 .Configure<BotConfig>(config.GetSection("ValeoBot"))
-                .Configure<ValeoApiConfig>(config.GetSection("ValeoApi"));
+                .Configure<ValeoApiConfig>(config.GetSection("ValeoApi"))
+                .Configure<SMTPConnection>(config.GetSection("STMPConnection"));
             
             ConfigProvider configProvider = new ConfigProvider()
             {
                 ConnectionStrings = GetConfiguration<ConnectionStrings>(config, "ConnectionStrings"),
                 Logging = GetConfiguration<LoggingSettings>(config, "Logging"),
                 BotConfig = GetConfiguration<BotConfig>(config, "ValeoBot"),
-                ValeoApi = GetConfiguration<ValeoApiConfig>(config, "ValeoApi")
+                ValeoApi = GetConfiguration<ValeoApiConfig>(config, "ValeoApi"),
+                STMPConnection = GetConfiguration<SMTPConnection>(config, "STMPConnection")
             };
             return configProvider;
         }

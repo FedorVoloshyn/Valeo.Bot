@@ -9,6 +9,7 @@ namespace ValeoBot.Configuration
         private LoggingSettings logging;
         private BotConfig botConfig;
         private ValeoApiConfig valeoApi;
+        private SMTPConnection stmpConnection;
         public ConnectionStrings ConnectionStrings
         {
             get
@@ -53,5 +54,7 @@ namespace ValeoBot.Configuration
                 botConfig = value;
             }
         }
+
+        public SMTPConnection STMPConnection { get => stmpConnection; set => stmpConnection = value; }
     }
 }
