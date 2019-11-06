@@ -23,27 +23,32 @@ namespace ValeoBot.Models
             CallbackQuery cq = context.Update.CallbackQuery;
 
             ValeoKeyboard reply = await _responseController.UpdateUserStateAsync(cq.Message.Chat.Id, cq.Data);
+
+            if (reply.Location != null)
+            {
+                await context.Bot.Client.SendLocationAsync(
+                    cq.Message.Chat.Id,
+                    reply.Location.Latitude,
+                    reply.Location.Longitude
+                );
+                await context.Bot.Client.SendTextMessageAsync(
+                    cq.Message.Chat.Id,
+                    reply.Message,
+                    ParseMode.Markdown,
+                    replyMarkup: reply.Markup
+                );
+                return;
+            }
+
             await context.Bot.Client.EditMessageTextAsync(
                 cq.Message.Chat.Id,
                 cq.Message.MessageId,
                 reply.Message,
                 ParseMode.Markdown);
-            if(reply.Location != null) {
-                await context.Bot.Client.EditMessageLiveLocationAsync(
-                cq.Message.Chat.Id,
-                cq.Message.MessageId,
-                reply.Location.Latitude,
-                reply.Location.Longitude
-                );
-            }
             await context.Bot.Client.EditMessageReplyMarkupAsync(
                 cq.Message.Chat.Id,
                 cq.Message.MessageId,
                 reply.Markup);
-
-
-
-
 
             await next(context);
         }

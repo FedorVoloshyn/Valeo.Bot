@@ -50,8 +50,8 @@ namespace ValeoBot
             if (Environment.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                   // options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
-                   options.UseInMemoryDatabase("Test")
+                   options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
+                   // options.UseInMemoryDatabase("Test")
                 );
             }
             else
