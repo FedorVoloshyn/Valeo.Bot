@@ -32,7 +32,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Поділитись 📢", "todo"),
+                    InlineKeyboardButton.WithSwitchInlineQuery("Поділитись 📢", "Звертайтесь до Валео Diagnostics!🏥"),
                     InlineKeyboardButton.WithCallbackData("Про нас 🏥", ValeoCommands.About)
                 }
             })
