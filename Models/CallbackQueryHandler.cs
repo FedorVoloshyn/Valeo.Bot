@@ -28,10 +28,22 @@ namespace ValeoBot.Models
                 cq.Message.MessageId,
                 reply.Message,
                 ParseMode.Markdown);
+            if(reply.Location != null) {
+                await context.Bot.Client.EditMessageLiveLocationAsync(
+                cq.Message.Chat.Id,
+                cq.Message.MessageId,
+                reply.Location.Latitude,
+                reply.Location.Longitude
+                );
+            }
             await context.Bot.Client.EditMessageReplyMarkupAsync(
                 cq.Message.Chat.Id,
                 cq.Message.MessageId,
                 reply.Markup);
+
+
+
+
 
             await next(context);
         }

@@ -27,7 +27,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Адреси 📍", "todo"),
+                    InlineKeyboardButton.WithCallbackData("Адреси 📍", ValeoCommands.Location),
                     InlineKeyboardButton.WithCallbackData("Контакти 📞", ValeoCommands.Contacts)
                 },
                 new InlineKeyboardButton[]
@@ -53,10 +53,10 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             Message = "При обробці запиту сталася помился. Зв'яжіться з адміністратором або спробуйте повторити спробу пізніше.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
-            new InlineKeyboardButton[]
-            {
-            InlineKeyboardButton.WithCallbackData("Записатись до лікаря", ValeoCommands.Doctors),
-            }
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Записатись до лікаря", ValeoCommands.Doctors),
+                }
             })
         };
         public static readonly ValeoKeyboard AboutKeyboard = new ValeoKeyboard
@@ -92,6 +92,20 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 }
             })
         };
+        public static readonly ValeoKeyboard Locationskeyboard = new ValeoKeyboard
+        {
+            Message = $"*Днiпро*\nМедичний центр *ВАЛЕО\nвулица Рабоча, 148, VIII-б",
+            Location = new Location { Latitude = 48.4531337f, Longitude = 35.0012804f } ,
+            Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+            {
+                new InlineKeyboardButton[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                }
+            })
+        };
+
+
         public static readonly ValeoKeyboard DoctorsValeoStaticKeyboard = new ValeoKeyboard
         {
             Message = "Оберіть лікаря, до якого бажаєте записатись на прийом.",
@@ -256,6 +270,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             _keybords.Add(ValeoCommands.DoctorsStatic, DoctorsValeoStaticKeyboard);
             _keybords.Add(ValeoCommands.OurDoctors, OurDoctorsKeyboard);
             _keybords.Add(ValeoCommands.Feedback, FeedbackKeyboard);
+            _keybords.Add(ValeoCommands.Location, Locationskeyboard);
         }
 
         public ValeoKeyboard GetKeyboard(ValeoCommands command)

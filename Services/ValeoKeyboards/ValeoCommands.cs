@@ -5,19 +5,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 {
     public struct ValeoCommands
     {
-        private static readonly Dictionary<string, Func<ValeoCommands>> _values = new Dictionary<string, Func<ValeoCommands>>()
-        { 
-            { "doctors", () => Doctors }, 
-            { "back", () => Back }, 
-            { "default", () => Default }, 
-            { "usi", () => Usi },
-            { "contacts", () => Contacts }, 
-            { "usiinfo", () => UsiInfo },
-            { "about", () => About },
-            { "doctorsstatic", () => DoctorsStatic },
-            { "ourdoctors", () => OurDoctors },
-            { "feedback", () => Feedback }
-        };
         public string OriginalValue { get; private set; }
         public string Value { get; private set; }
         public RequestType RequestType { get; private set; }
@@ -61,6 +48,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public static ValeoCommands DoctorsStatic { get { return new ValeoCommands("doctorsstatic", RequestType.Menu); } }
         public static ValeoCommands OurDoctors { get { return new ValeoCommands("ourdoctors", RequestType.OurDoctors); } }
         public static ValeoCommands Feedback { get { return new ValeoCommands("feedback", RequestType.Feedback); } }
+             public static ValeoCommands Location { get { return new ValeoCommands("location", RequestType.Location); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -111,7 +99,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         About,
         DoctorsStatic,
         OurDoctors,
-        Feedback
+        Feedback,
+        Location
     }
 
     public class Test

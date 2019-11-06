@@ -53,6 +53,8 @@ namespace ValeoBot.Services
                     return await SaveOrder(chatId);
                 case RequestType.Feedback:
                     return NewReview(chatId, command);
+                case RequestType.Location:
+                    return _keyboardsService.GetKeyboard(command);
                 default:
                     _logger.LogError($"Trying to create responce for unknown command: {command.OriginalValue}");
                     return ValeoKeyboardsService.DefaultKeyboard;
