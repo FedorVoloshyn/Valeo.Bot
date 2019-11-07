@@ -94,7 +94,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         };
         public static readonly ValeoKeyboard Locationskeyboard = new ValeoKeyboard
         {
-            Message = $"*Днiпро*\nМедичний центр *ВАЛЕО\nвулица Рабоча, 148, VIII-б",
+            Message = $"*Днiпро*\nМедичний центр *ВАЛЕО*\nвулица Рабоча, 148, VIII-б",
             Location = new Location { Latitude = 48.4531337f, Longitude = 35.0012804f } ,
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
