@@ -53,6 +53,17 @@ namespace ValeoBot.Models
             else if(_reviewCacheService.HasUnfinishedReview(message.Chat.Id))
             {
                 _reviewCacheService.AddReviewText(message.Chat.Id, message.Text);
+                await context.Bot.Client.SendTextMessageAsync(
+                    message.Chat.Id,
+                    "Дякуємо за відгук!",
+                    ParseMode.Markdown
+                );
+                await context.Bot.Client.SendTextMessageAsync(
+                    message.Chat.Id,
+                    ValeoKeyboardsService.DefaultKeyboard.Message,
+                    ParseMode.Markdown,
+                    replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
+                );
             }
             else
             {

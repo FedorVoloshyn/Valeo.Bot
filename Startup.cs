@@ -71,8 +71,8 @@ namespace ValeoBot
                 .AddScoped<SessionService>()
                 .AddScoped<AuthorizationService>()
                 .AddScoped<ValeoKeyboardsService>()
-                //.AddScoped<IValeoAPIService, ValeoAPIMockService>();
-                .AddTransient<IValeoAPIService, ValeoAPIService>();
+                .AddScoped<IValeoAPIService, ValeoAPIMockService>();
+                //.AddTransient<IValeoAPIService, ValeoAPIService>();
 
             // services.AddTelegramBot()
             services.AddTransient<ValeoLifeBot>()

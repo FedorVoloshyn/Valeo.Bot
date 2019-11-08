@@ -51,8 +51,15 @@ namespace ValeoBot.Services
             this.botConfig = botConfig;
         }
 
+        public bool HasUnfinishedOrder(long chatId)
+        {
+            return _ordersCache.FirstOrDefault(order => order.ChatId == chatId) != null ? true : false;
+        }
+
         public async Task<bool> UpdateOrder(ValeoCommands command, long chatId)
         {
+            if(!HasUnfinishedOrder(chatId)) return true;
+            
             try
             {
                 switch (command.RequestType)

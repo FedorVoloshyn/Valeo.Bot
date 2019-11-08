@@ -1,4 +1,7 @@
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Drawing;
+using Telegram.Bot.Types;
+using System.IO;
 
 namespace Valeo.Bot.Services.ValeoKeyboards
 {
@@ -7,6 +10,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public string Message { get; set; }
         public Location Location { get; set; }
         public InlineKeyboardMarkup Markup { get; set; }
+        public string ImagePath { get; set; }
     }
 
     public class Location
@@ -14,5 +18,4 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public float Latitude { get; set; }
         public float Longitude { get; set; }
     }
-
 }

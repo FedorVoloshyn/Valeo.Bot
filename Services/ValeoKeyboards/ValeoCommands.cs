@@ -48,7 +48,12 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         public static ValeoCommands DoctorsStatic { get { return new ValeoCommands("doctorsstatic", RequestType.Menu); } }
         public static ValeoCommands OurDoctors { get { return new ValeoCommands("ourdoctors", RequestType.OurDoctors); } }
         public static ValeoCommands Feedback { get { return new ValeoCommands("feedback", RequestType.Feedback); } }
-             public static ValeoCommands Location { get { return new ValeoCommands("location", RequestType.Location); } }
+        public static ValeoCommands Location { get { return new ValeoCommands("location", RequestType.Location); } }
+        public static ValeoCommands Safonov { get { return new ValeoCommands("safonov", RequestType.Safonov); } }
+        public static ValeoCommands Palivoda { get { return new ValeoCommands("palivoda", RequestType.Palivoda); } }
+        public static ValeoCommands Makarchenko { get { return new ValeoCommands("makarchenko", RequestType.Makarchenko); } }
+        public static ValeoCommands Kalita { get { return new ValeoCommands("kalita", RequestType.Kalita); } }
+        public static ValeoCommands Leonova { get { return new ValeoCommands("leonova", RequestType.Leonova); } }
 
         public static implicit operator ValeoCommands(string command)
         {
@@ -100,7 +105,12 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         DoctorsStatic,
         OurDoctors,
         Feedback,
-        Location
+        Location,
+        Safonov,
+        Palivoda,
+        Makarchenko,
+        Kalita,
+        Leonova
     }
 
     public class Test

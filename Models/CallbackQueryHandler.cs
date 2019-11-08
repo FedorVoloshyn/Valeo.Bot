@@ -1,9 +1,9 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using IBWT.Framework.Abstractions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.Services;
 
@@ -36,6 +36,40 @@ namespace ValeoBot.Models
                     reply.Message,
                     ParseMode.Markdown,
                     replyMarkup: reply.Markup
+                );
+                return;
+            }
+
+            if(reply.ImagePath != null)
+            {
+                await context.Bot.Client.DeleteMessageAsync(  
+                    cq.Message.Chat.Id,
+                    cq.Message.MessageId
+                );
+                using(var photo = new FileStream(reply.ImagePath, FileMode.Open))
+                {
+                    await context.Bot.Client.SendPhotoAsync(
+                        cq.Message.Chat.Id,
+                        photo,
+                        caption: reply.Message,
+                        replyMarkup: reply.Markup,
+                        parseMode : ParseMode.Markdown
+                    );
+                }
+                return;
+            }
+
+            if(cq.Message.Type == MessageType.Photo)
+            {
+                await context.Bot.Client.DeleteMessageAsync(  
+                    cq.Message.Chat.Id,
+                    cq.Message.MessageId
+                );
+
+                await context.Bot.Client.SendTextMessageAsync(
+                    cq.Message.Chat.Id,
+                    reply.Message,
+                    replyMarkup : reply.Markup
                 );
                 return;
             }

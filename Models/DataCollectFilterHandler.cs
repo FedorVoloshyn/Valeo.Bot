@@ -25,7 +25,7 @@ namespace ValeoBot.Models
             long chatId = GetChatIdFromUpdate(context.Update);
             var hasUncollectedData = _reviewCacheService.HasUnfinishedReview(chatId);
 
-            if(hasUncollectedData && (context.Update.Message?.Location == null && context.Update.CallbackQuery == null))
+            if(context.Update.Type != UpdateType.CallbackQuery && hasUncollectedData && String.IsNullOrEmpty(context.Update.Message.Text))
             {
                 await context.Bot.Client.SendTextMessageAsync(
                     chatId,

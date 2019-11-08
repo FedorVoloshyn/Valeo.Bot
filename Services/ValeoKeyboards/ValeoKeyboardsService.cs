@@ -12,17 +12,17 @@ namespace Valeo.Bot.Services.ValeoKeyboards
         /** param1| Command, param2| Keyboard Markup */
         public static readonly ValeoKeyboard DefaultKeyboard = new ValeoKeyboard
         {
-            Message = "Вітаємо у Valeo Diagnostic! Тут ви можете записатись на прийом до лікаря у нашій клінці. Натисніть *Записатись до лікаря* для оформлення заявки.",
+            Message = "Вітаємо у Valeo Diagnostic! Тут ви можете оформити запис на прийом до лікаря у нашій клінці. Натисніть *Записатися на прийом* для оформлення заявки.",
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
                 new InlineKeyboardButton[]
                 {
                     //InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.Doctors)
-                    InlineKeyboardButton.WithCallbackData("Записатись до лікаря 💊", ValeoCommands.DoctorsStatic)
+                    InlineKeyboardButton.WithUrl("Записатися на прийом 📝", "https://helsi.me/find-by-organization/2fd443d4-ffaa-493c-872c-5a9322c3237a")
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Наші лікарі 👨‍⚕️", "todo"),
+                    InlineKeyboardButton.WithCallbackData("Наші лікарі 👨‍⚕️", ValeoCommands.OurDoctors),
                     InlineKeyboardButton.WithCallbackData("Залишити відгук ✍️", "feedback|Feedback")
                 },
                 new InlineKeyboardButton[]
@@ -105,7 +105,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             })
         };
 
-
         public static readonly ValeoKeyboard DoctorsValeoStaticKeyboard = new ValeoKeyboard
         {
             Message = "Оберіть лікаря, до якого бажаєте записатись на прийом.",
@@ -144,23 +143,23 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Сім. лікар Сафонов Д.О.", ""),
+                    InlineKeyboardButton.WithCallbackData("Сафонов Денис Олегович", ValeoCommands.Safonov),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Терапевт Паливода Д.В.", ""),
+                    InlineKeyboardButton.WithCallbackData("Паливода Дмитро Васильович", ValeoCommands.Palivoda),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Педіатр Макарченко К.В.", ""),
+                    InlineKeyboardButton.WithCallbackData("Макарченко Катерина Вікторівна", ValeoCommands.Makarchenko),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Терапевт Калита Н.В.", ""),
+                    InlineKeyboardButton.WithCallbackData("Калита Наталя Вікторівна", ValeoCommands.Kalita),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Терапевт Лєонова О.О.", ""),
+                    InlineKeyboardButton.WithCallbackData("Лєонова Оксана Олександрівна", ValeoCommands.Leonova),
                 },
                 new InlineKeyboardButton[]
                 {
@@ -256,7 +255,8 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     Message = 
                         "__Контакти клініки *ВАЛЕО Diagnostics*__\n" + 
                         "\n*Сайт*: https://valeo.dp.ua/uk" + 
-                        "\n*Телефон*: +38 (095) 232-34-00" + 
+                        "\n*Телефон*: +380982323401" + 
+                        "\n*Телефон*: +380952323400" + 
                         "\n*e-mail*: valeo.diagnostics@ukr.net",
                     Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>{
                         new InlineKeyboardButton[]
@@ -271,6 +271,11 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             _keybords.Add(ValeoCommands.OurDoctors, OurDoctorsKeyboard);
             _keybords.Add(ValeoCommands.Feedback, FeedbackKeyboard);
             _keybords.Add(ValeoCommands.Location, Locationskeyboard);
+            _keybords.Add(ValeoCommands.Safonov, ValeoDoctorsKeyboards.Safonov);
+            _keybords.Add(ValeoCommands.Kalita, ValeoDoctorsKeyboards.Kalita);
+            _keybords.Add(ValeoCommands.Makarchenko, ValeoDoctorsKeyboards.Makarchenko);
+            _keybords.Add(ValeoCommands.Palivoda, ValeoDoctorsKeyboards.Palivoda);
+            _keybords.Add(ValeoCommands.Leonova, ValeoDoctorsKeyboards.Leonova);
         }
 
         public ValeoKeyboard GetKeyboard(ValeoCommands command)
