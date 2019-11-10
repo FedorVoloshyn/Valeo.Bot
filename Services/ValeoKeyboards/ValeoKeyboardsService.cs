@@ -32,7 +32,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithSwitchInlineQuery("Поділитись 📢", "Звертайтесь до Валео Diagnostics!🏥"),
+                    InlineKeyboardButton.WithSwitchInlineQuery("Поділитись 📢", "Звертайтесь до Валео Diagnostics! 🏥"),
                     InlineKeyboardButton.WithCallbackData("Про нас 🏥", ValeoCommands.About)
                 }
             })
@@ -44,7 +44,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
             new InlineKeyboardButton[]
             {
-            InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+            InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
             },
             })
         };
@@ -77,9 +77,21 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                 }
-            })
+            }),
+            AlbumImagesPathList = new List<string>(
+                new string[]
+                {
+                    "clinicPhoto/1.jpg",
+                    "clinicPhoto/2.jpg",
+                    "clinicPhoto/3.jpg",
+                    "clinicPhoto/4.jpg",
+                    "clinicPhoto/5.jpg",
+                    "clinicPhoto/6.jpg",
+                    "clinicPhoto/7.jpg",
+                }
+            )            
         };
         public static readonly ValeoKeyboard FeedbackKeyboard = new ValeoKeyboard
         {
@@ -88,19 +100,19 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                 }
             })
         };
         public static readonly ValeoKeyboard Locationskeyboard = new ValeoKeyboard
         {
             Message = $"*Днiпро*\nМедичний центр *ВАЛЕО*\nвулица Рабоча, 148, VIII-б",
-            Location = new Location { Latitude = 48.4531337f, Longitude = 35.0012804f } ,
+            Location = new Location { Latitude = 48.4530569f, Longitude = 35.0029239f } ,
             Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                 }
             })
         };
@@ -132,7 +144,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                 },
             })
         };
@@ -163,7 +175,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                 },
             })
         };
@@ -261,7 +273,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>{
                         new InlineKeyboardButton[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                            InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                         }
                     })
                 }

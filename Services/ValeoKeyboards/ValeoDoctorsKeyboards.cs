@@ -20,7 +20,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/9c2f65a7-4c36-49ae-864b-a51bbcfe52f0")
                     },
                     new InlineKeyboardButton[]
                     {
@@ -28,7 +28,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     },
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/9c2f65a7-4c36-49ae-864b-a51bbcfe52f0")
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                 }),
                 ImagePath = photoFolder + "safonov.jpg"
@@ -38,18 +38,18 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             {
                 Message = "*Паливода Дмитро Васильович*\nЛікар-терапевт",
                 Markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
-                {                    
-                    new InlineKeyboardButton[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
-                    },
-                    new InlineKeyboardButton[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("До списку лікарів", ValeoCommands.OurDoctors),
-                    },
+                {    
                     new InlineKeyboardButton[]
                     {
                         InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/dd4d4f9c-0618-4d05-900d-627875bc7ddd")
+                    },    
+                    new InlineKeyboardButton[]
+                    {
+                        InlineKeyboardButton.WithCallbackData("До списку лікарів", ValeoCommands.OurDoctors),
+                    },            
+                    new InlineKeyboardButton[]
+                    {
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                 }),
                 ImagePath = photoFolder + "palivoda.jpg"
@@ -61,7 +61,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                     new InlineKeyboardButton[]
                     {
@@ -81,7 +81,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/757f686e-c28c-4ad5-acd1-71de4c3906d5")
                     },
                     new InlineKeyboardButton[]
                     {
@@ -89,7 +89,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     },
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/757f686e-c28c-4ad5-acd1-71de4c3906d5")
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                 }),
                 ImagePath = photoFolder + "kalita.jpg"
@@ -101,7 +101,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Головне меню", ValeoCommands.Default),
+                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/8db0a856-cb6e-480b-b9c8-37fbc6df9afe")
                     },
                     new InlineKeyboardButton[]
                     {
@@ -109,7 +109,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     },
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/8db0a856-cb6e-480b-b9c8-37fbc6df9afe")
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                 }),
                 ImagePath = photoFolder + "leonova.jpg"

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using IBWT.Framework.Abstractions;
@@ -37,6 +38,38 @@ namespace ValeoBot.Models
                     ParseMode.Markdown,
                     replyMarkup: reply.Markup
                 );
+                return;
+            }
+
+            if(reply.AlbumImagesPathList != null)
+            {
+                List<Stream> photosStreams = new List<Stream>();
+                List<InputMediaPhoto> inputMediaPhotos = new List<InputMediaPhoto>();
+
+                foreach(string path in reply.AlbumImagesPathList)
+                {
+                    inputMediaPhotos.Add(new InputMediaPhoto(new InputMedia(System.IO.File.OpenRead(path), path)));
+                }
+                
+                IAlbumInputMedia[] inputMedia = inputMediaPhotos.ToArray();
+
+                await context.Bot.Client.DeleteMessageAsync(  
+                    cq.Message.Chat.Id,
+                    cq.Message.MessageId
+                );
+                await context.Bot.Client.SendMediaGroupAsync(
+                   inputMedia,
+                   cq.Message.Chat.Id
+                );
+                await context.Bot.Client.SendTextMessageAsync(
+                    cq.Message.Chat.Id,
+                    reply.Message,
+                    replyMarkup : reply.Markup,
+                    parseMode: ParseMode.Markdown
+                );
+
+                photosStreams.ForEach(stream => stream.Dispose());
+
                 return;
             }
 

@@ -111,7 +111,7 @@ namespace ValeoBot
         {
             return new BotBuilder()
                 .Use<ExceptionHandler>()
-                .Use<AuthorizationHandler>()
+                //.Use<AuthorizationHandler>()
                 .Use<DataCollectFilterHandler>()
                 //.UseWhen<WebhookLogger>(When.Webhook)
                 //.UseWhen<UpdateMembersList>(When.MembersChanged)
