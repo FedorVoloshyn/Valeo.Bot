@@ -14,7 +14,7 @@ namespace ValeoBot.Configuration
             services.Configure<ConnectionStrings>(config.GetSection("ConnectionStrings"))
                 .Configure<LoggingSettings>(config.GetSection("Logging"))
                 .Configure<ValeoApiConfig>(config.GetSection("ValeoApi"))
-                .Configure<SMTPConnection>(config.GetSection("STMPConnection"));
+                .Configure<SMTPConnection>(config.GetSection("SMTPConnection"));
 
             if (env.IsDevelopment())
             {

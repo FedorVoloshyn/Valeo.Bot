@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Valeo.Bot.Models;
+using Valeo.Bot.Services;
 using Valeo.Bot.Services.ReviewCashService;
 using Valeo.Bot.Services.ValeoKeyboards;
 using ValeoBot.Configuration;
@@ -45,6 +46,7 @@ namespace ValeoBot
             services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
             services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
             services.AddScoped<IAuthorization, AuthorizationService>();
+            services.AddSingleton<IMailingService, MailingService>();
             services.AddSingleton<IReviewCacheService, ReviewCacheService>();
 
             if (Environment.IsDevelopment())

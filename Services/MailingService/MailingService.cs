@@ -1,36 +1,48 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using ValeoBot.Configuration;
 
 namespace Valeo.Bot.Services
 {
-    public class MailingService : EmailSender
+    public class MailingService : IMailingService
     {
-        public MailingService(SMTPConnection settings) : base(settings)
+        protected SMTPConnection _settings;
+        private ILogger<MailingService> _logger;
+
+        public MailingService(IOptions<SMTPConnection> settings, ILogger<MailingService> logger)
         {
-            this.settings = settings;
+            _settings = settings.Value;
+            _logger = logger;
         }
-        public override async Task SendEmailAsync(Feedback review)
+        public async Task SendEmailAsync(Feedback review)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress(settings.CompanyName, settings.UserName));
-            emailMessage.To.Add(new MailboxAddress("tikey.gm@gmail.com"));
-            emailMessage.Subject = "Отзыв из чат-бота Валео Diagnostics";
+            emailMessage.From.Add(new MailboxAddress(_settings.CompanyName, _settings.UserName));
+            emailMessage.To.Add(new MailboxAddress(_settings.Recipient));
+            emailMessage.Subject = _settings.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text)
             {
                 Text = review.Text
             };
 
-            using(var client = new MailKit.Net.Smtp.SmtpClient())
+            try
             {
-                await client.ConnectAsync(settings.Server, settings.Port, settings.UseSSL);
-                await client.AuthenticateAsync(settings.UserName, settings.Password);
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
+                using(var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    await client.ConnectAsync(_settings.Server, _settings.Port, _settings.UseSSL);
+                    await client.AuthenticateAsync(_settings.UserName, _settings.Password);
+                    await client.SendAsync(emailMessage);
+                    await client.DisconnectAsync(true);
+                }
             }
-
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Error while trying to send email.");
+            }
         }
     }
 }

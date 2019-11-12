@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ValeoBot.Configuration;
@@ -14,14 +15,16 @@ namespace Valeo.Bot.Services.ReviewCashService
         private static readonly List<Feedback> _reviewCache = new List<Feedback>();
         #endregion
         private readonly ILogger<ReviewCacheService> _logger;
-        private readonly ILogger<MailingService> _emaillogger;
-        private readonly IOptions<SMTPConnection> _stmpConnection;
+        private readonly IOptions<SMTPConnection> _smtpConnection;
+        private readonly IMailingService _mailingService;
+        private readonly IHostingEnvironment _env;
 
-        public ReviewCacheService(ILogger<ReviewCacheService> logger, IOptions<SMTPConnection> stmpConnection, ILogger<MailingService> emaillogger)
+        public ReviewCacheService(ILogger<ReviewCacheService> logger, IOptions<SMTPConnection> smtpConnection, IMailingService mailingService, IHostingEnvironment env)
         {
             _logger = logger;
-            _stmpConnection = stmpConnection;
-            _emaillogger = emaillogger;
+            _smtpConnection = smtpConnection;
+            _mailingService = mailingService;
+            _env = env;
         }
 
         public void AddReview(long chatId)
@@ -48,10 +51,8 @@ namespace Valeo.Bot.Services.ReviewCashService
             else
             {  
                 review.Text = text;
-                
-                MailingService mailingService = new MailingService(_stmpConnection.Value);
-                await mailingService.SendEmailAsync(review);
-
+                if(!_env.IsDevelopment())
+                    await _mailingService.SendEmailAsync(review);
                 _reviewCache.Remove(review);
             }
         }
