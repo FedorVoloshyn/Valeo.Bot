@@ -12,7 +12,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 {
     public static class ValeoDoctorsKeyboards
     {
-        private static string photoFolder = "doctorsPhoto/";
+        private static string photoFolder = "Resourses/doctorsPhoto/";
         public static ValeoKeyboard Safonov { get { return new ValeoKeyboard
             {
                 Message = "*Сафонов Денис Олегович*\nЛікар загальної практики - Сімейний лікар",

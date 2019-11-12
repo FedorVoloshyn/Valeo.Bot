@@ -83,13 +83,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             AlbumImagesPathList = new List<string>(
                 new string[]
                 {
-                    "clinicPhoto/1.jpg",
-                    "clinicPhoto/2.jpg",
-                    "clinicPhoto/3.jpg",
-                    "clinicPhoto/4.jpg",
-                    "clinicPhoto/5.jpg",
-                    "clinicPhoto/6.jpg",
-                    "clinicPhoto/7.jpg",
+                    "Resourses/clinicPhoto/1.jpg",
+                    "Resourses/clinicPhoto/2.jpg",
+                    "Resourses/clinicPhoto/3.jpg",
+                    "Resourses/clinicPhoto/4.jpg",
+                    "Resourses/clinicPhoto/5.jpg",
+                    "Resourses/clinicPhoto/6.jpg",
+                    "Resourses/clinicPhoto/7.jpg",
                 }
             )            
         };
