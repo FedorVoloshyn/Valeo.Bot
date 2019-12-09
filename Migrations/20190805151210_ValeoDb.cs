@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ValeoBot.Migrations
+namespace Valeo.Bot.Migrations
 {
     public partial class ValeoDb : Migration
     {

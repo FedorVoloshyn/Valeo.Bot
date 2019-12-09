@@ -1,4 +1,4 @@
-namespace ValeoBot.Configuration.Entities.Logging
+namespace Valeo.Bot.Configuration.Entities.Logging
 {
     public class LogLevel
     {

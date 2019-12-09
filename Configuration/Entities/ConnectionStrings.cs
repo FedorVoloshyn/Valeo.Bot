@@ -1,4 +1,4 @@
-namespace ValeoBot.Configuration.Entities
+namespace Valeo.Bot.Configuration.Entities
 {
     public class ConnectionStrings
     {

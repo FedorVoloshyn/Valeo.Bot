@@ -2,18 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using ValeoBot.Data.Entities;
+using Valeo.Bot.Data.Entities;
 
-namespace ValeoBot.Data.Repository
+namespace Valeo.Bot.Data.Repository
 {
-    public class UserReposiroty : IDataRepository<ValeoUser>
+    public class UserRepository : IDataRepository<ValeoUser>
     {
-        private readonly ILogger<UserReposiroty> _logger;
+        private readonly ILogger<UserRepository> _logger;
         private readonly ApplicationDbContext _context;
 
-        public UserReposiroty(
+        public UserRepository(
             ApplicationDbContext context,
-            ILogger<UserReposiroty> logger)
+            ILogger<UserRepository> logger)
         {
             _logger = logger;
             _context = context;

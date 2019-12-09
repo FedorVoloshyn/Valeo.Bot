@@ -1,7 +1,15 @@
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Feedback
+namespace Valeo.Bot.Data.Entities
 {
-    public long ChatId { get; set; }
-    public string Text { get; set; }
+    public class Feedback
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
+        public long ChatId { get; set; }
+        public string Text { get; set; }
+    }
 }

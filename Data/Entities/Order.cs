@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ValeoBot.Data.Entities
+namespace Valeo.Bot.Data.Entities
 {
     public class Order
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public long ChatId { get; set; }
         public string Category { get; set; }

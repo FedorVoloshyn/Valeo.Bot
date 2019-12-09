@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ValeoBot.Data.Entities
+namespace Valeo.Bot.Data.Entities
 {
     public class DoctorInfo
     {

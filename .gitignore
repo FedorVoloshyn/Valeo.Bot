@@ -15,17 +15,17 @@
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-x64/
-x86/
-build/
+[Xx]64/
+[Xx]86/
+[Bb]uild/
 bld/
-bin/
-Bin/
-obj/
-Obj/
-logs/
+[Bb]in/
+[Oo]bj/
+
 # Visual Studio 2015 cache/options directory
 .vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -39,6 +39,10 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+
+# DNX
+project.lock.json
+artifacts/
 
 *_i.c
 *_p.c
@@ -76,6 +80,7 @@ ipch/
 *.opensdf
 *.sdf
 *.cachefile
+*.VC.db
 
 # Visual Studio profiler
 *.psess
@@ -134,9 +139,11 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings
-# but database connection strings (with potential passwords) will be unencrypted
-*.pubxml
+
+# TODO: Un-comment the next line if you do not want to checkin 
+# your web deploy settings because they may include unencrypted
+# passwords
+*.pubxml*
 *.publishproj
 
 # NuGet Packages
@@ -147,6 +154,9 @@ publish/
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
+# NuGet v3's project.json files produces more ignoreable files
+*.nuget.props
+*.nuget.targets
 
 # Microsoft Azure Build Output
 csx/
@@ -171,15 +181,15 @@ BundleArtifacts/
 
 # Others
 ClientBin/
+[Ss]tyle[Cc]op.*
 ~$*
 *~
 *.dbmdl
 *.dbproj.schemaview
 *.pfx
 *.publishsettings
+node_modules/
 orleans.codegen.cs
-
-/node_modules
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -224,8 +234,21 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
+# LightSwitch generated files
+GeneratedArtifacts/
+ModelManifest.xml
+
 # Paket dependency manager
 .paket/paket.exe
 
 # FAKE - F# Make
 .fake/
+
+# Settings for specific environments
+appsettings.*.json
+
+# Rider IDE
+.idea
+
+# Deployments files
+/dist/

@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using ValeoBot.Configuration;
+using Valeo.Bot.Configuration.Entities;
+using Valeo.Bot.Data.Entities;
 
 namespace Valeo.Bot.Services
 {

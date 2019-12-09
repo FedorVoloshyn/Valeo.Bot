@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ValeoBot.Data.Entities
+namespace Valeo.Bot.Data.Entities
 {        
     public class Registration
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string AuthServiceToken { get; set; }
         public int? RegistrationMessageId { get; set; }

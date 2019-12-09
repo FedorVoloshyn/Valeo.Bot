@@ -3,9 +3,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Valeo.Bot.Services.ValeoKeyboards;
-
-namespace ValeoBot
+namespace Valeo.Bot
 {
     public class Program
     {
@@ -27,8 +25,8 @@ namespace ValeoBot
                 logger.Trace("****** Shutdown application ******");
                 NLog.LogManager.Shutdown();
             }
-
         }
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()

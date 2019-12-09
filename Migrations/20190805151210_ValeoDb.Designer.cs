@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ValeoBot;
+using Valeo.Bot;
 
-namespace ValeoBot.Migrations
+namespace Valeo.Bot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20190805151210_ValeoDb")]
@@ -21,7 +21,7 @@ namespace ValeoBot.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.Order", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace ValeoBot.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.User", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.User", b =>
                 {
                     b.Property<long>("Id");
 
@@ -59,9 +59,9 @@ namespace ValeoBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.User", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.User", b =>
                 {
-                    b.HasOne("ValeoBot.Data.Entities.Order", "Order")
+                    b.HasOne("Valeo.Bot.Data.Entities.Order", "Order")
                         .WithMany("Users")
                         .HasForeignKey("LastOrderId");
                 });

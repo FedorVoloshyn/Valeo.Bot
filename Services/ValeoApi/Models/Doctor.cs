@@ -1,4 +1,4 @@
-﻿namespace ValeoBot.Services.ValeoApi.Models
+﻿namespace Valeo.Bot.Services.ValeoApi.Models
 {
     public struct Doctor
     {

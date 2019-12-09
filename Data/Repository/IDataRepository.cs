@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ValeoBot.Data.Repository
+namespace Valeo.Bot.Data.Repository
 {
     public interface IDataRepository<TEntity>
     {

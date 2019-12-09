@@ -3,8 +3,7 @@ using IBWT.Framework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ValeoBot.Configuration.Entities;
-using ValeoBot.Services;
+using Valeo.Bot.Services.HelsiAuthorization;
 
 namespace Valeo.Bot.Controllers
 {
@@ -26,6 +25,7 @@ namespace Valeo.Bot.Controllers
             this.botConfig = botConfig;
             this.authorizationService = authorizationService;
         }
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> Authorize(long id) 
         {

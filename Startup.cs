@@ -1,7 +1,10 @@
 ﻿using System;
 using IBWT.Framework;
 using IBWT.Framework.Abstractions;
+using IBWT.Framework.Extentions;
 using IBWT.Framework.Middleware;
+using IBWT.Framework.Scheduler;
+using IBWT.Framework.State.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,52 +12,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Valeo.Bot.Models;
+using Valeo.Bot.Configuration;
+using Valeo.Bot.Data.Entities;
+using Valeo.Bot.Data.Repository;
+using Valeo.Bot.Handlers;
 using Valeo.Bot.Services;
-using Valeo.Bot.Services.ReviewCashService;
-using Valeo.Bot.Services.ValeoKeyboards;
-using ValeoBot.Configuration;
-using ValeoBot.Configuration.Entities;
-using ValeoBot.Data.Entities;
-using ValeoBot.Data.Repository;
-using ValeoBot.Models;
-using ValeoBot.Models.Commands;
-using ValeoBot.Services;
-using ValeoBot.Services.ValeoApi;
+using Valeo.Bot.Services.HelsiAuthorization;
 
-namespace ValeoBot
+namespace Valeo.Bot
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public static IConfiguration StaticConfiguration { get; private set;}
-        public IHostingEnvironment Environment { get; }
+        private readonly IHostingEnvironment env;
+
+        public static IConfiguration StaticConfiguration { get; private set; }
+        private IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             StaticConfiguration = configuration;
-            Environment = env;
+            this.env = env;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddConfigurationProvider(Configuration, Environment);
+            services.AddConfigurationProvider(Configuration, env);
 
             services.AddScoped<IDataRepository<Order>, OrderRepository>();
-            services.AddScoped<IDataRepository<ValeoUser>, UserReposiroty>();
-            services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
-            services.AddScoped<IAuthorization, AuthorizationService>();
-            services.AddSingleton<IMailingService, MailingService>();
-            services.AddSingleton<IReviewCacheService, ReviewCacheService>();
 
-            if (Environment.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase"))
-                   // options.UseInMemoryDatabase("Test")
-                );
+                    options.UseSqlServer(Configuration.GetConnectionString("LocalDatabase")));
             }
             else
             {
@@ -68,26 +59,36 @@ namespace ValeoBot
                     options.UseSqlServer(Configuration.GetConnectionString("RemoteDatabase")));
             }
 
-            services
-                .AddScoped<ResponseController>()
-                .AddScoped<SessionService>()
-                .AddScoped<AuthorizationService>()
-                .AddScoped<ValeoKeyboardsService>()
-                .AddScoped<IValeoAPIService, ValeoAPIMockService>();
-                //.AddTransient<IValeoAPIService, ValeoAPIService>();
+            services.AddScoped<IDataRepository<Order>, OrderRepository>();
+            services.AddScoped<IDataRepository<ValeoUser>, UserRepository>();
+            services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
+            services.AddScoped<IAuthorization, AuthorizationService>();
+            services.AddSingleton<IMailingService, MailingService>();
 
-            // services.AddTelegramBot()
-            services.AddTransient<ValeoLifeBot>()
+            // Save history of telegram user movements throw the bots' menus
+            services.AddBotStateCache<InMemoryStateProvider>(ConfigureBot());
+
+            services.AddTelegramBot()
                 .AddScoped<ExceptionHandler>()
+                .AddScoped<UpdateLogger>()
                 .AddScoped<AuthorizationHandler>()
-                .AddScoped<DataCollectFilterHandler>()
+                .AddScoped<DefaultHandler>()
                 .AddScoped<StartCommand>()
-                .AddScoped<OrderUpdater>()
-                .AddScoped<CallbackQueryHandler>();
+                .AddScoped<AboutQueryHandler>()
+                .AddScoped<LocationsQueryHandler>()
+                .AddScoped<FeedbackQueryHandler>()
+                .AddScoped<DoctorsQueryHandler>()
+                .AddScoped<ContactsQueryHandler>();
 
+
+            // services.AddSingleton<IScheduledTask, NotifyWeatherTask>();
+            // services.AddScheduler((sender, args) =>
+            // {
+            //     Console.Write(args.Exception.Message);
+            //     args.SetObserved();
+            // });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHttpsRedirection();
@@ -96,15 +97,14 @@ namespace ValeoBot
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseTelegramBotLongPolling<ValeoLifeBot>(ConfigureBot(), startAfter : TimeSpan.FromSeconds(2));
                 app.UseMvc();
+                app.UseTelegramBotLongPolling(ConfigureBot(), startAfter: TimeSpan.FromSeconds(2));
             }
             else
             {
-                //UseMvc and Use Webhook order important!!
                 app.UseMvc();
-                app.EnsureWebhookSet<ValeoLifeBot>();
-                app.UseTelegramBotWebhook<ValeoLifeBot>(ConfigureBot());
+                app.UseTelegramBotWebhook(ConfigureBot());
+                app.EnsureWebhookSet();
             }
 
         }
@@ -113,25 +113,40 @@ namespace ValeoBot
         {
             return new BotBuilder()
                 .Use<ExceptionHandler>()
+                .Use<UpdateLogger>()
                 //.Use<AuthorizationHandler>()
-                .Use<DataCollectFilterHandler>()
-                //.UseWhen<WebhookLogger>(When.Webhook)
-                //.UseWhen<UpdateMembersList>(When.MembersChanged)
-                .MapWhen(When.NewMessage, msgBranch => msgBranch
-                    .MapWhen(When.NewTextMessage, txtBranch => txtBranch
-                        .MapWhen(When.NewCommand, cmdBranch => cmdBranch
-                            .UseCommand<StartCommand>("start")
-                        )
-                        .Use<OrderUpdater>()
+                .MapWhen(When.State("default"), cmdBranch => cmdBranch
+                    .MapWhen(When.NewMessage, msgBranch => msgBranch
+                        .MapWhen(When.NewTextMessage, txtBranch => txtBranch
+                            .MapWhen(When.NewCommand, cmdBranch => cmdBranch
+                                .UseCommand<StartCommand>("start")
+                            )
                         //.Use<NLP>()
+                        )
+
                     )
-                    //.MapWhen<StickerHandler>(When.StickerMessage)
-                    //.MapWhen<WeatherReporter>(When.LocationMessage)
+                    .Use<DefaultHandler>()
                 )
-
-                .MapWhen<CallbackQueryHandler>(When.CallbackQuery)
-
-            //.Use<UnhandledUpdateReporter>()
+                .MapWhen(When.State("doctors"), defaultBranch => defaultBranch
+                    //.MapWhen<DoctorsQueryHandler>(When.CallbackQuery)
+                    .Use<DoctorsQueryHandler>()
+                )
+                .MapWhen(When.State("locations"), defaultBranch => defaultBranch
+                    .Use<LocationsQueryHandler>()
+                )
+                .MapWhen(When.State("contacts"), defaultBranch => defaultBranch
+                    .Use<ContactsQueryHandler>()
+                )
+                .MapWhen(When.State("about"), defaultBranch => defaultBranch
+                    .Use<AboutQueryHandler>()
+                )
+                .MapWhen(When.State("feedback"), defaultBranch => defaultBranch
+                    .Use<FeedbackQueryHandler>()
+                )
+            // .MapWhen(When.State("pagination"), defaultBranch => defaultBranch
+            //     .MapWhen<PaginationHandler>(When.CallbackQuery)
+            // )
+            // .Use<UnhandledUpdateReporter>()
             ;
         }
     }

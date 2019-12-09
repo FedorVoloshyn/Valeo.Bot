@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ValeoBot.Data.Entities;
+using Valeo.Bot.Data.Entities;
 
-namespace ValeoBot
+namespace Valeo.Bot
 {
     public class ApplicationDbContext : DbContext
     {

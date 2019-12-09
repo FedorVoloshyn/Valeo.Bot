@@ -10,8 +10,8 @@ using Valeo.Bot;
 namespace Valeo.Bot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191027180645_AddDoctorEntity")]
-    partial class AddDoctorEntity
+    [Migration("20191209225823_ActualizeDatabase")]
+    partial class ActualizeDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,9 @@ namespace Valeo.Bot.Migrations
 
             modelBuilder.Entity("Valeo.Bot.Data.Entities.Order", b =>
                 {
-                    b.Property<long>("Id");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Category");
 
@@ -40,7 +42,9 @@ namespace Valeo.Bot.Migrations
 
             modelBuilder.Entity("Valeo.Bot.Data.Entities.Registration", b =>
                 {
-                    b.Property<long>("Id");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthServiceToken");
 

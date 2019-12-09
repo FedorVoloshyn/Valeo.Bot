@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Valeo.Bot.Data.Entities;
 
 namespace Valeo.Bot.Services
 {

@@ -3,9 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using IBWT.Framework.Abstractions;
-using ValeoBot.Services;
+using Valeo.Bot.Services.HelsiAuthorization;
+using Telegram.Bot.Types.Enums;
 
-namespace Valeo.Bot.Models
+namespace Valeo.Bot.Handlers
 {
     public class AuthorizationHandler : IUpdateHandler
     {
@@ -20,7 +21,24 @@ namespace Valeo.Bot.Models
         {
             var update = context.Update;
             
-            if(_authorizationService.IsAuthorized(context.Update))
+            long chatId = 0;
+
+            switch (update.Type)
+            {
+                case UpdateType.CallbackQuery:
+                    chatId = update.CallbackQuery.From.Id;
+                    break;
+                case UpdateType.Message:
+                    chatId = update.Message.From.Id;
+                    break;
+                case UpdateType.InlineQuery:
+                    chatId = update.InlineQuery.From.Id;
+                    break;
+                default:
+                    throw new ArgumentException("Cannot authorize this type of message.");
+            }
+
+            if(_authorizationService.IsAuthorized(chatId))
             {
                 await next(context);
             }

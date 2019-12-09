@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValeoBot.Data.Entities;
-using ValeoBot.Services.ValeoApi.Models;
+using Valeo.Bot.Data.Entities;
+using Valeo.Bot.Services.ValeoApi.Models;
 
-namespace ValeoBot.Services.ValeoApi
+namespace Valeo.Bot.Services.ValeoApi
 {
     public interface IValeoAPIService
     {

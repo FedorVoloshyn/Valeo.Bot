@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace ValeoBot.Configuration
+namespace Valeo.Bot.Configuration.Entities
 {
     public class SMTPConnection
     {

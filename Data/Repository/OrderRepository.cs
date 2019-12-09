@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using ValeoBot;
-using ValeoBot.Data.Entities;
+using Valeo.Bot;
+using Valeo.Bot.Data.Entities;
 
-namespace ValeoBot.Data.Repository
+namespace Valeo.Bot.Data.Repository
 {
     public class OrderRepository : IDataRepository<Order>
     {

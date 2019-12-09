@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ValeoBot;
+using Valeo.Bot;
 
-namespace ValeoBot.Migrations
+namespace Valeo.Bot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -19,9 +19,11 @@ namespace ValeoBot.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.Order", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.Order", b =>
                 {
-                    b.Property<long>("Id");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Category");
 
@@ -36,9 +38,11 @@ namespace ValeoBot.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.Registration", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.Registration", b =>
                 {
-                    b.Property<long>("Id");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthServiceToken");
 
@@ -51,7 +55,7 @@ namespace ValeoBot.Migrations
                     b.ToTable("Registrations");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.ValeoUser", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.ValeoUser", b =>
                 {
                     b.Property<long>("Id");
 
@@ -72,9 +76,9 @@ namespace ValeoBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ValeoBot.Data.Entities.ValeoUser", b =>
+            modelBuilder.Entity("Valeo.Bot.Data.Entities.ValeoUser", b =>
                 {
-                    b.HasOne("ValeoBot.Data.Entities.Order", "Order")
+                    b.HasOne("Valeo.Bot.Data.Entities.Order", "Order")
                         .WithMany()
                         .HasForeignKey("LastOrderId");
                 });

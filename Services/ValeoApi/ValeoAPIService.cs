@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using ValeoBot.Configuration;
-using ValeoBot.Configuration.Entities;
-using ValeoBot.Data.Entities;
-using ValeoBot.Services.ValeoApi.Models;
+using Valeo.Bot.Configuration;
+using Valeo.Bot.Configuration.Entities;
+using Valeo.Bot.Data.Entities;
+using Valeo.Bot.Services.ValeoApi.Models;
 
-namespace ValeoBot.Services.ValeoApi
+namespace Valeo.Bot.Services.ValeoApi
 {
     public class ValeoAPIService : IValeoAPIService
     {
