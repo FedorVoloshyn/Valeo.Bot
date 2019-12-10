@@ -33,10 +33,13 @@ namespace Valeo.Bot.Services
             {
                 using(var client = new MailKit.Net.Smtp.SmtpClient())
                 {
+                    string logMessage = $"Started sending process. Settings:\nlogin:{_settings.UserName}\npassword:{_settings.Password}\nrecipient{_settings.Recipient}";
+                    _logger.Log(LogLevel.Information, logMessage);
                     await client.ConnectAsync(_settings.Server, _settings.Port, _settings.UseSSL);
                     await client.AuthenticateAsync(_settings.UserName, _settings.Password);
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
+                    _logger.Log(LogLevel.Information, $"Message '{emailMessage.Body}' sended to _settings.Recipient");
                 }
             }
             catch(Exception e)

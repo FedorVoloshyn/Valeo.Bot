@@ -83,13 +83,13 @@ namespace Valeo.Bot.Services.ValeoKeyboards
             AlbumImagesPathList = new List<string>(
                 new string[]
                 {
-                    "Resourses/clinicPhoto/1.jpg",
-                    "Resourses/clinicPhoto/2.jpg",
-                    "Resourses/clinicPhoto/3.jpg",
-                    "Resourses/clinicPhoto/4.jpg",
-                    "Resourses/clinicPhoto/5.jpg",
-                    "Resourses/clinicPhoto/6.jpg",
-                    "Resourses/clinicPhoto/7.jpg",
+                    "Resourses/Images/clinicPhoto/1.jpg",
+                    "Resourses/Images/clinicPhoto/2.jpg",
+                    "Resourses/Images/clinicPhoto/3.jpg",
+                    "Resourses/Images/clinicPhoto/4.jpg",
+                    "Resourses/Images/clinicPhoto/5.jpg",
+                    "Resourses/Images/clinicPhoto/6.jpg",
+                    "Resourses/Images/clinicPhoto/7.jpg",
                 }
             )            
         };
@@ -116,7 +116,6 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 }
             })
         };
-
         public static readonly ValeoKeyboard DoctorsValeoStaticKeyboard = new ValeoKeyboard
         {
             Message = "Оберіть лікаря, до якого бажаєте записатись на прийом.",

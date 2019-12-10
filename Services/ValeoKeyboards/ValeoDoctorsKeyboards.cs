@@ -12,7 +12,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
 {
     public static class ValeoDoctorsKeyboards
     {
-        private static string photoFolder = "Resourses/doctorsPhoto/";
+        private static string photoFolder = "Resourses/Images/doctorsPhoto/";
         public static ValeoKeyboard Safonov { get { return new ValeoKeyboard
             {
                 Message = "*Сафонов Денис Олегович*\nЛікар загальної практики - Сімейний лікар",
@@ -61,7 +61,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 {
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
+                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/dd4d4f9c-0618-4d05-900d-627875bc7ddd")
                     },
                     new InlineKeyboardButton[]
                     {
@@ -69,7 +69,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                     },
                     new InlineKeyboardButton[]
                     {
-                        InlineKeyboardButton.WithUrl("Записатись на прийом", "https://helsi.me/doctor/dd4d4f9c-0618-4d05-900d-627875bc7ddd")
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", ValeoCommands.Default),
                     },
                 }),
                 ImagePath = photoFolder + "makarchenko.jpg"

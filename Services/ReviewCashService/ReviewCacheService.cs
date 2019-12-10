@@ -51,8 +51,7 @@ namespace Valeo.Bot.Services.ReviewCashService
             else
             {  
                 review.Text = text;
-                if(!_env.IsDevelopment())
-                    await _mailingService.SendEmailAsync(review);
+                await _mailingService.SendEmailAsync(review);
                 _reviewCache.Remove(review);
             }
         }
