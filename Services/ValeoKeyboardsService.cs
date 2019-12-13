@@ -48,48 +48,5 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 }
             })
         };
-
-        public ValeoKeyboard CreateDoctorsKeyboard(List<Doctor> doctors)
-        {
-            List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
-            List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
-            for (int i = 1; i < doctors.Count; i++)
-            {
-                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{doctors[i].FirstName} {doctors[i].LastName}", $"{doctors[i].FirstName}|Times"));
-                if (i % 2 == 0)
-                {
-                    rows.Add(currentRow.ToArray());
-                    currentRow.Clear();
-                }
-            }
-            rows.Add(new InlineKeyboardButton[]
-            {
-                InlineKeyboardButton.WithCallbackData("Назад", "back::"),
-            });
-            return new ValeoKeyboard() { Message = "Оберіть лікаря", Markup = new InlineKeyboardMarkup(rows) };
-        }
-        public ValeoKeyboard CreateTimesKeyboard(List<Time> times)
-        {
-            List<InlineKeyboardButton[]> rows = new List<InlineKeyboardButton[]>();
-            List<InlineKeyboardButton> currentRow = new List<InlineKeyboardButton>();
-            for (int i = 1; i < times.Count; i++)
-            {
-                string formatedTime = times[i].Value.ToString("g", CultureInfo.CreateSpecificCulture("es-ES")) 
-                                    + " " 
-                                    + times[i].Value.DayOfWeek.ToString();
-                currentRow.Add(InlineKeyboardButton.WithCallbackData($"{formatedTime}", $"{formatedTime}|Save"));
-                if (i % 2 == 0)
-                {
-                    rows.Add(currentRow.ToArray());
-                    currentRow.Clear();
-                }
-            }
-            rows.Add(new InlineKeyboardButton[]
-            {
-                InlineKeyboardButton.WithCallbackData("Назад", "back::"),
-            });
-
-            return new ValeoKeyboard() { Message = "Оберіть час", Markup = new InlineKeyboardMarkup(rows) };
-        }
     }
 }

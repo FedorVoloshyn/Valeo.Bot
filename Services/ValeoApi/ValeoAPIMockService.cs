@@ -23,12 +23,12 @@ namespace Valeo.Bot.Services.ValeoApi
             return doctors;
         }
 
-        public async Task<List<Time>> GetFreeTimeByDoctor(string doctor)
+        public async Task<List<TimeSlot>> GetFreeTimeByDoctor(string doctor)
         {
-            var times = new List<Time>();
+            var times = new List<TimeSlot>();
             for (int i = 0; i < 20; i++)
             {
-                times.Add(new Time() { Value = DateTime.Now });
+                times.Add(new TimeSlot() { Start = DateTime.Now });
             }
             return times;
         }

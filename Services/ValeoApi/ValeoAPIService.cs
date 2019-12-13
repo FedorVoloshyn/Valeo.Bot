@@ -15,7 +15,7 @@ using Valeo.Bot.Services.ValeoApi.Models;
 
 namespace Valeo.Bot.Services.ValeoApi
 {
-    public class ValeoAPIService : IValeoAPIService
+    public class ValeoAPIService //: IValeoAPIService
     {
         private const int SafeExpirationGap = 60 * 5;
         private static AuthorizationData authData;

@@ -7,8 +7,8 @@ namespace Valeo.Bot.Services.ValeoApi
 {
     public interface IValeoAPIService
     {
-        Task<List<Doctor>> GetDoctorsByCategory(string category);
-        Task<List<Time>> GetFreeTimeByDoctor(string doctor);
-        Task<bool> SaveOrder(Order order);
+    //     Task<List<Doctor>> GetDoctorsByCategory(string category);
+    //     Task<List<Period>> GetFreeTimeByDoctor(string doctor);
+    //     Task<bool> SaveOrder(Order order);
     }
 }
