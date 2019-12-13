@@ -79,6 +79,7 @@ namespace Valeo.Bot
                 .AddScoped<LocationsQueryHandler>()
                 .AddScoped<FeedbackQueryHandler>()     
                 .AddScoped<FeedbackCollectHandler>()
+                .AddScoped<DoctorsListHandler>()
                 .AddScoped<DoctorsQueryHandler>()
                 .AddScoped<ContactsQueryHandler>();
 

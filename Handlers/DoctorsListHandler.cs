@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using IBWT.Framework.Abstractions;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -12,7 +14,7 @@ namespace Valeo.Bot.Handlers
 {
     public class DoctorsListHandler : IUpdateHandler
     {
-        private const string photoFolder = "Resourses/doctorsPhoto/";
+        private const string photoFolder = "Resourses/Images/doctorsPhoto/";
         private static readonly ReadOnlyDictionary<string, DoctorInfo> _doctors = new ReadOnlyDictionary<string, DoctorInfo>(
             new Dictionary<string, DoctorInfo>()
             {
@@ -23,7 +25,14 @@ namespace Valeo.Bot.Handlers
                 { "leonova", new DoctorInfo { DoctorTitle = "*Лєонова Оксана Олександрівна*\nЛікар-терапевт",  ImagePath =  photoFolder + "leonova.jpg", Url = "https://helsi.me/doctor/8db0a856-cb6e-480b-b9c8-37fbc6df9afe" } }
             }
         );
-        
+        private readonly ILogger<DoctorsListHandler> logger;
+        public DoctorsListHandler(
+            ILogger<DoctorsListHandler> logger
+        )
+        {
+            this.logger = logger;
+        }
+
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             CallbackQuery cq = context.Update.CallbackQuery;
@@ -41,27 +50,34 @@ namespace Valeo.Bot.Handlers
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "delault::"),
+                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "default::"),
                 },
             });
+            try
+            {
+                await context.Bot.Client.DeleteMessageAsync(
+                    cq.Message.Chat.Id,
+                    cq.Message.MessageId
+                );
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Cannot delete message before doctor info");
+            }
 
-            await context.Bot.Client.DeleteMessageAsync(  
-                cq.Message.Chat.Id,
-                cq.Message.MessageId
-            );
-            using(var photo = new FileStream(di.ImagePath, FileMode.Open))
+            using (var photo = new FileStream(di.ImagePath, FileMode.Open))
             {
                 await context.Bot.Client.SendPhotoAsync(
                     cq.Message.Chat.Id,
                     photo,
                     caption: di.DoctorTitle,
                     replyMarkup: markup,
-                    parseMode : ParseMode.Markdown
+                    parseMode: ParseMode.Markdown
                 );
             }
         }
 
-        private class DoctorInfo 
+        private class DoctorInfo
         {
             public string DoctorTitle { get; set; }
             public string ImagePath { get; set; }

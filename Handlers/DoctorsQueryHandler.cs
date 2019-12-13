@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using IBWT.Framework.Abstractions;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -18,37 +20,55 @@ namespace Valeo.Bot.Handlers
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithUrl("Сім. лікар Сафонов Д.О.", "doctors::safonov"),
+                    InlineKeyboardButton.WithCallbackData("Сім. лікар Сафонов Д.О.", "doctors::safonov"),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithUrl("Терапевт Паливода Д.В.", "doctors::palivoda"),
+                    InlineKeyboardButton.WithCallbackData("Терапевт Паливода Д.В.", "doctors::palivoda"),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithUrl("Педіатр Макарченко К.В.", "doctors::makarchenko"),
+                    InlineKeyboardButton.WithCallbackData("Педіатр Макарченко К.В.", "doctors::makarchenko"),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithUrl("Терапевт Калита Н.В.", "doctors::kalita"),
+                    InlineKeyboardButton.WithCallbackData("Терапевт Калита Н.В.", "doctors::kalita"),
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithUrl("Терапевт Лєонова О.О.", "doctors::leonova"),
+                    InlineKeyboardButton.WithCallbackData("Терапевт Лєонова О.О.", "doctors::leonova"),
                 },
                 new InlineKeyboardButton[]
                 {
                     InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "back::"),
                 },
             });
+        private readonly ILogger<DoctorsQueryHandler> logger;
+
+        public DoctorsQueryHandler(
+            ILogger<DoctorsQueryHandler> logger
+        )
+        {
+            this.logger = logger;
+        }
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             CallbackQuery cq = context.Update.CallbackQuery;
+            try
+            {
+                await context.Bot.Client.DeleteMessageAsync(
+                    cq.Message.Chat.Id,
+                    cq.Message.MessageId
+                );
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Cannot delete message before default");
+            }
 
-            await context.Bot.Client.EditMessageTextAsync(
+            await context.Bot.Client.SendTextMessageAsync(
                 cq.Message.Chat.Id,
-                cq.Message.MessageId,
                 Message,
                 replyMarkup: Markup,
                 parseMode: ParseMode.Markdown

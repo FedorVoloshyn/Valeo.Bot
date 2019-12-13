@@ -11,20 +11,21 @@ using Microsoft.AspNetCore.Hosting;
 using Valeo.Bot.Services;
 using Valeo.Bot.Data.Repository;
 using Valeo.Bot.Data.Entities;
+using IBWT.Framework.Services.State;
 
 namespace Valeo.Bot.Handlers
 {
     public class FeedbackCollectHandler : IUpdateHandler
     {
         private readonly ILogger<FeedbackCollectHandler> logger;
-        private readonly IStateProvider stateProvider;
+        private readonly IStateCacheService stateProvider;
         private readonly IDataRepository<Feedback> feedbackRepository;
         private readonly IHostingEnvironment env;
         private readonly IMailingService mailingService;
 
         public FeedbackCollectHandler(
             ILogger<FeedbackCollectHandler> logger,
-            IStateProvider stateProvider,
+            IStateCacheService stateProvider,
             IDataRepository<Feedback> feedbackRepository,
             IHostingEnvironment env,
             IMailingService mailingService
@@ -52,7 +53,7 @@ namespace Valeo.Bot.Handlers
 
             if (context.Update.Message.Text.Equals("Головне меню ↩️"))
             {
-                stateProvider.GetState(chatId).StepForward("default");
+                stateProvider.UpdateState(context, "default");
                 return;
             }
 
@@ -68,7 +69,7 @@ namespace Valeo.Bot.Handlers
 
             if(!env.IsDevelopment())
                 await mailingService.SendEmailAsync(review);
-            stateProvider.GetState(chatId).StepForward("default");
+            stateProvider.UpdateState(context, "default");
 
         }
 
