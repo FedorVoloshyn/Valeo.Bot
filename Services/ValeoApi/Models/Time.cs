@@ -2,8 +2,9 @@
 
 namespace Valeo.Bot.Services.ValeoApi.Models
 {
-    public struct Time
+    public struct TimeSlot
     {
-            public DateTime Value { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
     }
 }

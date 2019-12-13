@@ -8,7 +8,7 @@ namespace Valeo.Bot.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public long Id { get; set; }
         public long ChatId { get; set; }
         public string Text { get; set; }
     }

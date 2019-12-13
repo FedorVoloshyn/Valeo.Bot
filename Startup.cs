@@ -41,8 +41,6 @@ namespace Valeo.Bot
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddConfigurationProvider(Configuration, env);
 
-            services.AddScoped<IDataRepository<Order>, OrderRepository>();
-
             if (env.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
@@ -63,11 +61,12 @@ namespace Valeo.Bot
             services.AddScoped<IDataRepository<Order>, OrderRepository>();
             services.AddScoped<IDataRepository<ValeoUser>, UserRepository>();
             services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
+            services.AddScoped<IDataRepository<Feedback>, FeedbackRepository>();
+
             services.AddScoped<IAuthorization, AuthorizationService>();
             services.AddSingleton<IMailingService, MailingService>();
 
             services.AddSingleton<IReviewCacheService, ReviewCacheService>();
-            // Save history of telegram user movements throw the bots' menus
             services.AddBotStateCache<InMemoryStateProvider>(ConfigureBot());
 
             services.AddTelegramBot()
@@ -78,7 +77,8 @@ namespace Valeo.Bot
                 .AddScoped<StartCommand>()
                 .AddScoped<AboutQueryHandler>()
                 .AddScoped<LocationsQueryHandler>()
-                .AddScoped<FeedbackQueryHandler>()
+                .AddScoped<FeedbackQueryHandler>()     
+                .AddScoped<FeedbackCollectHandler>()
                 .AddScoped<DoctorsQueryHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
@@ -131,6 +131,10 @@ namespace Valeo.Bot
                 )
                 .MapWhen(When.State("doctors"), defaultBranch => defaultBranch
                     //.MapWhen<DoctorsQueryHandler>(When.CallbackQuery)
+                   .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
+                        //.MapWhen(WhenCopy.Data(""), branch => branch.Use<SafonovHandler>())
+                        .Use<DoctorsListHandler>()
+                    )
                     .Use<DoctorsQueryHandler>()
                 )
                 .MapWhen(When.State("locations"), defaultBranch => defaultBranch
@@ -143,7 +147,8 @@ namespace Valeo.Bot
                     .Use<AboutQueryHandler>()
                 )
                 .MapWhen(When.State("feedback"), defaultBranch => defaultBranch
-                    .Use<FeedbackQueryHandler>()
+                    .MapWhen<FeedbackQueryHandler>(When.CallbackQuery)
+                    .Use<FeedbackCollectHandler>()
                 )
             // .MapWhen(When.State("pagination"), defaultBranch => defaultBranch
             //     .MapWhen<PaginationHandler>(When.CallbackQuery)
@@ -151,5 +156,14 @@ namespace Valeo.Bot
             // .Use<UnhandledUpdateReporter>()
             ;
         }
+
+        // TODO: Move to framework
+        public static class WhenCopy 
+        {
+            public static Predicate<IUpdateContext> Data(string data) => (IUpdateContext context) => context.Items["Data"].Equals(data);
+
+            public static bool HasData(IUpdateContext context) => context.Items["Data"] != null && !string.IsNullOrEmpty(context.Items["Data"].ToString());
+        }
+
     }
 }

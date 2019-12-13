@@ -13,7 +13,7 @@ namespace Valeo.Bot.Configuration.Entities
         public string Specialities { get; set; }
         public string Doctors { get; set; }
         public string DoctorInfo { get; set; }
-        public string Times { get; set; }
+        public string BlockedTimes { get; set; }
         public string Save { get; set; }
     }
 
