@@ -13,22 +13,31 @@ namespace Valeo.Bot.Handlers
     public class FeedbackQueryHandler : IUpdateHandler
     {
         private const string Message = "Напишіть ваші враження та зауваження про якість обслуговування у клініці.";
-        private static readonly InlineKeyboardMarkup Markup =
-            new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
+        private static readonly ReplyKeyboardMarkup Markup = new ReplyKeyboardMarkup()
+        {
+            Keyboard = new KeyboardButton[][]
             {
-                new InlineKeyboardButton[]
+                new KeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "back::"),
+                    new KeyboardButton("Головне меню ↩️")
                 }
-            });
+            }
+        };
+
+        // new ReplyKeyboardMarkup(new List<InlineKeyboardButton[]>
+        // {
+        //     new InlineKeyboardButton[]
+        //     {
+        //         InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "back::"),
+        //     }
+        // });
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             CallbackQuery cq = context.Update.CallbackQuery;
 
-            await context.Bot.Client.EditMessageTextAsync(
+            await context.Bot.Client.SendTextMessageAsync(
                 cq.Message.Chat.Id,
-                cq.Message.MessageId,
                 Message,
                 replyMarkup: Markup,
                 parseMode: ParseMode.Markdown

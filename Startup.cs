@@ -18,6 +18,7 @@ using Valeo.Bot.Data.Repository;
 using Valeo.Bot.Handlers;
 using Valeo.Bot.Services;
 using Valeo.Bot.Services.HelsiAuthorization;
+using Valeo.Bot.Services.ReviewCashService;
 
 namespace Valeo.Bot
 {
@@ -65,6 +66,7 @@ namespace Valeo.Bot
             services.AddScoped<IAuthorization, AuthorizationService>();
             services.AddSingleton<IMailingService, MailingService>();
 
+            services.AddSingleton<IReviewCacheService, ReviewCacheService>();
             // Save history of telegram user movements throw the bots' menus
             services.AddBotStateCache<InMemoryStateProvider>(ConfigureBot());
 
