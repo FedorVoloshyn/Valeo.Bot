@@ -138,9 +138,15 @@ namespace Valeo.Bot
                    .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
                         //.MapWhen(WhenCopy.Data(""), branch => branch.Use<SafonovHandler>())
                         .Use<DoctorsListHandler>()
+                        .Use<DoctorsListHandler>()
                     )
                     //.Use<DoctorsQueryHandler>()
                     .Use<HelsiDoctorsQueryHandler>()
+                )
+                .MapWhen(When.State("doctors-time"), defaultBranch => defaultBranch
+                   .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
+                        .Use<HelsiDoctorTimesHandler>()
+                    )
                 )
                 .MapWhen(When.State("locations"), defaultBranch => defaultBranch
                     .Use<LocationsQueryHandler>()
