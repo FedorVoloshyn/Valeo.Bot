@@ -17,6 +17,7 @@ using Valeo.Bot.Data.Entities;
 using Valeo.Bot.Data.Repository;
 using Valeo.Bot.Handlers;
 using Valeo.Bot.Services;
+using Valeo.Bot.Services.HelsiAPI;
 using Valeo.Bot.Services.HelsiAuthorization;
 using Valeo.Bot.Services.ReviewCashService;
 
@@ -63,6 +64,7 @@ namespace Valeo.Bot
             services.AddScoped<IDataRepository<Registration>, RegistrationRepository>();
             services.AddScoped<IDataRepository<Feedback>, FeedbackRepository>();
 
+            services.AddScoped<IHelsiAPIService, HelsiAPIService>();
             services.AddScoped<IAuthorization, AuthorizationService>();
             services.AddSingleton<IMailingService, MailingService>();
 
@@ -81,6 +83,7 @@ namespace Valeo.Bot
                 .AddScoped<FeedbackCollectHandler>()
                 .AddScoped<DoctorsListHandler>()
                 .AddScoped<DoctorsQueryHandler>()
+                .AddScoped<HelsiDoctorsQueryHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
 
@@ -119,7 +122,7 @@ namespace Valeo.Bot
                 .Use<UpdateLogger>()
                 //.Use<AuthorizationHandler>()
                 .MapWhen(When.State("default"), cmdBranch => cmdBranch
-                    .MapWhen(When.NewMessage, msgBranch => msgBranch
+                    .UseWhen(When.NewMessage, msgBranch => msgBranch
                         .MapWhen(When.NewTextMessage, txtBranch => txtBranch
                             .MapWhen(When.NewCommand, cmdBranch => cmdBranch
                                 .UseCommand<StartCommand>("start")
@@ -136,7 +139,8 @@ namespace Valeo.Bot
                         //.MapWhen(WhenCopy.Data(""), branch => branch.Use<SafonovHandler>())
                         .Use<DoctorsListHandler>()
                     )
-                    .Use<DoctorsQueryHandler>()
+                    //.Use<DoctorsQueryHandler>()
+                    .Use<HelsiDoctorsQueryHandler>()
                 )
                 .MapWhen(When.State("locations"), defaultBranch => defaultBranch
                     .Use<LocationsQueryHandler>()

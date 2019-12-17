@@ -5,6 +5,7 @@ using IBWT.Framework.Abstractions;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 using Valeo.Bot.Services.ValeoKeyboards;
 
 namespace Valeo.Bot.Handlers
@@ -23,20 +24,20 @@ namespace Valeo.Bot.Handlers
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             Message msg = context.Update.Message ?? context.Update.CallbackQuery.Message;
-
             try
-            {
-                await context.Bot.Client.DeleteMessageAsync(
-                    msg.Chat.Id,
-                    msg.MessageId
-                );
+            {   
+                if(context.Update.Type == UpdateType.CallbackQuery)
+                    await context.Bot.Client.DeleteMessageAsync(
+                        msg.Chat.Id,
+                        msg.MessageId
+                    );
             }
             catch (Exception e)
             {
                 logger.LogError(e, "Cannot delete message before default");
             }
 
-            await context.Bot.Client.SendTextMessageAsync(
+            var defaultMessage = await context.Bot.Client.SendTextMessageAsync(
                 msg.Chat.Id,
                 ValeoKeyboardsService.DefaultKeyboard.Message,
                 ParseMode.Markdown,

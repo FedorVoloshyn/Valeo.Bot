@@ -13,7 +13,7 @@ namespace Valeo.Bot.Configuration
         {
             services.Configure<ConnectionStrings>(config.GetSection("ConnectionStrings"))
                 .Configure<LoggingSettings>(config.GetSection("Logging"))
-                .Configure<ValeoApiConfig>(config.GetSection("ValeoApi"))
+                .Configure<HelsiAPIConfig>(config.GetSection("HelsiAPI"))
                 .Configure<SMTPConnection>(config.GetSection("SMTPConnection"));
 
 

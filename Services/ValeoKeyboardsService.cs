@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Telegram.Bot.Types.ReplyMarkups;
-using Valeo.Bot.Services.ValeoApi;
-using Valeo.Bot.Services.ValeoApi.Models;
+using Valeo.Bot.Services.HelsiAPI;
+using Valeo.Bot.Services.HelsiAPI.Models;
 
 namespace Valeo.Bot.Services.ValeoKeyboards
 {

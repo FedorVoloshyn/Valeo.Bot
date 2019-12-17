@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Valeo.Bot.Services.ValeoApi.Models
+namespace Valeo.Bot.Services.HelsiAPI.Models
 {
     public struct TimeSlot
     {

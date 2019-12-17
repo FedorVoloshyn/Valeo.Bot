@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Valeo.Bot.Migrations
@@ -8,12 +9,28 @@ namespace Valeo.Bot.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ChatId = table.Column<long>(nullable: false),
+                    Text = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ChatId = table.Column<long>(nullable: false),
-                    DoctorID = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    DoctorId = table.Column<string>(nullable: true),
                     Time = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -25,7 +42,8 @@ namespace Valeo.Bot.Migrations
                 name: "Registrations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AuthServiceToken = table.Column<string>(nullable: true),
                     RegistrationMessageId = table.Column<int>(nullable: true),
                     Time = table.Column<DateTime>(nullable: false)
@@ -65,6 +83,9 @@ namespace Valeo.Bot.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Feedbacks");
+
             migrationBuilder.DropTable(
                 name: "Registrations");
 

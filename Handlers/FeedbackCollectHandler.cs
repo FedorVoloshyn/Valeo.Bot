@@ -12,6 +12,7 @@ using Valeo.Bot.Services;
 using Valeo.Bot.Data.Repository;
 using Valeo.Bot.Data.Entities;
 using IBWT.Framework.Services.State;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Valeo.Bot.Handlers
 {
@@ -42,7 +43,7 @@ namespace Valeo.Bot.Handlers
         {
             long chatId = GetChatIdFromUpdate(context.Update);
 
-            if (context.Update.Message == null || String.IsNullOrEmpty(context.Update.Message.Text))
+            if (context.Update.Message == null)
             {
                 await context.Bot.Client.SendTextMessageAsync(
                     chatId,
@@ -64,10 +65,13 @@ namespace Valeo.Bot.Handlers
             feedbackRepository.Add(review);
             await context.Bot.Client.SendTextMessageAsync(
                 chatId,
-                "Дякуємо за відгук стосовно обслуговування у нашій клініці!"
+                "Дякуємо за відгук стосовно обслуговування у нашій клініці! 🙏",
+                replyMarkup : new ReplyKeyboardRemove()
             );
 
-            if(!env.IsDevelopment())
+            await Task.Delay(1000);
+
+            if (!env.IsDevelopment())
                 await mailingService.SendEmailAsync(review);
             stateProvider.UpdateState(context, "default");
 

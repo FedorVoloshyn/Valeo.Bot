@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Valeo.Bot.Services.ValeoApi.Models
+namespace Valeo.Bot.Services.HelsiAPI.Models
 {
     public class Subdivision
     {

@@ -11,7 +11,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Valeo.Bot.Configuration.Entities;
 using Valeo.Bot.Data.Entities;
 using Valeo.Bot.Data.Repository;
-using Valeo.Bot.Services.ValeoApi;
+using Valeo.Bot.Services.HelsiAPI;
 using Valeo.Bot.Services.ValeoKeyboards;
 
 namespace Valeo.Bot.Services.HelsiAuthorization
@@ -22,9 +22,9 @@ namespace Valeo.Bot.Services.HelsiAuthorization
         private readonly IDataRepository<ValeoUser> userRepository;
         private readonly IDataRepository<Order> orderRepository;
         private readonly IDataRepository<Registration> regRepository;
-        private readonly IValeoAPIService valeoApi;
+        private readonly IHelsiAPIService HelsiAPI;
         private readonly TelegramBot valeoBot;
-        private readonly IOptions<ValeoApiConfig> apiConfig;
+        private readonly IOptions<HelsiAPIConfig> apiConfig;
         private readonly IOptions<BotOptions> botConfig;
 
         public AuthorizationService(
@@ -33,8 +33,8 @@ namespace Valeo.Bot.Services.HelsiAuthorization
             IDataRepository<Order> orderRepository,
             IDataRepository<Registration> regRepository,
             TelegramBot valeoBot,
-            IValeoAPIService valeoApi,
-            IOptions<ValeoApiConfig> apiConfig,
+            IHelsiAPIService HelsiAPI,
+            IOptions<HelsiAPIConfig> apiConfig,
             IOptions<BotOptions> botConfig
         )
         {
@@ -43,7 +43,7 @@ namespace Valeo.Bot.Services.HelsiAuthorization
             this.orderRepository = orderRepository;
             this.regRepository = regRepository;
             this.valeoBot = valeoBot;
-            this.valeoApi = valeoApi;
+            this.HelsiAPI = HelsiAPI;
             this.apiConfig = apiConfig;
             this.botConfig = botConfig;
         }

@@ -21,7 +21,9 @@ namespace Valeo.Bot.Handlers
                 {
                     new KeyboardButton("Головне меню ↩️")
                 }
-            }
+            },
+            ResizeKeyboard = true,
+            OneTimeKeyboard = true
         };
 
         // new ReplyKeyboardMarkup(new List<InlineKeyboardButton[]>

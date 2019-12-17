@@ -51,7 +51,7 @@ namespace Valeo.Bot.Handlers
                 new InlineKeyboardButton[]
                 {
                     InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "default::"),
-                },
+                }
             });
             try
             {

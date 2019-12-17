@@ -1,8 +1,8 @@
 namespace Valeo.Bot.Configuration.Entities
 {
-    public class ValeoApiConfig
+    public class HelsiAPIConfig
     {
-        public ValeoApiAuth AuthData { get; set; }
+        public HelsiAPIAuth AuthData { get; set; }
         public ValeoUrls Urls { get; set; }
     }
 
@@ -17,7 +17,7 @@ namespace Valeo.Bot.Configuration.Entities
         public string Save { get; set; }
     }
 
-    public class ValeoApiAuth
+    public class HelsiAPIAuth
     {
         public string client_id { get; set; }
         public string client_secret { get; set; }

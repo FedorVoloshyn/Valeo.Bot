@@ -11,11 +11,11 @@ using Newtonsoft.Json;
 using Valeo.Bot.Configuration;
 using Valeo.Bot.Configuration.Entities;
 using Valeo.Bot.Data.Entities;
-using Valeo.Bot.Services.ValeoApi.Models;
+using Valeo.Bot.Services.HelsiAPI.Models;
 
-namespace Valeo.Bot.Services.ValeoApi
+namespace Valeo.Bot.Services.HelsiAPI
 {
-    public class ValeoAPIService //: IValeoAPIService
+    public class HelsiAPIService : IHelsiAPIService
     {
         private const int SafeExpirationGap = 60 * 5;
         private static AuthorizationData authData;
@@ -49,12 +49,12 @@ namespace Valeo.Bot.Services.ValeoApi
             };
             HttpClient client = new HttpClient(hmh);
             string token = Startup.StaticConfiguration
-                .GetSection("ValeoApi")
+                .GetSection("HelsiAPI")
                 .GetSection("Urls")
                 .GetSection("Token").Value;
-            ValeoApiAuth valeoAuth = Startup.StaticConfiguration
-                .GetSection("ValeoApi")
-                .GetSection("ValeoApiAuth").Get<ValeoApiAuth>();
+            HelsiAPIAuth valeoAuth = Startup.StaticConfiguration
+                .GetSection("HelsiAPI")
+                .GetSection("HelsiAPIAuth").Get<HelsiAPIAuth>();
             var response = client.PostAsync(token, new FormUrlEncodedContent(
                 new Dictionary<string, string>
                 { { nameof(valeoAuth.client_id), valeoAuth.client_id },
@@ -67,9 +67,9 @@ namespace Valeo.Bot.Services.ValeoApi
             authData.expiration_date = DateTime.Now.AddSeconds(authData.expires_in - SafeExpirationGap);
 
         }
-        private ValeoApiConfig _config;
+        private HelsiAPIConfig _config;
 
-        public ValeoAPIService(IOptions<ValeoApiConfig> config)
+        public HelsiAPIService(IOptions<HelsiAPIConfig> config)
         {
             _config = config.Value;
             HttpClientHandler hmh = new HttpClientHandler()
@@ -162,7 +162,7 @@ namespace Valeo.Bot.Services.ValeoApi
             return result;
         }
 
-        public async Task<bool> SaveOrder(Order order)
+        public async Task<bool> SaveTime(Order order)
         {
             throw new NotImplementedException();
         }
