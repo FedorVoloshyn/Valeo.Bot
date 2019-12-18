@@ -123,10 +123,19 @@ namespace Valeo.Bot.Services.HelsiAPI
             if (Holidays.Any(d => d.Year == date.Year && d.Month == date.Month && d.Day == date.Day))
                 return result;
 
-            string jsonBlockedTimeSlots = await Client.GetStringAsync(string.Format(_config.Urls.BlockedTimes, doctorId))
-                .ConfigureAwait(false);
-            var response = JsonConvert.DeserializeObject<HelsiResponse<List<Period>>>(jsonBlockedTimeSlots);
-            List<Period> blockedPeriods = response.Data;
+            List<Period> blockedPeriods;
+            try
+            {
+                string jsonBlockedTimeSlots = await Client.GetStringAsync(string.Format(_config.Urls.BlockedTimes, doctorId))
+                    .ConfigureAwait(false);
+                var response = JsonConvert.DeserializeObject<HelsiResponse<List<Period>>>(jsonBlockedTimeSlots);
+                blockedPeriods = response.Data;
+            }
+            catch(HttpRequestException e)
+            {
+                blockedPeriods = new List<Period>();
+            }
+            
 
             IEnumerable<Period> schedules = doctor.Period
                                                     .Where(v => v.Msg == 1 && v.Day == (int)date.DayOfWeek)

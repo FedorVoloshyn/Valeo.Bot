@@ -48,12 +48,16 @@ namespace Valeo.Bot.Handlers
         {
             CallbackQuery cq = context.Update.CallbackQuery;
 
+
             Doctor doc = await helsiApi.GetDoctor(context.Items["Data"].ToString());
+
+            string message = $"*{doc.LastName} {doc.FirstName}*\n{doc.Position.Name}";
+
             InlineKeyboardMarkup markup = new InlineKeyboardMarkup(new List<InlineKeyboardButton[]>
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записатись на прийом", $"doctortimes::{doc.ResourceId}")
+                    InlineKeyboardButton.WithCallbackData("Записатись на прийом", $"doctortimes::1::{doc.ResourceId}")
                 },
                 new InlineKeyboardButton[]
                 {
@@ -81,7 +85,7 @@ namespace Valeo.Bot.Handlers
                 await context.Bot.Client.SendPhotoAsync(
                     cq.Message.Chat.Id,
                     $"https://helsi.me/doctor/media/{doc.PhotoId}",
-                    caption: doc.Position.Name,
+                    caption: message,
                     replyMarkup: markup,
                     parseMode: ParseMode.Markdown
                 );
@@ -89,7 +93,7 @@ namespace Valeo.Bot.Handlers
             catch (ApiRequestException e) 
             {
                 logger.LogError(e, $"Cannot find doctors-photo {doc.PhotoId}");
-                
+            
                 await context.Bot.Client.SendTextMessageAsync(
                     cq.Message.Chat.Id,
                     doc.Position.Name,

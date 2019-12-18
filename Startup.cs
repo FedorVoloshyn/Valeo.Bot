@@ -85,6 +85,7 @@ namespace Valeo.Bot
                 .AddScoped<DoctorsQueryHandler>()
                 .AddScoped<HelsiDoctorHandler>()
                 .AddScoped<HelsiDoctorsQueryHandler>()
+                .AddScoped<HelsiDoctorTimesHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
 
@@ -144,7 +145,7 @@ namespace Valeo.Bot
                     //.Use<DoctorsQueryHandler>()
                     .Use<HelsiDoctorsQueryHandler>()
                 )
-                .MapWhen(When.State("doctors-time"), defaultBranch => defaultBranch
+                .MapWhen(When.State("doctortimes"), defaultBranch => defaultBranch
                    .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
                         .Use<HelsiDoctorTimesHandler>()
                     )
