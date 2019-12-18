@@ -13,9 +13,9 @@ namespace Valeo.Bot.Services.HelsiAPI.Models
 
     public class Rating
     {
-        public int Professionalism { get; set; }
-        public int Service { get; set; }
-        public int Average { get; set; }
+        public float Professionalism { get; set; }
+        public float Service { get; set; }
+        public float Average { get; set; }
         public int ReviewCount { get; set; }
         public int CommentsCount { get; set; }
         public bool IsPublic { get; set; }

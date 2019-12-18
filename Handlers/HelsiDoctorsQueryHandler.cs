@@ -16,7 +16,7 @@ namespace Valeo.Bot.Handlers
 {
     public class HelsiDoctorsQueryHandler : IUpdateHandler
     {
-        private const string Message = "Оберіть лікаря, до якого бажаєте записатись на прийом.";
+        private const string Message = "Оберіть лікаря, до якого бажаєте записатись на прийом 👨‍⚕️👩‍⚕️";
         private readonly ILogger<HelsiDoctorsQueryHandler> logger;
         private readonly IHelsiAPIService helsiApi;
 
@@ -61,7 +61,7 @@ namespace Valeo.Bot.Handlers
             {
                 rows.Add(new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData(doctor.FirstName + " " + doctor.LastName , "doctors::safonov")
+                    InlineKeyboardButton.WithCallbackData(doctor.FirstName + " " + doctor.LastName , $"doctors::{doctor.ResourceId}")
                 });
             }
 

@@ -81,8 +81,9 @@ namespace Valeo.Bot
                 .AddScoped<LocationsQueryHandler>()
                 .AddScoped<FeedbackQueryHandler>()     
                 .AddScoped<FeedbackCollectHandler>()
-                .AddScoped<DoctorsListHandler>()
+                .AddScoped<DoctorHandler>()
                 .AddScoped<DoctorsQueryHandler>()
+                .AddScoped<HelsiDoctorHandler>()
                 .AddScoped<HelsiDoctorsQueryHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
@@ -137,8 +138,8 @@ namespace Valeo.Bot
                     //.MapWhen<DoctorsQueryHandler>(When.CallbackQuery)
                    .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
                         //.MapWhen(WhenCopy.Data(""), branch => branch.Use<SafonovHandler>())
-                        .Use<DoctorsListHandler>()
-                        .Use<DoctorsListHandler>()
+                        //.Use<DoctorHandler>()
+                        .Use<HelsiDoctorHandler>()
                     )
                     //.Use<DoctorsQueryHandler>()
                     .Use<HelsiDoctorsQueryHandler>()

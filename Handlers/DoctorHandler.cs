@@ -12,7 +12,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Valeo.Bot.Handlers
 {
-    public class DoctorsListHandler : IUpdateHandler
+    public class DoctorHandler : IUpdateHandler
     {
         private const string photoFolder = "Resourses/Images/doctorsPhoto/";
         private static readonly ReadOnlyDictionary<string, DoctorInfo> _doctors = new ReadOnlyDictionary<string, DoctorInfo>(
@@ -25,9 +25,9 @@ namespace Valeo.Bot.Handlers
                 { "leonova", new DoctorInfo { DoctorTitle = "*Лєонова Оксана Олександрівна*\nЛікар-терапевт",  ImagePath =  photoFolder + "leonova.jpg", Url = "https://helsi.me/doctor/8db0a856-cb6e-480b-b9c8-37fbc6df9afe" } }
             }
         );
-        private readonly ILogger<DoctorsListHandler> logger;
-        public DoctorsListHandler(
-            ILogger<DoctorsListHandler> logger
+        private readonly ILogger<DoctorHandler> logger;
+        public DoctorHandler(
+            ILogger<DoctorHandler> logger
         )
         {
             this.logger = logger;

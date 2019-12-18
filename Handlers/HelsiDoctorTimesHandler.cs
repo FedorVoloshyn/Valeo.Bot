@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using Valeo.Bot.Services.ValeoApi;
+using Valeo.Bot.Services.HelsiAPI;
 
 namespace Valeo.Bot.Handlers
 {
@@ -45,11 +45,11 @@ namespace Valeo.Bot.Handlers
                 },
             });
         private readonly ILogger<DoctorsQueryHandler> logger;
-        private readonly IValeoAPIService helsiApi;
+        private readonly IHelsiAPIService helsiApi;
 
         public HelsiDoctorTimesHandler(
             ILogger<DoctorsQueryHandler> logger,
-            IValeoAPIService helsiApi
+            IHelsiAPIService helsiApi
         )
         {
             this.logger = logger;
