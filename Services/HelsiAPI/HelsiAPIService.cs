@@ -151,20 +151,28 @@ namespace Valeo.Bot.Services.HelsiAPI
                 DateTime startSlot = new DateTime(date.Year, date.Month, date.Day, startTime.Hour, startTime.Minute, 0);
 
                 DateTime endTime = DateTime.ParseExact(schedule.TimeEnd, "HH:mm", null);
-                DateTime endSlot = new DateTime(date.Year, date.Month, date.Day, startTime.Hour, startTime.Minute, 0);
+                DateTime endSlot;
+                if (endTime.Hour != 0)
+                    endSlot = new DateTime(date.Year, date.Month, date.Day, endTime.Hour, endTime.Minute, 0);
+                else 
+                {
+                    DateTime nextDay = date.AddDays(1);
+                    endSlot = new DateTime(nextDay.Year, nextDay.Month, nextDay.Day, endTime.Hour, endTime.Minute, 0);
+                }
+                    
 
                 foreach (var na in doctor.ResourceNA)
                 {
-                    if (startSlot > na.DateStartNA && startSlot < na.DateStopNA)
+                    if (startSlot >= na.DateStartNA && startSlot <= na.DateStopNA)
                         startSlot = na.DateStopNA;
+                }
 
-                    DateTime startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
-                    while (startSlotEnd <= endSlot)
-                    {
-                        result.Add(new TimeSlot{ Start = startSlot });
-                        startSlot = startSlotEnd;
-                        startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
-                    }
+                DateTime startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
+                while (startSlotEnd <= endSlot)
+                {
+                    result.Add(new TimeSlot { Start = startSlot });
+                    startSlot = startSlotEnd;
+                    startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
                 }
             }
 

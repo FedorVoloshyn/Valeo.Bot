@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Timers;
+using System.Linq;
 using System.Text;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using Valeo.Bot.Services.HelsiAPI;
 using Valeo.Bot.Services.HelsiAPI.Models;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.InlineQueryResults;
 
 namespace Valeo.Bot.Handlers
 {
@@ -65,46 +67,80 @@ namespace Valeo.Bot.Handlers
             CallbackQuery cq = context.Update.CallbackQuery;
 
             string[] contextData = context.Items["Data"].ToString().Split("::");
-            List<TimeSlot> timeSlots = await helsiApi.GetFreeTimeByDoctor(contextData[1], DateTime.Today);
-            PaginatorBuilder<TimeSlot> pb = new PaginatorBuilder<TimeSlot>(10, 2, "doctortimes");
+            List<TimeSlot> timeSlots = await helsiApi.GetFreeTimeByDoctor(contextData[0], Convert.ToDateTime(contextData[1].ToString()));
 
-            pb.MessageBuilder(PaginatorMessageBuilder);
-
-            PaginatorData pd = pb.Build(timeSlots.ToArray(), Int32.Parse(contextData[0]));
-
-
-            try
+            if (timeSlots.Count == 0)
             {
-                await context.Bot.Client.DeleteMessageAsync(
-                    cq.Message.Chat.Id,
-                    cq.Message.MessageId
+                await context.Bot.Client.SendTextMessageAsync(
+                    cq.From.Id,
+                    "Нажаль доктор у цей день доктор не приймає",
+                    replyMarkup: new InlineKeyboardMarkup(new InlineKeyboardButton[]
+                    {
+                        InlineKeyboardButton.WithCallbackData("Головне меню ↩️", "default::")
+                    }),
+                    parseMode: ParseMode.Markdown
                 );
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, "Cannot delete message before default");
+                return;
             }
 
+            //PaginatorBuilder<TimeSlot> pb = new PaginatorBuilder<TimeSlot>(10, 3, "doctortimes");
+            //pb.MessageBuilder(PaginatorMessageBuilder);
+
+            //PaginatorData pd = pb.Build(timeSlots.ToArray(), Int32.Parse(contextData[0]));
+
+
+            var keyboard = TimeSlotsKeyboardBuilder(timeSlots);
             await context.Bot.Client.SendTextMessageAsync(
-                cq.Message.Chat.Id,
-                pd.Message,
-                replyMarkup: pd.ReplyMarkup,
+                cq.From.Id,
+                $"Обраний день - {contextData[1]}. \nТеперь оберіть час у клавіатурі знизу 👇",
+                replyMarkup: keyboard,
                 parseMode: ParseMode.Markdown
             );
         }
+        private ReplyKeyboardMarkup TimeSlotsKeyboardBuilder(List<TimeSlot> timeSlots)
+        {
+            ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup()
+            {
+                OneTimeKeyboard = true,
+                ResizeKeyboard= true
+            };
+            var kb = new List<KeyboardButton[]>();
+            List<KeyboardButton> row = new List<KeyboardButton>();;
+            for (int i = 0; i < timeSlots.Count; i++)
+            {
+                if(row == null)
+                    row = new List<KeyboardButton>();
 
+                KeyboardButton button = new KeyboardButton
+                { 
+                    Text = timeSlots[i].Start.ToShortTimeString()
+                };
+                row.Add(button);
+                if(i != 0 && i % 3 == 0)
+                {
+                    
+                    kb.Add(row.ToArray());
+                    row = null;
+                }
+            }
+            if(row != null)
+                kb.Add(row.ToArray());
+
+            markup.Keyboard = kb.ToArray();
+            return markup;
+        }
         private string PaginatorMessageBuilder<TimeSlot>(
-            TimeSlot[] data, 
-            int startIndex, 
+            TimeSlot[] data,
+            int startIndex,
             int itemsPerPage)
         {
             StringBuilder sb = new StringBuilder();
 
-            for(int i = 0; i < data.Length && i < itemsPerPage; i++)
+            for (int i = 0; i < data.Length && i < itemsPerPage; i++)
             {
-                sb.Append($"{i + startIndex + 1}. {data[i].ToString()}{Environment.NewLine} [I'm an inline-style link](https://www.google.com) [Command Link](/google)");
+                sb.Append($"{i + startIndex + 1}. {data[i].ToString()} [I'm an inline-style link](https://www.google.com) [Command Link](/google) {Environment.NewLine}");
             }
-            
+
             return sb.ToString();
         }
     }

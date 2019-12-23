@@ -57,7 +57,7 @@ namespace Valeo.Bot.Handlers
             {
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Записатись на прийом", $"doctortimes::1::{doc.ResourceId}")
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Записатись на прийом", $"doctortimes::1::{doc.ResourceId}")
                 },
                 new InlineKeyboardButton[]
                 {

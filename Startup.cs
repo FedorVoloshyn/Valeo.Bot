@@ -85,6 +85,7 @@ namespace Valeo.Bot
                 .AddScoped<DoctorsQueryHandler>()
                 .AddScoped<HelsiDoctorHandler>()
                 .AddScoped<HelsiDoctorsQueryHandler>()
+                .AddScoped<InlineHelsiDoctorsQueryHandler>()
                 .AddScoped<HelsiDoctorTimesHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
@@ -133,7 +134,11 @@ namespace Valeo.Bot
                         )
 
                     )
+                    .MapWhen(WhenCopy.InlineQuery, docQuery => docQuery
+                        .Use<InlineHelsiDoctorsQueryHandler>()
+                    )
                     .Use<DefaultHandler>()
+
                 )
                 .MapWhen(When.State("doctors"), defaultBranch => defaultBranch
                     //.MapWhen<DoctorsQueryHandler>(When.CallbackQuery)
@@ -173,9 +178,12 @@ namespace Valeo.Bot
         // TODO: Move to framework
         public static class WhenCopy 
         {
-            public static Predicate<IUpdateContext> Data(string data) => (IUpdateContext context) => context.Items["Data"].Equals(data);
-
-            public static bool HasData(IUpdateContext context) => context.Items["Data"] != null && !string.IsNullOrEmpty(context.Items["Data"].ToString());
+            public static Predicate<IUpdateContext> Data(string data) => 
+                (IUpdateContext context) => context.Items["Data"].Equals(data);
+            public static bool InlineQuery(IUpdateContext context) =>
+                    context.Update.InlineQuery != null;
+            public static bool HasData(IUpdateContext context) =>
+                context.Items["Data"] != null && !string.IsNullOrEmpty(context.Items["Data"].ToString());
         }
 
     }

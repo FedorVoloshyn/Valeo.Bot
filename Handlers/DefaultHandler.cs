@@ -24,9 +24,25 @@ namespace Valeo.Bot.Handlers
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
             Message msg = context.Update.Message ?? context.Update.CallbackQuery.Message;
+
+            if (msg == null)
+            {
+                await context.Bot.Client.SendTextMessageAsync(
+                    context.Update.CallbackQuery.From.Id,
+                    ValeoKeyboardsService.DefaultKeyboard.Message,
+                    ParseMode.Markdown,
+                    replyMarkup: ValeoKeyboardsService.DefaultKeyboard.Markup
+                );
+                return;
+            }
+            // if message from InlineQuery
+            if (msg.ReplyMarkup != null)
+                return;
+
+
             try
-            {   
-                if(context.Update.Type == UpdateType.CallbackQuery)
+            {
+                if (context.Update.Type == UpdateType.CallbackQuery)
                     await context.Bot.Client.DeleteMessageAsync(
                         msg.Chat.Id,
                         msg.MessageId
@@ -41,7 +57,7 @@ namespace Valeo.Bot.Handlers
                 msg.Chat.Id,
                 ValeoKeyboardsService.DefaultKeyboard.Message,
                 ParseMode.Markdown,
-                replyMarkup : ValeoKeyboardsService.DefaultKeyboard.Markup
+                replyMarkup: ValeoKeyboardsService.DefaultKeyboard.Markup
             );
         }
     }

@@ -21,7 +21,7 @@ namespace Valeo.Bot.Services.ValeoKeyboards
                 },
                 new InlineKeyboardButton[]
                 {
-                    InlineKeyboardButton.WithCallbackData("Наші лікарі 👨‍⚕️", "doctors::"),
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Наші лікарі 👨‍⚕️"), // , "doctors::"
                     InlineKeyboardButton.WithCallbackData("Залишити відгук ✍️", "feedback::")
                 },
                 new InlineKeyboardButton[]
