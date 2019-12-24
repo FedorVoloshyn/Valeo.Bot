@@ -54,7 +54,8 @@ namespace Valeo.Bot.Handlers
 
             if (context.Update.Message.Text.Equals("Головне меню ↩️"))
             {
-                stateProvider.UpdateState(context, "default");
+                await stateProvider.UpdateState(context, "default");
+                stateProvider.InitUpdate(context);
                 return;
             }
 

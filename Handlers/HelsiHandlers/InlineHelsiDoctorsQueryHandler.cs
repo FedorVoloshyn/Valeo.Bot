@@ -32,7 +32,6 @@ namespace Valeo.Bot.Handlers
 
         public async Task HandleAsync(IUpdateContext context, UpdateDelegate next, CancellationToken cancellationToken)
         {
-            
             InlineQuery iq = context.Update.InlineQuery;
             await context.Bot.Client.SendChatActionAsync(iq.From.Id, ChatAction.Typing);  
 
@@ -43,7 +42,7 @@ namespace Valeo.Bot.Handlers
             for (int i = 0; i < doctors.Count; i++)
             {
                 string description = doctors[i].Speciality.Count > 0 ? doctors[i].Speciality[0].DoctorSpeciality : "Доктор Valeo Diagnostics";
-                description += $"\n {doctors[i].Division?.Name}";
+                description += $"\n{doctors[i].Division?.Name}";
 
                 results.Add(new InlineQueryResultArticle(
                     id: i.ToString(),
@@ -70,14 +69,12 @@ namespace Valeo.Bot.Handlers
                         {
                             InlineKeyboardButton.WithCallbackData(
                             $"Інший день 📅", 
-                            $"calendar::{doctors[i].ResourceId}"),
+                            $"calendar::{DateTime.Today.ToShortDateString()}::{doctors[i].ResourceId}"),
                             InlineKeyboardButton.WithCallbackData(
                             $"Головне меню ↩️", 
                             $"default::"),
                         },
                     }),
-                    ThumbHeight = 100,
-                    ThumbWidth = 100,
                     ThumbUrl = "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/72d39556402457.59ad88082d175.png" //$"https://helsi.me/media/{doctors[i].PhotoId}"
                 });
             }

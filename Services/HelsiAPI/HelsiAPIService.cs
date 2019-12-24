@@ -141,6 +141,7 @@ namespace Valeo.Bot.Services.HelsiAPI
                                                     .Where(v => v.Msg == 1 && v.Day == (int)date.DayOfWeek)
                                                     .OrderBy(v => v.TimeStart);
 
+            
             if (schedules.Count() == 0)
                 return result;
 
@@ -170,7 +171,8 @@ namespace Valeo.Bot.Services.HelsiAPI
                 DateTime startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
                 while (startSlotEnd <= endSlot)
                 {
-                    result.Add(new TimeSlot { Start = startSlot });
+                    if(startSlot >= DateTime.Now)
+                        result.Add(new TimeSlot { Start = startSlot });
                     startSlot = startSlotEnd;
                     startSlotEnd = startSlot.AddMinutes(doctor.Time_slot);
                 }

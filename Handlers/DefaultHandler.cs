@@ -36,7 +36,7 @@ namespace Valeo.Bot.Handlers
                 return;
             }
             // if message from InlineQuery
-            if (msg.ReplyMarkup != null)
+            if (context.Update.CallbackQuery == null && msg.ReplyMarkup != null)
                 return;
 
 

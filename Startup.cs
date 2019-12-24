@@ -87,6 +87,8 @@ namespace Valeo.Bot
                 .AddScoped<HelsiDoctorsQueryHandler>()
                 .AddScoped<InlineHelsiDoctorsQueryHandler>()
                 .AddScoped<HelsiDoctorTimesHandler>()
+                .AddScoped<HelsiDoctorAppyTimeHandler>()
+                .AddScoped<HelsiCalendarHandler>()
                 .AddScoped<ContactsQueryHandler>();
 
 
@@ -154,6 +156,14 @@ namespace Valeo.Bot
                    .MapWhen(WhenCopy.HasData, doctorsBranch => doctorsBranch
                         .Use<HelsiDoctorTimesHandler>()
                     )
+                    .MapWhen(When.NewMessage, msgBranch => msgBranch
+                        .Use<HelsiDoctorAppyTimeHandler>()
+                    )
+
+                    
+                )
+                .MapWhen(When.State("calendar"), defaultBranch => defaultBranch
+                    .Use<HelsiCalendarHandler>()
                 )
                 .MapWhen(When.State("locations"), defaultBranch => defaultBranch
                     .Use<LocationsQueryHandler>()
@@ -183,7 +193,7 @@ namespace Valeo.Bot
             public static bool InlineQuery(IUpdateContext context) =>
                     context.Update.InlineQuery != null;
             public static bool HasData(IUpdateContext context) =>
-                context.Items["Data"] != null && !string.IsNullOrEmpty(context.Items["Data"].ToString());
+                context.Items.ContainsKey("Data") && !string.IsNullOrEmpty(context.Items["Data"].ToString());
         }
 
     }
