@@ -126,7 +126,7 @@ namespace Valeo.Bot
                 .Use<ExceptionHandler>()
                 .Use<UpdateLogger>()
                 //.Use<AuthorizationHandler>()
-                .MapWhen(When.State("default"), cmdBranch => cmdBranch
+                .MapWhen(When.State("default"), defaultBranch => defaultBranch
                     .UseWhen(When.NewMessage, msgBranch => msgBranch
                         .MapWhen(When.NewTextMessage, txtBranch => txtBranch
                             .MapWhen(When.NewCommand, cmdBranch => cmdBranch
